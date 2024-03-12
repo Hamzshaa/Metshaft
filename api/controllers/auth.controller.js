@@ -1,58 +1,57 @@
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/auth.model.js";
+import { errorHandler } from "../utils/errorHandler.js";
 
 export const signup = async (req, res, next) => {
   const { name, email, password1, password2 } = req.body;
 
   if (!name || !email || !password1 || !password2) {
-    return res.status(400).json({ message: "All fields are required." });
+    return next(errorHandler(400, "All fields are required"));
   }
 
   if (password1 !== password2) {
-    return res.status(400).json({ message: "Passwords do not match." });
+    return next(errorHandler(400, "Passwords do not match."));
   }
-
   const user = await User.findOne({ email });
 
   if (user) {
-    return res.status(400).json({ message: "Email is already registered." });
+    return next(errorHandler(400, "Email is already registered."));
   }
 
   const hashedPassword = bcryptjs.hashSync(password1, 10);
 
-  const newUser = await new User({
+  const newUser = new User({
     name,
     email,
     password: hashedPassword,
   });
 
   try {
-    newUser.save();
+    await newUser.save();
     res.status(200).json(newUser);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
 export const signin = async (req, res, next) => {
   const { email, password } = req.body;
-
   if (!email || !password) {
-    return res.status(400).json({ message: "All fields are required." });
+    return next(errorHandler(400, "All fields are required"));
   }
 
   try {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(404).json({ message: "User not found." });
+      return next(errorHandler(404, "User not found."));
     }
 
     const isPasswordValid = bcryptjs.compareSync(password, user.password);
 
     if (!isPasswordValid) {
-      return res.status(404).json({ message: "Invalid credential" });
+      return next(errorHandler(400, "Invalid credential"));
     }
 
     const token = jwt.sign(
@@ -64,7 +63,7 @@ export const signin = async (req, res, next) => {
 
     res.status(200).cookie("accessToken", token, { httpOnly: true }).send(rest);
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    next(error);
   }
 };
 
@@ -113,6 +112,6 @@ export const oauth = async (req, res, next) => {
         .send(rest);
     }
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    next(error);
   }
 };

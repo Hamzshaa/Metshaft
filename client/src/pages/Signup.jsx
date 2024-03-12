@@ -1,11 +1,25 @@
-import { Button, Card, Label, TextInput } from "flowbite-react";
+import { Alert, Button, Card, Label, TextInput } from "flowbite-react";
 import book from "../assets/book2.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import OAuth from "../components/OAuth";
+import {
+  signInStart,
+  signInFailure,
+  signInSuccess,
+} from "../redux/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Signup() {
-  const [inputs, setinputs] = useState({});
+  const [inputs, setinputs] = useState({
+    name: "",
+    email: "",
+    password1: "",
+    password2: "",
+  });
+  const { loading, error } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setinputs((prev) => {
@@ -15,13 +29,27 @@ export default function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch("/api/auth/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(inputs),
-    });
+    try {
+      dispatch(signInStart());
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(inputs),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        dispatch(signInSuccess(data));
+        navigate("/signin");
+      } else {
+        dispatch(signInFailure(data.message));
+      }
+    } catch (error) {
+      dispatch(signInFailure(error.message));
+    }
   };
 
   return (
@@ -38,6 +66,7 @@ export default function Signup() {
               placeholder="John Doe"
               required
               onChange={handleChange}
+              value={inputs.name}
             />
           </div>
           <div>
@@ -50,6 +79,7 @@ export default function Signup() {
               placeholder="johndoe@gmail.com"
               required
               onChange={handleChange}
+              value={inputs.email}
             />
           </div>
           <div>
@@ -61,6 +91,7 @@ export default function Signup() {
               type="password"
               required
               onChange={handleChange}
+              value={inputs.password1}
             />
           </div>
           <div>
@@ -72,10 +103,13 @@ export default function Signup() {
               type="password"
               required
               onChange={handleChange}
+              value={inputs.password2}
             />
           </div>
 
-          <Button type="submit">Submit</Button>
+          <Button type="submit" disabled={loading} isProcessing={loading}>
+            Submit
+          </Button>
           <OAuth />
           <div className="flex gap-1 mt-4">
             Already have an account?
@@ -83,6 +117,9 @@ export default function Signup() {
               Sign In
             </Link>
           </div>
+          <Alert className="mt-5" color="failure">
+            {error}
+          </Alert>
         </form>
       </Card>
       <div className="flex flex-col justify-center hidden sm:block">
