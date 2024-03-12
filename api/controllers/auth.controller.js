@@ -67,6 +67,14 @@ export const signin = async (req, res, next) => {
   }
 };
 
+export const signout = (req, res, next) => {
+  try {
+    res.clearCookie("accessToken").status(200).json("User has been signed out");
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const oauth = async (req, res, next) => {
   const { name, email, profilePic } = req.body;
   try {

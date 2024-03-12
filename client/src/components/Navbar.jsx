@@ -10,12 +10,28 @@ import {
 import { Link, useLocation } from "react-router-dom";
 
 import { AiOutlineSearch } from "react-icons/ai";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { signOutSuccess } from "../redux/user/userSlice";
 
 export default function NavbarComponent() {
   const path = useLocation().pathname;
+  const dispatch = useDispatch();
 
   const { currentUser } = useSelector((state) => state.user);
+
+  const handleSignout = async () => {
+    try {
+      const res = await fetch("api/auth/signout", {
+        method: "POST",
+      });
+
+      if (res.ok) {
+        dispatch(signOutSuccess());
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <Navbar className="border-b-2 h-[64px]">
@@ -59,7 +75,7 @@ export default function NavbarComponent() {
               <Dropdown.Item>Profile</Dropdown.Item>
             </Link>
             <DropdownDivider />
-            <Dropdown.Item>Sign out</Dropdown.Item>
+            <Dropdown.Item onClick={handleSignout}>Sign out</Dropdown.Item>
           </Dropdown>
         ) : (
           <Link to="/signin">
