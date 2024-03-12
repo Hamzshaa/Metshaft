@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --body-height: calc(100vh - 64px); /* Set the desired height of your navbar */
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
