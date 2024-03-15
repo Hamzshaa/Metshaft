@@ -53,7 +53,7 @@ export default function Signup() {
   };
 
   return (
-    <div className="flex max-w-fit sm:max-w-6xl mx-auto sm:space-x-10 sm:justify-center items-center h-[var(--body-height)] overflow-y-scroll ">
+    <div className="flex max-w-fit sm:max-w-6xl mx-auto sm:space-x-10 sm:justify-center items-center overflow-y-scroll min-h-[var(--body-height)]">
       <Card className=" bg-transparent dark:bg-transparent shadow-none border-0 sm:border-r-2 sm:border-r-slate-700 rounded-none sm:pr-16">
         <form className="flex flex-col gap-4 sm:w-80" onSubmit={handleSubmit}>
           <div>
@@ -117,9 +117,11 @@ export default function Signup() {
               Sign In
             </Link>
           </div>
-          <Alert className="mt-5" color="failure">
-            {error}
-          </Alert>
+          {error && (
+            <Alert className="mt-5" color="failure">
+              {error}
+            </Alert>
+          )}
         </form>
       </Card>
       <div className="flex flex-col justify-center hidden sm:block">

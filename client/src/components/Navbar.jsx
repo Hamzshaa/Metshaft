@@ -4,18 +4,23 @@ import {
   DarkThemeToggle,
   Dropdown,
   DropdownDivider,
+  Modal,
   Navbar,
   TextInput,
 } from "flowbite-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { AiOutlineSearch } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { signOutSuccess } from "../redux/user/userSlice";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { useState } from "react";
 
 export default function NavbarComponent() {
   const path = useLocation().pathname;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [openModal, setOpenModal] = useState(false);
 
   const { currentUser } = useSelector((state) => state.user);
 
@@ -26,15 +31,18 @@ export default function NavbarComponent() {
       });
 
       if (res.ok) {
+        navigate("/signin");
         dispatch(signOutSuccess());
       }
     } catch (error) {
       console.log(error.message);
+    } finally {
+      setOpenModal(false);
     }
   };
 
   return (
-    <Navbar className="border-b-2 h-[64px]">
+    <Navbar className="border-b-2">
       <Link to="/" className="self-center whitespace-nowrap ">
         <img
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6FIP9j5d38NvEKOOD4lsA0pJmtLR6U3PW0wftHoQXCj_ZBjuTK-pOpSmuxTOxOgFCRxA&usqp=CAU"
@@ -63,7 +71,7 @@ export default function NavbarComponent() {
           <Dropdown
             arrowIcon={false}
             inline
-            label={<Avatar img={currentUser.profilePic} rounded />}
+            label={<Avatar img={currentUser.profilePicture} rounded />}
           >
             <Dropdown.Header>
               <span className="block text-sm font-medium truncate">
@@ -75,7 +83,9 @@ export default function NavbarComponent() {
               <Dropdown.Item>Profile</Dropdown.Item>
             </Link>
             <DropdownDivider />
-            <Dropdown.Item onClick={handleSignout}>Sign out</Dropdown.Item>
+            <Dropdown.Item onClick={() => setOpenModal(true)}>
+              Sign out
+            </Dropdown.Item>
           </Dropdown>
         ) : (
           <Link to="/signin">
@@ -98,6 +108,31 @@ export default function NavbarComponent() {
           <Link to="/finished">Finished</Link>
         </Navbar.Link>
       </Navbar.Collapse>
+
+      <Modal
+        show={openModal}
+        size="md"
+        onClose={() => setOpenModal(false)}
+        popup
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+              Are you sure you want to sign out?
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button color="failure" onClick={handleSignout}>
+                {"Yes, I'm sure"}
+              </Button>
+              <Button color="gray" onClick={() => setOpenModal(false)}>
+                No, cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </Navbar>
   );
 }

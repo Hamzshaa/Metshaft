@@ -47,7 +47,7 @@ export default function Signin() {
   };
 
   return (
-    <div className="flex max-w-fit sm:max-w-6xl mx-auto sm:space-x-10 sm:justify-center   items-center h-[var(--body-height)]  overflow-y-scroll">
+    <div className="flex max-w-fit sm:max-w-6xl mx-auto sm:space-x-10 sm:justify-center items-center min-h-[var(--body-height)]  overflow-y-scroll">
       <div className="flex flex-col justify-center hidden sm:block">
         <img src={book} alt="book" className="w-[300px] h-fit" />
       </div>
@@ -89,9 +89,11 @@ export default function Signin() {
               Sign Up
             </Link>
           </div>
-          <Alert className="mt-5" color="failure">
-            {error}
-          </Alert>
+          {error && (
+            <Alert className="mt-5" color="failure">
+              {error}
+            </Alert>
+          )}
         </form>
       </Card>
     </div>

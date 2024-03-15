@@ -1,12 +1,22 @@
-import { GoogleLogin } from "@react-oauth/google";
 import { useGoogleLogin } from "@react-oauth/google";
 import { Button } from "flowbite-react";
 import { AiFillGoogleCircle } from "react-icons/ai";
-import { jwtDecode } from "jwt-decode";
+import {
+  signInStart,
+  signInFailure,
+  signInSuccess,
+} from "../redux/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function OAuth() {
+  const { loading } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleGoogleClick = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
+      dispatch(signInStart());
       try {
         const profileResponse = await fetch(
           "https://www.googleapis.com/oauth2/v1/userinfo",
@@ -31,29 +41,29 @@ export default function OAuth() {
               profilePic: userProfile.picture,
             }),
           });
+
+          const data = await res.json();
+
+          dispatch(signInSuccess(data));
         } else {
+          dispatch(signInFailure("Error while profile response"));
           console.log("Error while profile response");
         }
+        navigate("/");
       } catch (error) {
+        dispatch(signInFailure(error.message));
         console.log(error);
       }
     },
   });
 
   return (
-    // <GoogleLogin
-    //   onSuccess={(credentialResponse) => {
-    //     console.log(credentialResponse);
-    //   }}
-    //   onError={() => {
-    //     console.log("Login Failed");
-    //   }}
-    // />
     <Button
       type="button"
-      gradientDuoTone="pinkToOrange"
+      gradientDuoTone="tealToLime"
       outline
       onClick={handleGoogleClick}
+      isProcessing={loading}
     >
       <AiFillGoogleCircle className="w-6 h-6 mr-2" />
       Continue with Google
