@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import authRoute from "../api/routers/auth.router.js";
 import userRoute from "../api/routers/user.router.js";
+import bookRoute from "../api/routers/book.router.js";
 dotenv.config();
 
 const app = express();
@@ -22,6 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);
+app.use("/api/books", bookRoute);
 
 app.listen(5000, () => {
   console.log("Server is running on port 5000");
