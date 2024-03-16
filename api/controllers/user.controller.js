@@ -40,7 +40,7 @@ export const updateUser = async (req, res, next) => {
       console.log(response);
     }
 
-    if (req.body.email) {
+    if (req.body.email && req.body.email !== user.email) {
       const emailExist = await User.findOne({ email: req.body.email });
       console.log(emailExist);
       if (emailExist) {

@@ -87,7 +87,6 @@ export default function DashboardProfile() {
     }
   };
 
-  console.log(currentUser);
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(updateStart());
@@ -187,7 +186,7 @@ export default function DashboardProfile() {
         <Button type="submit" gradientDuoTone="tealToLime" className="mt-5">
           Update
         </Button>
-        <div className="mt-5">
+        <div className="mt-5 ">
           <span
             className="text-red-600 dark:text-red-500 cursor-pointer"
             onClick={() => setOpenModal(true)}
@@ -196,10 +195,11 @@ export default function DashboardProfile() {
           </span>
         </div>
         {error && (
-          <Alert color="failure" className="mt-5">
+          <Alert color="failure" className="mt-5 ">
             {error}
           </Alert>
         )}
+        <div className="mb-12 md:mb-0"></div>
       </form>
 
       <Modal

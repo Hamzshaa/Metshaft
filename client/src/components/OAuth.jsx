@@ -8,15 +8,18 @@ import {
 } from "../redux/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function OAuth() {
   const { loading } = useSelector((state) => state.user);
+  const [oauthLoading, setOauthLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleGoogleClick = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       dispatch(signInStart());
+      setOauthLoading(true);
       try {
         const profileResponse = await fetch(
           "https://www.googleapis.com/oauth2/v1/userinfo",
@@ -49,9 +52,11 @@ export default function OAuth() {
           dispatch(signInFailure("Error while profile response"));
           console.log("Error while profile response");
         }
+        setOauthLoading(false);
         navigate("/");
       } catch (error) {
         dispatch(signInFailure(error.message));
+        setOauthLoading(false);
         console.log(error);
       }
     },
@@ -63,7 +68,8 @@ export default function OAuth() {
       gradientDuoTone="tealToLime"
       outline
       onClick={handleGoogleClick}
-      isProcessing={loading}
+      disabled={loading}
+      isProcessing={oauthLoading}
     >
       <AiFillGoogleCircle className="w-6 h-6 mr-2" />
       Continue with Google
