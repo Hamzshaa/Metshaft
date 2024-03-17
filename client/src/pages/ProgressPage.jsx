@@ -1,5 +1,9 @@
-import React from "react";
+import ProgressPageComponent from "../components/ProgressPageComponent";
 
 export default function ProgressPage() {
-  return <div>Progress Page</div>;
+  return (
+    <div className="">
+      <ProgressPageComponent />
+    </div>
+  );
 }

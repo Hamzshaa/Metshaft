@@ -1,5 +1,9 @@
-import React from "react";
+import FinishedComponent from "../components/FinishedComponent";
 
 export default function FinishedPage() {
-  return <div>Finished Page</div>;
+  return (
+    <div className="">
+      <FinishedComponent />
+    </div>
+  );
 }

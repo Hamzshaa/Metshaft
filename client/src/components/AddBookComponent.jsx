@@ -28,12 +28,16 @@ export default function AddBookComponent() {
   const [switch1, setSwitch1] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [imageFile, setImageFile] = useState(null);
+  const options = { year: "numeric", month: "long", day: "numeric" };
 
   const [inputs, setInputs] = useState({
     date: new Date(),
     addDirectly: false,
     user_id: currentUser._id,
+    published_date: null,
   });
+
+  console.log(inputs);
 
   const handleChange = (e) => {
     if (e.target.id === "addDirectly") {
@@ -48,10 +52,9 @@ export default function AddBookComponent() {
   };
 
   const handleDatePickerChange = (date) => {
-    console.log(typeof date);
     setSelectedDate(date);
     setInputs((prev) => {
-      return { ...prev, date: date };
+      return { ...prev, published_date: date };
     });
   };
 
@@ -125,6 +128,14 @@ export default function AddBookComponent() {
       const data = await res.json();
       if (res.ok) {
         dispatch(addBookSuccess());
+        setInputs({
+          date: new Date(),
+          addDirectly: false,
+          user_id: currentUser._id,
+          published_date: null,
+        });
+        setSwitch1(false);
+        setImageFile(null);
       } else {
         dispatch(addBookFailure(data.message));
       }
@@ -150,6 +161,7 @@ export default function AddBookComponent() {
           required
           shadow
           onChange={handleChange}
+          value={inputs?.title || ""}
         />
       </div>
       <div>
@@ -163,6 +175,7 @@ export default function AddBookComponent() {
           required
           shadow
           onChange={handleChange}
+          value={inputs?.author || ""}
         />
       </div>
       <div className="flex justify-between ">
@@ -176,6 +189,7 @@ export default function AddBookComponent() {
             placeholder="320"
             shadow
             onChange={handleChange}
+            value={inputs?.page || ""}
           />
         </div>
 
@@ -187,7 +201,12 @@ export default function AddBookComponent() {
               onChange={handleChange}
             />
           </div>
-          <Select id="genre" required onChange={handleChange}>
+          <Select
+            id="genre"
+            required
+            onChange={handleChange}
+            value={inputs?.genre || "Other"}
+          >
             <option>Academic</option>
             <option>Action and adventure</option>
             <option>Biography</option>
@@ -215,16 +234,21 @@ export default function AddBookComponent() {
             placeholder="Penguin Random House"
             shadow
             onChange={handleChange}
+            value={inputs?.publisher || ""}
           />
         </div>
         <div className="w-[47%] ">
           <div className="mb-2 block">
-            <Label htmlFor="date" value="Published date" />
+            <Label htmlFor="published_date" value="Published date" />
           </div>
           <Datepicker
-            id="date"
+            id="published_date"
             selected={selectedDate}
             onSelectedDateChanged={handleDatePickerChange}
+            value={
+              inputs?.published_date ||
+              new Date().toLocaleDateString("en-US", options)
+            }
           />
         </div>
       </div>
@@ -245,38 +269,30 @@ export default function AddBookComponent() {
             placeholder="American"
             shadow
             onChange={handleChange}
+            value={inputs?.nationality || ""}
           />
         </div>
       </div>
-      {!switch1 && (
-        <div className="w-full">
+
+      <div className="flex justify-between -mt-0 items-end">
+        <div className={switch1 ? "w-[40%]" : "w-full"}>
           <div className="mb-2 block">
-            <Label htmlFor="language" value="Language" />
+            <Label
+              htmlFor="language"
+              value={switch1 ? "Original language" : "Language"}
+            />
           </div>
           <TextInput
             id="language"
             type="text"
             placeholder="English"
+            required
             shadow
             onChange={handleChange}
+            value={inputs?.language || ""}
           />
         </div>
-      )}
-      {switch1 && (
-        <div className="flex justify-between -mt-0 items-end">
-          <div className="w-[40%]">
-            <div className="mb-2 block">
-              <Label htmlFor="original-language" value="Original language" />
-            </div>
-            <TextInput
-              id="original-language"
-              type="text"
-              placeholder="English"
-              required
-              shadow
-              onChange={handleChange}
-            />
-          </div>
+        {switch1 && (
           <div className="w-[28%]">
             <div className="mb-2 block">
               <Label htmlFor="translated_to" value="Translated to" />
@@ -285,12 +301,13 @@ export default function AddBookComponent() {
               id="translated_to"
               type="text"
               placeholder="Amharic"
-              required
               shadow
               onChange={handleChange}
+              value={inputs?.translated_to || ""}
             />
           </div>
-
+        )}
+        {switch1 && (
           <div className="w-[28%]">
             <div className="mb-2 block">
               <Label htmlFor="translator" value="Translator" />
@@ -299,13 +316,14 @@ export default function AddBookComponent() {
               id="translator"
               type="text"
               placeholder="አቤ ከቤ"
-              required
               shadow
               onChange={handleChange}
+              value={inputs?.translator || ""}
             />
           </div>
-        </div>
-      )}
+        )}
+      </div>
+      {/* )} */}
       {!imageFile && (
         <div
           className="flex w-full items-center justify-center"
@@ -363,7 +381,7 @@ export default function AddBookComponent() {
         <Checkbox
           id="addDirectly"
           onChange={handleChange}
-          checked={inputs.addDirectly}
+          checked={inputs.addDirectly || false}
         />
         <Label htmlFor="addDirectly" className="flex">
           Add directly to the finished list
