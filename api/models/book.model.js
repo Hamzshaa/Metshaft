@@ -16,10 +16,13 @@ const bookSchema = new mongoose.Schema(
       required: true,
     },
     page: {
-      type: Number,
+      type: String,
     },
     genre: {
       type: String,
+    },
+    date: {
+      type: Date,
     },
     publisher: {
       type: String,
@@ -35,7 +38,6 @@ const bookSchema = new mongoose.Schema(
     },
     language: {
       type: String,
-      required: true,
     },
     original_language: {
       type: String,

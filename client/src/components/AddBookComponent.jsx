@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Checkbox,
   Datepicker,
@@ -8,26 +9,42 @@ import {
   TextInput,
   ToggleSwitch,
 } from "flowbite-react";
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import {
   uploadImgStart,
   uploadImgFailure,
   uploadImgSuccess,
+  addBookStart,
+  addBookFailure,
+  addBookSuccess,
 } from "../redux/book/bookSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function AddBookComponent() {
   const dispatch = useDispatch();
+  const imgRef = useRef();
+  const { currentUser } = useSelector((state) => state.user);
+  const { loading, error } = useSelector((state) => state.book);
   const [switch1, setSwitch1] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [imageFile, setImageFile] = useState(null);
 
-  const [inputs, setInputs] = useState({ date: new Date() });
+  const [inputs, setInputs] = useState({
+    date: new Date(),
+    addDirectly: false,
+    user_id: currentUser._id,
+  });
 
   const handleChange = (e) => {
-    setInputs((prev) => {
-      return { ...prev, [e.target.id]: e.target.value };
-    });
+    if (e.target.id === "addDirectly") {
+      setInputs((prev) => {
+        return { ...prev, [e.target.id]: e.target.checked };
+      });
+    } else {
+      setInputs((prev) => {
+        return { ...prev, [e.target.id]: e.target.value };
+      });
+    }
   };
 
   const handleDatePickerChange = (date) => {
@@ -38,30 +55,24 @@ export default function AddBookComponent() {
     });
   };
 
-  //   const handleFileChange = (e) => {
-  //     console.log(e.target.files[0]);
-  //   };
-
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImageFile(file);
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target?.files[0];
+      if (file) {
+        setImageFile(file);
+        uploadImage();
+      }
     }
   };
 
   const handleImgDrop = (e) => {
-    e.preventDefault();
+    e?.preventDefault();
     const file = e.dataTransfer.files[0];
     if (file) {
       setImageFile(file);
+      uploadImage();
     }
   };
-
-  //   useEffect(() => {
-  //     if (imageFile) {
-  //       uploadImage();
-  //     }
-  //   }, [imageFile]);
 
   const uploadImage = async () => {
     dispatch(uploadImgStart());
@@ -98,6 +109,7 @@ export default function AddBookComponent() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    dispatch(addBookStart());
     try {
       if (imageFile) {
         uploadImage();
@@ -112,12 +124,12 @@ export default function AddBookComponent() {
 
       const data = await res.json();
       if (res.ok) {
-        console.log("pis new");
+        dispatch(addBookSuccess());
       } else {
-        console.log(data.message);
+        dispatch(addBookFailure(data.message));
       }
     } catch (error) {
-      console.log(error);
+      dispatch(addBookFailure(error.message));
     }
   };
 
@@ -162,7 +174,6 @@ export default function AddBookComponent() {
             id="page"
             type="text"
             placeholder="320"
-            required
             shadow
             onChange={handleChange}
           />
@@ -246,7 +257,6 @@ export default function AddBookComponent() {
             id="language"
             type="text"
             placeholder="English"
-            required
             shadow
             onChange={handleChange}
           />
@@ -301,9 +311,10 @@ export default function AddBookComponent() {
           className="flex w-full items-center justify-center"
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleImgDrop}
+          onClick={(e) => handleFileChange(e)}
         >
           <Label
-            htmlFor="dropzone-file"
+            htmlFor="img"
             className="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
           >
             <div className="flex flex-col items-center justify-center pb-6 pt-5">
@@ -331,9 +342,10 @@ export default function AddBookComponent() {
               </p>
             </div>
             <FileInput
-              id="dropzone-file"
+              id="img"
               className="hidden"
               onChange={handleFileChange}
+              ref={imgRef}
             />
           </Label>
         </div>
@@ -348,12 +360,23 @@ export default function AddBookComponent() {
         </div>
       )}
       <div className="flex items-center gap-2">
-        <Checkbox id="addDirectly" />
+        <Checkbox
+          id="addDirectly"
+          onChange={handleChange}
+          checked={inputs.addDirectly}
+        />
         <Label htmlFor="addDirectly" className="flex">
           Add directly to the finished list
         </Label>
       </div>
-      <Button type="submit">Add book</Button>
+      <Button type="submit" isProcessing={loading}>
+        Add book
+      </Button>
+      {error && (
+        <Alert color="failure" className="mt-5 ">
+          {error}
+        </Alert>
+      )}
     </form>
   );
 }

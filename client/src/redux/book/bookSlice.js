@@ -21,10 +21,28 @@ export const bookSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
+    addBookStart: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    addBookSuccess: (state) => {
+      state.error = null;
+      state.loading = false;
+    },
+    addBookFailure: (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    },
   },
 });
 
-export const { uploadImgStart, uploadImgFailure, uploadImgSuccess } =
-  bookSlice.actions;
+export const {
+  uploadImgStart,
+  uploadImgFailure,
+  uploadImgSuccess,
+  addBookStart,
+  addBookFailure,
+  addBookSuccess,
+} = bookSlice.actions;
 
 export default bookSlice.reducer;
