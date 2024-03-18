@@ -15,6 +15,7 @@ import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import { useSelector } from "react-redux";
+import EditPage from "./pages/EditPage";
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -38,6 +39,7 @@ function App() {
 
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/edit/:bookId" element={<EditPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

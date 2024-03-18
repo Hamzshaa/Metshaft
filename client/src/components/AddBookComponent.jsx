@@ -32,17 +32,21 @@ export default function AddBookComponent() {
 
   const [inputs, setInputs] = useState({
     date: new Date(),
-    addDirectly: false,
     user_id: currentUser._id,
     published_date: null,
+    state: "onProgress",
   });
 
-  console.log(inputs);
+  // console.log(inputs);
 
   const handleChange = (e) => {
     if (e.target.id === "addDirectly") {
       setInputs((prev) => {
-        return { ...prev, [e.target.id]: e.target.checked };
+        if (e.target.checked) {
+          return { ...prev, ["state"]: "finished" };
+        } else {
+          return { ...prev, ["state"]: "onProgress" };
+        }
       });
     } else {
       setInputs((prev) => {
@@ -62,8 +66,12 @@ export default function AddBookComponent() {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target?.files[0];
       if (file) {
+        console.log(file);
         setImageFile(file);
-        uploadImage();
+        if (inputs.img) {
+          deleteImgFromCloudinary(inputs.img);
+        }
+        uploadImage(file);
       }
     }
   };
@@ -72,16 +80,20 @@ export default function AddBookComponent() {
     e?.preventDefault();
     const file = e.dataTransfer.files[0];
     if (file) {
+      console.log(file);
       setImageFile(file);
-      uploadImage();
+      if (inputs.img) {
+        deleteImgFromCloudinary(inputs.img);
+      }
+      uploadImage(file);
     }
   };
 
-  const uploadImage = async () => {
+  const uploadImage = async (file) => {
     dispatch(uploadImgStart());
     try {
       const formData = new FormData();
-      formData.append("file", imageFile);
+      formData.append("file", file || imageFile);
       const cloudPreset = import.meta.env.VITE_CLOUD_PRESET;
       formData.append("upload_preset", cloudPreset);
 
@@ -130,9 +142,9 @@ export default function AddBookComponent() {
         dispatch(addBookSuccess());
         setInputs({
           date: new Date(),
-          addDirectly: false,
           user_id: currentUser._id,
           published_date: null,
+          state: "onProgress",
         });
         setSwitch1(false);
         setImageFile(null);
@@ -141,6 +153,30 @@ export default function AddBookComponent() {
       }
     } catch (error) {
       dispatch(addBookFailure(error.message));
+    }
+  };
+
+  const deleteImgFromCloudinary = async (img) => {
+    if (!img) {
+      console.log("KDJFK");
+      return;
+    }
+
+    let fileName = img.split("/").pop().split(".")[0];
+    console.log("FILENAME: ", fileName);
+    try {
+      const res = await fetch(`/api/books/delete/img/${fileName}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        console.log(data);
+      } else {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -323,55 +359,59 @@ export default function AddBookComponent() {
           </div>
         )}
       </div>
-      {/* )} */}
-      {!imageFile && (
+      <div
+        className={`flex w-full items-center justify-center ${
+          (imageFile || inputs.img) && "hidden"
+        }`}
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={handleImgDrop}
+        onClick={(e) => handleFileChange(e)}
+      >
+        <Label
+          htmlFor="img"
+          className="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+        >
+          <div className="flex flex-col items-center justify-center pb-6 pt-5">
+            <svg
+              className="mb-4 h-8 w-8 text-gray-500 dark:text-gray-400"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 16"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+              />
+            </svg>
+            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+              <span className="font-semibold">Click to upload</span> or drag and
+              drop
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              SVG, PNG, JPG or GIF (MAX. 800x400px)
+            </p>
+          </div>
+          <FileInput
+            id="img"
+            className="hidden"
+            onChange={handleFileChange}
+            ref={imgRef}
+          />
+        </Label>
+      </div>
+      {(imageFile || inputs.img) && (
         <div
-          className="flex w-full items-center justify-center"
+          className="w-[576px] h-[256px] flex justify-center bg-[#374151] rounded-xl"
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleImgDrop}
-          onClick={(e) => handleFileChange(e)}
+          onClick={() => imgRef.current.click()}
         >
-          <Label
-            htmlFor="img"
-            className="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-          >
-            <div className="flex flex-col items-center justify-center pb-6 pt-5">
-              <svg
-                className="mb-4 h-8 w-8 text-gray-500 dark:text-gray-400"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 16"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                />
-              </svg>
-              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                <span className="font-semibold">Click to upload</span> or drag
-                and drop
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                SVG, PNG, JPG or GIF (MAX. 800x400px)
-              </p>
-            </div>
-            <FileInput
-              id="img"
-              className="hidden"
-              onChange={handleFileChange}
-              ref={imgRef}
-            />
-          </Label>
-        </div>
-      )}
-      {imageFile && (
-        <div className="w-[576px] h-[256px] flex justify-center bg-[#374151] rounded-xl">
           <img
-            src={URL.createObjectURL(imageFile)}
+            src={(imageFile && URL.createObjectURL(imageFile)) || inputs.img}
             alt=""
             className="h-[256px] w-fit self-center"
           />
@@ -381,7 +421,7 @@ export default function AddBookComponent() {
         <Checkbox
           id="addDirectly"
           onChange={handleChange}
-          checked={inputs.addDirectly || false}
+          checked={inputs.state == "finished"}
         />
         <Label htmlFor="addDirectly" className="flex">
           Add directly to the finished list

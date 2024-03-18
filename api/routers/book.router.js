@@ -5,6 +5,8 @@ import {
   getBook,
   deleteBook,
   addToFinished,
+  deleteImg,
+  editBook,
 } from "../controllers/book.controller.js";
 
 const router = express.Router();
@@ -12,6 +14,8 @@ const router = express.Router();
 router.post("/add", verifyToken, addBook);
 router.get("/", verifyToken, getBook);
 router.delete("/delete/:bookId", verifyToken, deleteBook);
+router.delete("/delete/img/:imgUrl", verifyToken, deleteImg);
 router.put("/add/toFinished/:bookId", verifyToken, addToFinished);
+router.put("/edit/:bookId", verifyToken, editBook);
 
 export default router;

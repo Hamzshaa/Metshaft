@@ -127,6 +127,22 @@ export const deleteBook = async (req, res, next) => {
     next(error);
   }
 };
+export const deleteImg = async (req, res, next) => {
+  try {
+    if (!req.user) {
+      return next(errorHandler(401, "Unauthorized"));
+    }
+
+    if (req.params.imgUrl) {
+      const fullPath = "metsehaft/" + req.params.imgUrl;
+      await cloudinary.uploader.destroy(fullPath);
+    }
+
+    res.status(200).json({ message: "Deleted successfully from cloudinary" });
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const addToFinished = async (req, res, next) => {
   try {

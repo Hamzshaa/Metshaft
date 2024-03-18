@@ -152,7 +152,7 @@ export default function FinishedComponent() {
                 </Table.Cell>
                 <Table.Cell>
                   <Link
-                    to="/progress"
+                    to={`/edit/${book._id}`}
                     className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                   >
                     Edit

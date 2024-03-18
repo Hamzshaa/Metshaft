@@ -33,13 +33,7 @@ const bookSchema = new mongoose.Schema(
     nationality: {
       type: String,
     },
-    translated: {
-      type: Boolean,
-    },
     language: {
-      type: String,
-    },
-    original_language: {
       type: String,
     },
     translated_to: {
