@@ -424,7 +424,7 @@ export default function AddBookComponent() {
           Add directly to the finished list
         </Label>
       </div>
-      <Button type="submit" isProcessing={loading}>
+      <Button type="submit" disabled={loading} isProcessing={loading}>
         Add book
       </Button>
       {error && (

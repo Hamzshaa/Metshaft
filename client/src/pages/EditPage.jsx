@@ -468,7 +468,7 @@ export default function AddBookComponent() {
             onChange={(e) => handleChange(e)}
           />
         </div>
-        <Button type="submit" isProcessing={loading}>
+        <Button type="submit" disabled={loading} isProcessing={loading}>
           Save changes
         </Button>
         {error && (
