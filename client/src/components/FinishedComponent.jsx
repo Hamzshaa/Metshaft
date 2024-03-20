@@ -1,4 +1,11 @@
-import { Button, Modal, Spinner, Table } from "flowbite-react";
+import {
+  Button,
+  Dropdown,
+  Modal,
+  Spinner,
+  Table,
+  TextInput,
+} from "flowbite-react";
 import { useEffect, useState } from "react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +15,7 @@ import {
   processStart,
   processSuccess,
 } from "../redux/book/bookSlice";
+import { IoSearch } from "react-icons/io5";
 
 export default function FinishedComponent() {
   const dispatch = useDispatch();
@@ -83,6 +91,22 @@ export default function FinishedComponent() {
 
   return (
     <div className="overflow-scroll mx-5 my-5 md:m-10">
+      <div className="flex justify-between mb-5 px-2">
+        <Dropdown label="All" inline>
+          <Dropdown.Item>Last year</Dropdown.Item>
+          <Dropdown.Item>Last month</Dropdown.Item>
+          <Dropdown.Item>Last week</Dropdown.Item>
+          <Dropdown.Item>Today</Dropdown.Item>
+        </Dropdown>
+
+        <TextInput
+          id="search"
+          type="text"
+          icon={IoSearch}
+          placeholder="search book"
+          className="w-72"
+        />
+      </div>
       <Table hoverable>
         <Table.Head className="bg-red-800">
           <Table.HeadCell></Table.HeadCell>
