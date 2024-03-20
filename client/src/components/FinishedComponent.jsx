@@ -124,29 +124,31 @@ export default function FinishedComponent() {
                   </div>
                 </Table.Cell>
                 <Table.Cell>
-                  <div className="bg-slate-300 dark:bg-slate-500 w-12 h-14 flex">
-                    {book.img ? (
-                      <img
-                        src={
-                          book.img ||
-                          "https://static.wikia.nocookie.net/souo/images/4/47/Old_Book.jpg/revision/latest/scale-to-width-down/323?cb=20181030100841"
-                        }
-                        alt={book.title}
-                        className="h-fit w-auto my-auto"
-                      />
-                    ) : (
-                      <div className="text-[9px] leading-4 text-opacity-80 text-center mx-auto text-zinc-700 dark:text-zinc-300 p-1">
-                        NO
-                        <br />
-                        COVER
-                        <br />
-                        IMAGE
-                      </div>
-                    )}
-                  </div>
+                  <Link to={`/book/${book._id}`}>
+                    <div className="bg-slate-300 dark:bg-slate-500 w-12 h-14 flex">
+                      {book.img ? (
+                        <img
+                          src={
+                            book.img ||
+                            "https://static.wikia.nocookie.net/souo/images/4/47/Old_Book.jpg/revision/latest/scale-to-width-down/323?cb=20181030100841"
+                          }
+                          alt={book.title}
+                          className="h-fit w-auto my-auto"
+                        />
+                      ) : (
+                        <div className="text-[9px] leading-4 text-opacity-80 text-center mx-auto text-zinc-700 dark:text-zinc-300 p-1">
+                          NO
+                          <br />
+                          COVER
+                          <br />
+                          IMAGE
+                        </div>
+                      )}
+                    </div>
+                  </Link>
                 </Table.Cell>
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {book.title}
+                  <Link to={`/book/${book._id}`}>{book.title}</Link>
                 </Table.Cell>
                 <Table.Cell>{book.author}</Table.Cell>
                 <Table.Cell className="text-center">

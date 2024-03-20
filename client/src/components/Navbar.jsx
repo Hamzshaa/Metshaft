@@ -49,18 +49,6 @@ export default function NavbarComponent() {
         />
       </Link>
 
-      {/* <form>
-        <TextInput
-          type="text"
-          placeholder="Search..."
-          rightIcon={AiOutlineSearch}
-          className="hidden lg:inline"
-        ></TextInput>
-      </form>
-      <Button className="w-14 h-10 lg:hidden " color="gray" pill>
-        <AiOutlineSearch className="w-5 h-5" />
-      </Button> */}
-
       <div className="flex gap-2 md:order-2">
         <div className="self-center p-3">
           <DarkThemeToggle className=" p-0 m-0 focus:ring-0 hover:bg-transparent" />
