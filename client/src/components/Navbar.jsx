@@ -6,11 +6,9 @@ import {
   DropdownDivider,
   Modal,
   Navbar,
-  TextInput,
 } from "flowbite-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import { AiOutlineSearch } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { signOutSuccess } from "../redux/user/userSlice";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
@@ -51,7 +49,7 @@ export default function NavbarComponent() {
         />
       </Link>
 
-      <form>
+      {/* <form>
         <TextInput
           type="text"
           placeholder="Search..."
@@ -61,7 +59,7 @@ export default function NavbarComponent() {
       </form>
       <Button className="w-14 h-10 lg:hidden " color="gray" pill>
         <AiOutlineSearch className="w-5 h-5" />
-      </Button>
+      </Button> */}
 
       <div className="flex gap-2 md:order-2">
         <div className="self-center p-3">
