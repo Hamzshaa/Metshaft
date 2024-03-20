@@ -22,7 +22,10 @@ export const addBook = async (req, res, next) => {
       return next(errorHandler(404, "User not found"));
     }
 
-    const book = await Book.findOne({ title: req.body.title });
+    const book = await Book.findOne({
+      title: req.body.title,
+      _id: req.body.user_Id,
+    });
 
     if (book) {
       return next(errorHandler(400, "Book with this title already exist."));
@@ -114,10 +117,11 @@ export const deleteBook = async (req, res, next) => {
       return next(errorHandler(401, "Unauthorized"));
     }
 
-    if (book.img.includes("cloudinary")) {
+    if (book.img && book.img.includes("cloudinary")) {
       let fileName = book.img.split("/").pop().split(".")[0];
       const fullPath = "metsehaft/" + fileName;
       await cloudinary.uploader.destroy(fullPath);
+      console.log(book.img);
     }
 
     await Book.findByIdAndDelete(req.params.bookId);
@@ -133,9 +137,20 @@ export const deleteImg = async (req, res, next) => {
       return next(errorHandler(401, "Unauthorized"));
     }
 
+    let result = "";
     if (req.params.imgUrl) {
       const fullPath = "metsehaft/" + req.params.imgUrl;
-      await cloudinary.uploader.destroy(fullPath);
+      result = await cloudinary.uploader.destroy(fullPath);
+      console.log("Full path: ", fullPath);
+      console.log("Response: ", result);
+    }
+
+    // if (result != "ok") {
+    //   return next(errorHandler(404, "not found"));
+    // }
+
+    if (result == "not found") {
+      return res.send();
     }
 
     res.status(200).json({ message: "Deleted successfully from cloudinary" });
@@ -174,6 +189,55 @@ export const addToFinished = async (req, res, next) => {
 
     console.log(updatedBook);
     res.status(200).json(updatedBook);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const editBook = async (req, res, next) => {
+  console.log("ID: ", req.params.bookId);
+  console.log("body: ", req.body);
+
+  try {
+    const book = await Book.findById(req.params.bookId);
+
+    if (!book) {
+      next(errorHandler(404, "Book not found"));
+    }
+
+    if (req.params.bookId !== req.body._id) {
+      next(errorHandler(404, "Incorrect data"));
+    }
+
+    if (req.user.id !== req.body.user_id || req.user.isAdmin) {
+      next(errorHandler(401, "Unauthorized to edit this book"));
+    }
+
+    console.log(req.body.img);
+
+    const editedBook = await Book.findByIdAndUpdate(
+      req.params.bookId,
+      {
+        $set: {
+          title: req.body.title,
+          author: req.body.author,
+          page: req.body.page,
+          genre: req.body.genre,
+          date: req.body.date,
+          publisher: req.body.publisher,
+          published_date: req.body.published_date,
+          nationality: req.body.nationality,
+          language: req.body.language,
+          translated_to: req.body.translated_to,
+          translator: req.body.translator,
+          img: req.body.img,
+          state: req.body.state,
+        },
+      },
+      { new: true }
+    );
+
+    res.status(200).json(editedBook);
   } catch (error) {
     next(error);
   }

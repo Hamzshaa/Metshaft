@@ -11,19 +11,17 @@ import {
 } from "flowbite-react";
 import { useEffect, useRef, useState } from "react";
 import {
-  uploadImgStart,
-  uploadImgFailure,
-  uploadImgSuccess,
-  // addBookStart,
-  // addBookFailure,
-  // addBookSuccess,
+  processStart,
+  processFailure,
+  processSuccess,
 } from "../redux/book/bookSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function AddBookComponent() {
   const dispatch = useDispatch();
   const imgRef = useRef();
+  const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
   const [inputs, setInputs] = useState({
     date: new Date(),
@@ -36,29 +34,34 @@ export default function AddBookComponent() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const options = { year: "numeric", month: "long", day: "numeric" };
+  // const [imageUploading, setImageUploading] = useState(false);
 
   const { bookId } = useParams();
 
-  console.log(inputs);
-
   useEffect(() => {
     const getBook = async () => {
+      dispatch(processStart());
       try {
         const res = await fetch(`/api/books/?bookId=${bookId}`);
         const data = await res.json();
 
         if (res.ok) {
           setInputs(data.books[0]);
+          dispatch(processSuccess());
         } else {
+          dispatch(processFailure(data.message));
           console.log(data.message);
         }
       } catch (error) {
+        dispatch(processFailure(error.message));
         console.log(error);
       }
     };
 
     getBook();
-  }, [bookId]);
+  }, [bookId, dispatch]);
+
+  console.log(inputs);
 
   const handleChange = (e) => {
     if (typeof e === "boolean") {
@@ -87,12 +90,11 @@ export default function AddBookComponent() {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target?.files[0];
       if (file) {
-        console.log(file);
         setImageFile(file);
         if (inputs.img) {
           deleteImgFromCloudinary(inputs.img);
         }
-        uploadImage(file);
+        //  uploadImage(file);
       }
     }
   };
@@ -101,17 +103,16 @@ export default function AddBookComponent() {
     e?.preventDefault();
     const file = e.dataTransfer.files[0];
     if (file) {
-      console.log(file);
       setImageFile(file);
       if (inputs.img) {
         deleteImgFromCloudinary(inputs.img);
       }
-      uploadImage(file);
+      // uploadImage(file);
     }
   };
 
   const uploadImage = async (file) => {
-    dispatch(uploadImgStart());
+    dispatch(processStart());
     try {
       const formData = new FormData();
       formData.append("file", file || imageFile);
@@ -130,38 +131,50 @@ export default function AddBookComponent() {
 
       const data = await response.json();
       if (response.ok) {
-        dispatch(uploadImgSuccess());
-        setInputs((prev) => {
-          return { ...prev, img: data.secure_url };
-        });
+        dispatch(processSuccess());
+        return data.secure_url;
       } else {
-        dispatch(uploadImgFailure(data.message));
+        dispatch(processFailure(data.message));
         console.error("Failed to upload image:", response.statusText);
       }
     } catch (error) {
-      dispatch(uploadImgFailure(error.message));
+      dispatch(processFailure(error.message));
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // dispatch(addBookStart());
+    dispatch(processStart());
     try {
-      if (imageFile) {
-        uploadImage();
+      let prevImg = "";
+      if (inputs.img && inputs.img.includes("cloudinary")) {
+        prevImg = inputs.img;
       }
+      let imgUrl = "";
+      if (imageFile) {
+        console.log(imageFile);
+        imgUrl = await uploadImage(imageFile);
+      }
+
+      setInputs((prev) => ({ ...prev, img: imgUrl }));
+      const newInput = imgUrl ? { ...inputs, img: imgUrl } : inputs;
+
+      console.log(inputs);
       const res = await fetch(`/api/books/edit/${inputs._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(inputs),
+        body: JSON.stringify(newInput),
       });
 
+      console.log(newInput);
       const data = await res.json();
       if (res.ok) {
         console.log(data);
-        // dispatch(addBookSuccess());
+        dispatch(processSuccess());
+        if (newInput.img && newInput.img != prevImg)
+          deleteImgFromCloudinary(prevImg);
         setInputs({
           date: new Date(),
           user_id: currentUser._id,
@@ -170,21 +183,22 @@ export default function AddBookComponent() {
         });
         setSwitch1(false);
         setImageFile(null);
+        navigate("/");
       } else {
-        // dispatch(addBookFailure(data.message));
+        console.log(data.message);
+        dispatch(processFailure(data.message));
       }
     } catch (error) {
       console.log(error.message);
-      // dispatch(addBookFailure(error.message));
+      dispatch(processFailure(error.message));
     }
   };
 
   const deleteImgFromCloudinary = async (img) => {
     if (!img) {
-      console.log("KDJFK");
       return;
     }
-
+    dispatch(processStart());
     let fileName = img.split("/").pop().split(".")[0];
     console.log("FILENAME: ", fileName);
     try {
@@ -195,10 +209,13 @@ export default function AddBookComponent() {
       const data = await res.json();
       if (res.ok) {
         console.log(data);
+        dispatch(processSuccess());
       } else {
+        dispatch(processFailure(data.message));
         console.log(data.message);
       }
     } catch (error) {
+      dispatch(processFailure(error.message));
       console.log(error);
     }
   };

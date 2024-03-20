@@ -1,17 +1,25 @@
-import { Button, Modal, Table } from "flowbite-react";
+import { Button, Modal, Spinner, Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import {
+  processStart,
+  processSuccess,
+  processFailure,
+} from "../redux/book/bookSlice";
 
 export default function ProgressPageComponent() {
-  const [books, setBooks] = useState(null);
+  const [books, setBooks] = useState([]);
   const [bookId, setBookId] = useState(null);
   const options = { year: "numeric", month: "long", day: "numeric" };
+  const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
+  const { loading } = useSelector((state) => state.book);
 
   useEffect(() => {
     const getBooks = async () => {
+      dispatch(processStart());
       try {
         const res = await fetch(
           `/api/books/?state=onProgress&userId=${currentUser._id}`
@@ -19,19 +27,21 @@ export default function ProgressPageComponent() {
         const data = await res.json();
 
         if (!res.ok) {
-          console.log(data.message);
+          dispatch(processFailure(data.message));
           return;
         }
+        dispatch(processSuccess(data));
         setBooks(data.books);
       } catch (error) {
-        console.log(error);
+        dispatch(processFailure(error.message));
       }
     };
 
     getBooks();
-  }, []);
+  }, [dispatch, currentUser._id]);
 
   const handleAddToFinished = async (bookId) => {
+    dispatch(processStart());
     try {
       const res = await fetch(`/api/books/add/toFinished/${bookId}`, {
         method: "PUT",
@@ -44,17 +54,18 @@ export default function ProgressPageComponent() {
       const data = await res.json();
 
       if (res.ok) {
-        console.log(data);
         setBooks((prev) => prev.filter((book) => book._id !== bookId));
+        dispatch(processSuccess());
       } else {
-        console.log("Error: ", data.message);
+        dispatch(processFailure(data.message));
       }
     } catch (error) {
-      console.log(error.message);
+      dispatch(processFailure(error.message));
     }
   };
 
   const handleDelete = async () => {
+    dispatch(processStart());
     try {
       const res = await fetch(`/api/books/delete/${bookId}`, {
         method: "DELETE",
@@ -62,17 +73,35 @@ export default function ProgressPageComponent() {
 
       const data = await res.json();
       if (res.ok) {
-        console.log(data);
         setBooks((prev) => prev.filter((book) => book._id !== bookId));
+
+        dispatch(processSuccess(data));
       } else {
-        console.log("error: ", data);
+        dispatch(processFailure(data.message));
       }
     } catch (error) {
+      dispatch(processFailure(error.message));
       console.log(error.message);
     } finally {
       setBookId(null);
     }
   };
+
+  if (loading && books.length == 0) {
+    return (
+      <div className="text-center mt-[30vh]">
+        <Spinner aria-label="Center-aligned spinner example" size="xl" />
+      </div>
+    );
+  }
+
+  if (!loading && books.length == 0) {
+    return (
+      <div className="text-center mt-[20vh] text-2xl">
+        On Progress list is currently empty
+      </div>
+    );
+  }
 
   return (
     <div className="overflow-scroll mx-5 my-5 md:m-10">

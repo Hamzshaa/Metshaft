@@ -9,40 +9,22 @@ export const bookSlice = createSlice({
   name: "book",
   initialState,
   reducers: {
-    uploadImgStart: (state) => {
+    processStart: (state) => {
       state.loading = true;
       state.error = null;
     },
-    uploadImgSuccess: (state) => {
+    processSuccess: (state) => {
       state.error = null;
       state.loading = false;
     },
-    uploadImgFailure: (state, action) => {
-      state.error = action.payload;
-      state.loading = false;
-    },
-    addBookStart: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    addBookSuccess: (state) => {
-      state.error = null;
-      state.loading = false;
-    },
-    addBookFailure: (state, action) => {
+    processFailure: (state, action) => {
       state.error = action.payload;
       state.loading = false;
     },
   },
 });
 
-export const {
-  uploadImgStart,
-  uploadImgFailure,
-  uploadImgSuccess,
-  addBookStart,
-  addBookFailure,
-  addBookSuccess,
-} = bookSlice.actions;
+export const { processStart, processFailure, processSuccess } =
+  bookSlice.actions;
 
 export default bookSlice.reducer;
