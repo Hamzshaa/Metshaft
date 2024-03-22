@@ -7,6 +7,7 @@ import authRoute from "../api/routers/auth.router.js";
 import userRoute from "../api/routers/user.router.js";
 import bookRoute from "../api/routers/book.router.js";
 dotenv.config();
+import path from "path";
 
 const app = express();
 
@@ -14,6 +15,8 @@ mongoose
   .connect(process.env.MONGODB_URL)
   .then(() => console.log("mongoDB connected"))
   .catch((e) => console.log(e.message));
+
+const __dirname = path.resolve();
 
 app.use(cors({ origin: true }));
 app.use(cookieParser());
@@ -24,6 +27,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);
 app.use("/api/books", bookRoute);
+
+app.use(express.static(path.join(__dirname, "/client/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
 
 app.listen(5000, () => {
   console.log("Server is running on port 5000");
