@@ -20,10 +20,12 @@ export default function FinishedComponent() {
   const { loading } = useSelector((state) => state.book);
   const [filter, setFilter] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [filterLoading, setFilterLoading] = useState(false);
 
   useEffect(() => {
     const getBooks = async () => {
       dispatch(processStart());
+      setFilterLoading(true);
       try {
         const res = await fetch(
           `/api/books/?state=finished&userId=${currentUser._id}${
@@ -96,6 +98,8 @@ export default function FinishedComponent() {
       } catch (error) {
         dispatch(processFailure(error.message));
         console.log(error);
+      } finally {
+        setFilterLoading(false);
       }
     };
 
@@ -150,7 +154,7 @@ export default function FinishedComponent() {
   }
 
   return (
-    <div className="overflow-scroll mx-5 my-5 md:m-10">
+    <div className="overflow-scroll mx-5 my-5 md:m-10 backdrop-blur-3xl">
       <ListFilterComponent filterFromUrl={filter} searchFromUrl={searchQuery} />
       <Table hoverable>
         <Table.Head className="bg-red-800">
@@ -297,6 +301,16 @@ export default function FinishedComponent() {
           </div>
         </Modal.Body>
       </Modal>
+
+      {filterLoading && (
+        <div className="text-center self-center fixed w-[100%] h-[var(--table-height)] bottom-0 left-0 backdrop-blur-[1px] bg-white/30 flex flex-col justify-center">
+          <Spinner
+            aria-label="Center-aligned spinner example"
+            size="xl"
+            className=""
+          />
+        </div>
+      )}
     </div>
   );
 }

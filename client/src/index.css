@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --body-height: calc(100vh - 64px); /* Set the desired height of your navbar */
+  --body-height: calc(100vh - 64px);
+  --table-height: calc(100% - 64px);
 }
 
 *::-webkit-scrollbar {

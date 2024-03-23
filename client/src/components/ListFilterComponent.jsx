@@ -63,7 +63,7 @@ const ListFilterComponent = ({ searchFromUrl, filterFromUrl }) => {
           placeholder="search book"
           className="w-72"
           onChange={handleSearchQueryChange}
-          value={searchFromUrl || ""}
+          //   value={searchFromUrl || ""}
         />
       </div>
     </div>
