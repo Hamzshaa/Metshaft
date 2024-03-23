@@ -20,7 +20,6 @@ export default function ProgressPageComponent() {
   const { loading } = useSelector((state) => state.book);
   const [filter, setFilter] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  console.log("Filter: ", filter, "search: ", searchQuery);
 
   useEffect(() => {
     const getBooks = async () => {

@@ -1,36 +1,34 @@
-import {
-  Button,
-  Dropdown,
-  Modal,
-  Spinner,
-  Table,
-  TextInput,
-} from "flowbite-react";
+import { Button, Modal, Spinner, Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   processFailure,
   processStart,
   processSuccess,
 } from "../redux/book/bookSlice";
-import { IoSearch } from "react-icons/io5";
+import ListFilterComponent from "./ListFilterComponent";
 
 export default function FinishedComponent() {
+  const location = useLocation();
   const dispatch = useDispatch();
   const [books, setBooks] = useState([]);
   const [bookId, setBookId] = useState(null);
   const options = { year: "numeric", month: "long", day: "numeric" };
   const { currentUser } = useSelector((state) => state.user);
   const { loading } = useSelector((state) => state.book);
+  const [filter, setFilter] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const getBooks = async () => {
       dispatch(processStart());
       try {
         const res = await fetch(
-          `/api/books/?state=finished&userId=${currentUser._id}`
+          `/api/books/?state=finished&userId=${currentUser._id}${
+            searchQuery ? "&search=" + searchQuery : ""
+          }`
         );
         const data = await res.json();
 
@@ -39,8 +37,62 @@ export default function FinishedComponent() {
           console.log(data.message);
           return;
         }
-        setBooks(data.books);
         dispatch(processSuccess());
+
+        const currentDate = new Date();
+
+        if (filter == "today") {
+          const today = new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate()
+          );
+
+          const todayBooks = data.books.filter((book) => {
+            const createdAt = new Date(book.createdAt);
+            return createdAt >= today;
+          });
+
+          return setBooks(todayBooks);
+        } else if (filter == "last-week") {
+          const lastWeekStartDate = new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate() - 7
+          );
+
+          const lastWeekBooks = data.books.filter((book) => {
+            const createdAt = new Date(book.createdAt);
+            return createdAt >= lastWeekStartDate;
+          });
+          return setBooks(lastWeekBooks);
+        } else if (filter == "last-month") {
+          const lastMonthStartDate = new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth() - 1,
+            currentDate.getDate()
+          );
+
+          const lastMonthBooks = data.books.filter((book) => {
+            const createdAt = new Date(book.createdAt);
+            return createdAt >= lastMonthStartDate;
+          });
+          return setBooks(lastMonthBooks);
+        } else if (filter == "last-year") {
+          const lastYearStartDate = new Date(
+            currentDate.getFullYear() - 1,
+            currentDate.getMonth(),
+            currentDate.getDate()
+          );
+
+          const lastYearBooks = data.books.filter((book) => {
+            const createdAt = new Date(book.createdAt);
+            return createdAt >= lastYearStartDate;
+          });
+          return setBooks(lastYearBooks);
+        } else {
+          setBooks(data.books);
+        }
       } catch (error) {
         dispatch(processFailure(error.message));
         console.log(error);
@@ -48,7 +100,15 @@ export default function FinishedComponent() {
     };
 
     getBooks();
-  }, [currentUser._id, dispatch]);
+  }, [dispatch, currentUser._id, filter, searchQuery]);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const filterFromUrl = urlParams.get("filter");
+    const searchFromUrl = urlParams.get("search");
+    setFilter(filterFromUrl);
+    setSearchQuery(searchFromUrl);
+  }, [location.search]);
 
   const handleDelete = async () => {
     dispatch(processStart());
@@ -73,7 +133,7 @@ export default function FinishedComponent() {
     }
   };
 
-  if (loading && books.length == 0) {
+  if (!searchQuery && !filter && loading && books.length == 0) {
     return (
       <div className="text-center mt-[30vh]">
         <Spinner aria-label="Center-aligned spinner example" size="xl" />
@@ -81,7 +141,7 @@ export default function FinishedComponent() {
     );
   }
 
-  if (!loading && books.length == 0) {
+  if (!searchQuery && !filter && !loading && books.length == 0) {
     return (
       <div className="text-center mt-[20vh] text-2xl">
         On Progress list is currently empty
@@ -91,22 +151,7 @@ export default function FinishedComponent() {
 
   return (
     <div className="overflow-scroll mx-5 my-5 md:m-10">
-      <div className="flex justify-between mb-5 px-2">
-        <Dropdown label="All" inline>
-          <Dropdown.Item>Last year</Dropdown.Item>
-          <Dropdown.Item>Last month</Dropdown.Item>
-          <Dropdown.Item>Last week</Dropdown.Item>
-          <Dropdown.Item>Today</Dropdown.Item>
-        </Dropdown>
-
-        <TextInput
-          id="search"
-          type="text"
-          icon={IoSearch}
-          placeholder="search book"
-          className="w-72"
-        />
-      </div>
+      <ListFilterComponent filterFromUrl={filter} searchFromUrl={searchQuery} />
       <Table hoverable>
         <Table.Head className="bg-red-800">
           <Table.HeadCell></Table.HeadCell>
@@ -226,6 +271,12 @@ export default function FinishedComponent() {
             ))}
         </Table.Body>
       </Table>
+
+      {(filter || searchQuery) && (!books || books?.length == 0) && (
+        <div className="w-full text-center mt-10 text-3xl font-semibold text-slate-400 dark:text-slate-500">
+          No book found
+        </div>
+      )}
 
       <Modal show={bookId} size="md" onClose={() => setBookId(null)} popup>
         <Modal.Header />

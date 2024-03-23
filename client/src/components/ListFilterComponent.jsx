@@ -30,7 +30,7 @@ const ListFilterComponent = ({ searchFromUrl, filterFromUrl }) => {
   return (
     <div>
       <div className="flex justify-between mb-5 px-2">
-        <Dropdown label={`${tab || "All"} `} inline>
+        <Dropdown label={`${filterFromUrl || "All"} `} inline>
           <Dropdown.Item onClick={() => handleFilterQueryChange("")}>
             All
           </Dropdown.Item>
@@ -63,7 +63,7 @@ const ListFilterComponent = ({ searchFromUrl, filterFromUrl }) => {
           placeholder="search book"
           className="w-72"
           onChange={handleSearchQueryChange}
-          value={searchFromUrl}
+          value={searchFromUrl || ""}
         />
       </div>
     </div>

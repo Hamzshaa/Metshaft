@@ -106,14 +106,14 @@ export const getBook = async (req, res, next) => {
       createdAt: { $gte: oneWeekAgo },
     });
 
-    const todayBooks = await Book.countDocuments({
+    const totalTodayBooks = await Book.countDocuments({
       createdAt: { $gte: currentDate },
     });
 
     res.status(200).json({
       books,
       totalBooks,
-      todayBooks,
+      totalTodayBooks,
       totalLastWeekBooks,
       totalLastMonthBooks,
       totalLastYearBooks,
