@@ -74,17 +74,7 @@ export const getBook = async (req, res, next) => {
       .limit(limit);
 
     const totalBooks = await Book.countDocuments();
-
     const currentDate = new Date();
-    const oneMonthAgo = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth() - 1,
-      currentDate.getDate()
-    );
-
-    const lastMonthBooks = await Book.countDocuments({
-      createdAt: { $gte: oneMonthAgo },
-    });
 
     const oneYearAgo = new Date(
       currentDate.getFullYear() - 1,
@@ -92,11 +82,42 @@ export const getBook = async (req, res, next) => {
       currentDate.getDate()
     );
 
-    const lastYearBooks = await Book.countDocuments({
+    const totalLastYearBooks = await Book.countDocuments({
       createdAt: { $gte: oneYearAgo },
     });
 
-    res.status(200).json({ books, totalBooks, lastMonthBooks, lastYearBooks });
+    const oneMonthAgo = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() - 1,
+      currentDate.getDate()
+    );
+
+    const totalLastMonthBooks = await Book.countDocuments({
+      createdAt: { $gte: oneMonthAgo },
+    });
+
+    const oneWeekAgo = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - 7
+    );
+
+    const totalLastWeekBooks = await Book.countDocuments({
+      createdAt: { $gte: oneWeekAgo },
+    });
+
+    const todayBooks = await Book.countDocuments({
+      createdAt: { $gte: currentDate },
+    });
+
+    res.status(200).json({
+      books,
+      totalBooks,
+      todayBooks,
+      totalLastWeekBooks,
+      totalLastMonthBooks,
+      totalLastYearBooks,
+    });
   } catch (error) {
     next(error);
   }
