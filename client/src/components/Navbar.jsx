@@ -57,9 +57,9 @@ export default function NavbarComponent() {
 
       <div className="flex gap-2 md:order-2">
         <div className="self-center p-3">
-          <div className="h-5">
+          <div className="h-5" onClick={() => dispatch(toggleTheme())}>
             <DarkThemeToggle
-              onClick={() => dispatch(toggleTheme())}
+              // onClick={() => dispatch(toggleTheme())}
               className="p-0 m-0 focus:ring-0 hover:bg-transparent"
             />
           </div>

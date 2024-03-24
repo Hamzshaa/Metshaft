@@ -257,19 +257,6 @@ export default function AddBookComponent() {
         </div>
       </div>
       <div className="flex justify-between items-end">
-        <div className="w-[47%]">
-          <div className="mb-2 block">
-            <Label htmlFor="publisher" value="Publisher" />
-          </div>
-          <TextInput
-            id="publisher"
-            type="text"
-            placeholder="Penguin Random House"
-            shadow
-            onChange={handleChange}
-            value={inputs?.publisher || ""}
-          />
-        </div>
         <div className="w-[47%] ">
           <div className="mb-2 block">
             <Label htmlFor="published_date" value="Published date" />
@@ -282,6 +269,19 @@ export default function AddBookComponent() {
               inputs?.published_date ||
               new Date().toLocaleDateString("en-US", options)
             }
+          />
+        </div>
+        <div className="w-[47%]">
+          <div className="mb-2 block">
+            <Label htmlFor="publisher" value="Publisher" />
+          </div>
+          <TextInput
+            id="publisher"
+            type="text"
+            placeholder="Penguin Random House"
+            shadow
+            onChange={handleChange}
+            value={inputs?.publisher || ""}
           />
         </div>
       </div>
@@ -402,7 +402,7 @@ export default function AddBookComponent() {
       </div>
       {(imageFile || inputs.img) && (
         <div
-          className="w-[576px] h-[256px] flex justify-center bg-[#374151] rounded-xl"
+          className="w-full h-[252px] h- md:w-[576px] md:h-[256px] flex justify-center bg-[#374151] rounded-xl"
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleImgDrop}
           onClick={() => imgRef.current.click()}
@@ -410,7 +410,7 @@ export default function AddBookComponent() {
           <img
             src={(imageFile && URL.createObjectURL(imageFile)) || inputs.img}
             alt=""
-            className="h-[256px] w-fit self-center"
+            className="h-full md:h-[256px] w-fit self-center"
           />
         </div>
       )}
