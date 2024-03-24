@@ -8,9 +8,9 @@ export default function Home() {
     <div className="relative">
       <div className="h-[var(--body-height)] w-full bg-slate-50 dark:bg-slate-800 absolute top-0 bg-opacity-90 dark:bg-opacity-80 -z-0"></div>
       <div className="h-[var(--body-height)] bg-logo-bgg bg-[url('./assets/logo_bg.jpg')] bg-no-repeat bg-cover bg-center"></div>
-      <div className="z-20 absolute top-8 w-full h-[var(--body-height)] mt-16 sm:mt-12 md:mt-8">
+      <div className="z-20 absolute top-8 w-full h-[var(--body-height)] mt-20 sm:mt-16 md:mt-16">
         <Logo />
-        <div className="mt-16 text-center max-w-[600px] mx-auto">
+        <div className="mt-10 text-center max-w-[600px] mx-auto">
           <div className="h-[200px] relative">
             <div
               id="animated-div"
@@ -26,7 +26,7 @@ export default function Home() {
             </a> */}
               <h2
                 id="animated-text"
-                className="self-center h-fit w-fit m-auto text-center text-lg"
+                className="self-center h-fit w-fit m-auto text-center text-lg dark:text-slate-100"
               ></h2>
             </div>
             <Link to="/add">

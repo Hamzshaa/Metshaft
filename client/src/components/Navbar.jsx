@@ -59,7 +59,6 @@ export default function NavbarComponent() {
         <div className="self-center p-3">
           <div className="h-5">
             <DarkThemeToggle
-              // onClick={themeSwitch}
               onClick={() => dispatch(toggleTheme())}
               className="p-0 m-0 focus:ring-0 hover:bg-transparent"
             />
