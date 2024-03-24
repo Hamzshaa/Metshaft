@@ -20,9 +20,6 @@ function App() {
         <NavbarComponent />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/add" element={<AddBook />} />
-          <Route path="/progress" element={<ProgressPage />} />
-          <Route path="/finished" element={<FinishedPage />} />
           <Route
             path="/signin"
             element={currentUser ? <Navigate to="/" /> : <Signin />}
@@ -33,6 +30,9 @@ function App() {
           />
 
           <Route element={<PrivateRoute />}>
+            <Route path="/add" element={<AddBook />} />
+            <Route path="/progress" element={<ProgressPage />} />
+            <Route path="/finished" element={<FinishedPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/edit/:bookId" element={<EditPage />} />
             <Route path="/book/:bookId" element={<Book />} />
