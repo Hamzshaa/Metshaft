@@ -13,7 +13,7 @@ export default function Logo() {
         </span>
         <div className="flex flex-col">
           <div className="h-[4px] sm:h-[7px] md:h-[9px] w-[80%] mx-auto mb-0 pb-0 bg-teal-400"></div>
-          <h1 className="text-3xl mt-[6px] sm:text-6xl sm:mb-1 sm:mt-[4px] md:text-7xl md:mt-[6px] md:mb-[8px]">
+          <h1 className="text-3xl mt-[7px] sm:text-6xl sm:mb-1 sm:mt-[4px] md:text-7xl md:mt-[6px] md:mb-[8px]">
             rident <span className="text-yellow-400">M</span>
             etshaft
           </h1>
