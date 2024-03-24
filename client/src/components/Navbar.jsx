@@ -8,11 +8,11 @@ import {
   Navbar,
 } from "flowbite-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
+import { toggleTheme } from "../redux/theme/themeSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { signOutSuccess } from "../redux/user/userSlice";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import darkLogo from "../assets/logo_dark.png";
 import lightLogo from "../assets/logo_light.png";
@@ -22,38 +22,8 @@ export default function NavbarComponent() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
-  const [theme, setTheme] = useState("");
-
-  // const handleDarkMode = () => setIsDarkMode(!isDarkMode);
-
-  useEffect(() => {
-    const userTheme = localStorage.getItem("theme");
-    const systemTheme = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
-
-    // const themeCheck = () => {
-    if (userTheme === "dark" || (!userTheme && systemTheme)) {
-      document.documentElement.classList.add("dark");
-      setTheme("dark");
-    }
-    // };
-  }, []);
-
-  const themeSwitch = () => {
-    if (document.documentElement.classList.contains("dark")) {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-      setTheme("light");
-      return;
-    }
-
-    document.documentElement.classList.add("dark");
-    localStorage.setItem("theme", "dark");
-    setTheme("dark");
-  };
-
   const { currentUser } = useSelector((state) => state.user);
+  const { theme } = useSelector((state) => state.theme);
 
   const handleSignout = async () => {
     try {
@@ -87,13 +57,10 @@ export default function NavbarComponent() {
 
       <div className="flex gap-2 md:order-2">
         <div className="self-center p-3">
-          <div
-            className="h-5"
-            //  onClick={() => setIsDarkMode((prev) => !prev)}
-          >
+          <div className="h-5">
             <DarkThemeToggle
-              // onClick={handleDarkMode}
-              onClick={themeSwitch}
+              // onClick={themeSwitch}
+              onClick={() => dispatch(toggleTheme())}
               className="p-0 m-0 focus:ring-0 hover:bg-transparent"
             />
           </div>

@@ -5,13 +5,7 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
     "node_modules/flowbite-react/lib/esm/**/*.js",
   ],
-  theme: {
-    extend: {
-      backgroundImage: {
-        "logo-bg": "url('./src/assets/logo_bg.jpg')",
-      },
-    },
-  },
+  theme: {},
   plugins: [require("flowbite/plugin")],
   darkMode: "class",
 };

@@ -1,9 +1,6 @@
-import React from "react";
+import { useSelector } from "react-redux";
 
 export default function ThemeProvider({ children }) {
-  return (
-    <div className="bg-slate-50 text-slate-800 dark:bg-[#15202B] dark:text-white min-h-screen">
-      {children}
-    </div>
-  );
+  const { theme } = useSelector((state) => state.theme);
+  return <div className={theme}>{children}</div>;
 }

@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <div className="relative">
       <div className="h-[var(--body-height)] w-full bg-slate-50 dark:bg-slate-800 absolute top-0 bg-opacity-90 dark:bg-opacity-80 -z-0"></div>
-      <div className="h-[var(--body-height)] bg-logo-bg bg-no-repeat bg-cover bg-center"></div>
+      <div className="h-[var(--body-height)] bg-logo-bgg bg-[url('./assets/logo_bg.jpg')] bg-no-repeat bg-cover bg-center"></div>
       <div className="z-20 absolute top-8 w-full h-[var(--body-height)] mt-16 sm:mt-12 md:mt-8">
         <Logo />
         <div className="mt-16 text-center max-w-[600px] mx-auto">
