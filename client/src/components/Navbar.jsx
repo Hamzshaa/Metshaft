@@ -14,11 +14,17 @@ import { signOutSuccess } from "../redux/user/userSlice";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { useState } from "react";
 
+import darkLogo from "../assets/logo_dark.png";
+import lightLogo from "../assets/logo_light.png";
+
 export default function NavbarComponent() {
   const path = useLocation().pathname;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+  );
 
   const { currentUser } = useSelector((state) => state.user);
 
@@ -41,17 +47,22 @@ export default function NavbarComponent() {
 
   return (
     <Navbar className="border-b-2">
-      <Link to="/" className="self-center whitespace-nowrap ">
+      <Link
+        to="/"
+        className="self-center whitespace-nowrap h-16 align-middle items-center flex justify-center overflow-hidden"
+      >
         <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6FIP9j5d38NvEKOOD4lsA0pJmtLR6U3PW0wftHoQXCj_ZBjuTK-pOpSmuxTOxOgFCRxA&usqp=CAU"
+          src={isDarkMode ? darkLogo : lightLogo}
           alt="logo"
-          className="w-12"
+          className="w-40 -mb-3 bg-[url('../assets/logo_dark.png')]"
         />
       </Link>
 
       <div className="flex gap-2 md:order-2">
         <div className="self-center p-3">
-          <DarkThemeToggle className=" p-0 m-0 focus:ring-0 hover:bg-transparent" />
+          <div className="h-5" onClick={() => setIsDarkMode((prev) => !prev)}>
+            <DarkThemeToggle className="p-0 m-0 focus:ring-0 hover:bg-transparent" />
+          </div>
         </div>
         {currentUser ? (
           <Dropdown

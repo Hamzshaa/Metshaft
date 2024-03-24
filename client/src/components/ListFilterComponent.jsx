@@ -61,7 +61,7 @@ const ListFilterComponent = ({ searchFromUrl, filterFromUrl }) => {
           type="text"
           icon={IoSearch}
           placeholder="search book"
-          className="w-72"
+          className="sm:w-72"
           onChange={handleSearchQueryChange}
           //   value={searchFromUrl || ""}
         />

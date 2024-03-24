@@ -3,10 +3,53 @@
 @tailwind utilities;
 
 :root {
-  --body-height: calc(100vh - 64px);
+  --body-height: calc(100vh - 86px);
   --table-height: calc(100% - 64px);
 }
 
 *::-webkit-scrollbar {
   display: none;
+}
+
+@keyframes squeeze-animation {
+  0% {
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    height: 100px;
+  }
+  50% {
+    border-top-width: 4px;
+    border-bottom-width: 4px;
+    height: 0px;
+  }
+  100% {
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    height: 100px;
+  }
+}
+
+@keyframes text-change-animation {
+  0% {
+    content: "Trident Metshaft - Your Personal Bookshelf";
+  }
+  55%,
+  65% {
+    content: "Discover, Track, and Relive Your Reading Adventures";
+  }
+  70%,
+  100% {
+    content: "Trident Metshaft - Your Personal Bookshelf";
+  }
+}
+
+#animated-div {
+  animation: squeeze-animation 4s infinite;
+  -webkit-animation: squeeze-animation 4s infinite;
+}
+
+#animated-text::after {
+  animation: text-change-animation 8s infinite;
+  content: "Discover, Track, and Relive Your Reading Adventuress";
+  -webkit-animation: text-change-animation 8s infinite;
 }
