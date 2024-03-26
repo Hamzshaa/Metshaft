@@ -176,140 +176,143 @@ export default function ProgressPageComponent() {
   }
 
   return (
-    <div className="overflow-scroll mx-5 my-5 md:m-10 backdrop-blur-3xl min-h-[var(--body-height)]">
+    <div className="mx-5 my-5 md:m-10 backdrop-blur-3xl min-h-[var(--body-height)]">
       <ListFilterComponent filterFromUrl={filter} searchFromUrl={searchQuery} />
+      <div className="overflow-scroll">
+        <Table hoverable>
+          <Table.Head className="bg-red-800">
+            <Table.HeadCell></Table.HeadCell>
+            <Table.HeadCell className="text-center">
+              Starting date
+            </Table.HeadCell>
+            <Table.HeadCell>Book Cover</Table.HeadCell>
+            <Table.HeadCell>Title</Table.HeadCell>
+            <Table.HeadCell>Author</Table.HeadCell>
+            <Table.HeadCell>page</Table.HeadCell>
+            <Table.HeadCell>genre</Table.HeadCell>
+            <Table.HeadCell>Language</Table.HeadCell>
+            <Table.HeadCell>Translated to</Table.HeadCell>
+            <Table.HeadCell>Translator</Table.HeadCell>
+            <Table.HeadCell>Author&apos;s nationality</Table.HeadCell>
+            <Table.HeadCell>Publisher</Table.HeadCell>
+            <Table.HeadCell>Published Date</Table.HeadCell>
 
-      <Table hoverable>
-        <Table.Head className="bg-red-800">
-          <Table.HeadCell></Table.HeadCell>
-          <Table.HeadCell className="text-center">Starting date</Table.HeadCell>
-          <Table.HeadCell>Book Cover</Table.HeadCell>
-          <Table.HeadCell>Title</Table.HeadCell>
-          <Table.HeadCell>Author</Table.HeadCell>
-          <Table.HeadCell>page</Table.HeadCell>
-          <Table.HeadCell>genre</Table.HeadCell>
-          <Table.HeadCell>Language</Table.HeadCell>
-          <Table.HeadCell>Translated to</Table.HeadCell>
-          <Table.HeadCell>Translator</Table.HeadCell>
-          <Table.HeadCell>Author&apos;s nationality</Table.HeadCell>
-          <Table.HeadCell>Publisher</Table.HeadCell>
-          <Table.HeadCell>Published Date</Table.HeadCell>
+            <Table.HeadCell>
+              <span className="sr-only">Edit</span>
+            </Table.HeadCell>
+            <Table.HeadCell>
+              <span className="sr-only">Remove</span>
+            </Table.HeadCell>
+            <Table.HeadCell>
+              <span className="sr-only">Add to Finished</span>
+            </Table.HeadCell>
+          </Table.Head>
 
-          <Table.HeadCell>
-            <span className="sr-only">Edit</span>
-          </Table.HeadCell>
-          <Table.HeadCell>
-            <span className="sr-only">Remove</span>
-          </Table.HeadCell>
-          <Table.HeadCell>
-            <span className="sr-only">Add to Finished</span>
-          </Table.HeadCell>
-        </Table.Head>
-
-        <Table.Body className="divide-y">
-          {books &&
-            books.length > 0 &&
-            books.map((book, index) => (
-              <Table.Row
-                key={book.title}
-                className="bg-white dark:border-gray-700 dark:bg-gray-800"
-              >
-                <Table.Cell>{index + 1}</Table.Cell>
-                <Table.Cell className="w-fit">
-                  <div className="w-[100px] ">
-                    {new Date(book.createdAt).toLocaleDateString(
-                      "en-US",
-                      options
-                    )}
-                  </div>
-                </Table.Cell>
-                <Table.Cell>
-                  <Link to={`/book/${book._id}`}>
-                    <div className="bg-slate-300 dark:bg-slate-500 max-w-12 h-14 flex">
-                      {book.img ? (
-                        <img
-                          src={
-                            book.img ||
-                            "https://static.wikia.nocookie.net/souo/images/4/47/Old_Book.jpg/revision/latest/scale-to-width-down/323?cb=20181030100841"
-                          }
-                          alt={book.title}
-                          className="h-fit w-auto my-auto"
-                        />
-                      ) : (
-                        <div className="text-[9px] leading-4 text-opacity-80 text-center mx-auto text-zinc-700 dark:text-zinc-300 p-1">
-                          NO
-                          <br />
-                          COVER
-                          <br />
-                          IMAGE
-                        </div>
+          <Table.Body className="divide-y">
+            {books &&
+              books.length > 0 &&
+              books.map((book, index) => (
+                <Table.Row
+                  key={book.title}
+                  className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                >
+                  <Table.Cell>{index + 1}</Table.Cell>
+                  <Table.Cell className="w-fit">
+                    <div className="w-[100px] ">
+                      {new Date(book.createdAt).toLocaleDateString(
+                        "en-US",
+                        options
                       )}
                     </div>
-                  </Link>
-                </Table.Cell>
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  <Link to={`/book/${book._id}`}>{book.title}</Link>
-                </Table.Cell>
-                <Table.Cell>{book.author}</Table.Cell>
-                <Table.Cell className="text-center">
-                  {book.page || "-"}
-                </Table.Cell>
-                <Table.Cell className="text-center">
-                  {book.genre || "-"}
-                </Table.Cell>
-                <Table.Cell className="text-center">
-                  {book.language || book.original_language || "-"}
-                </Table.Cell>
-                <Table.Cell className="text-center">
-                  {book.translated_to || "-"}
-                </Table.Cell>
-                <Table.Cell className="text-center">
-                  {book.translator || "-"}
-                </Table.Cell>
-                <Table.Cell className="text-center">
-                  {book.nationality || "-"}
-                </Table.Cell>
-                <Table.Cell className="text-center">
-                  {book.publisher || "-"}
-                </Table.Cell>
-                <Table.Cell className="text-center">
-                  <div className="w-[120px]">
-                    {book.published_date
-                      ? new Date(book.published_date).toLocaleDateString(
-                          "en-US",
-                          options
-                        )
-                      : "-"}
-                  </div>
-                </Table.Cell>
-                <Table.Cell>
-                  <Link
-                    to={`/edit/${book._id}`}
-                    className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                  >
-                    Edit
-                  </Link>
-                </Table.Cell>
-                <Table.Cell>
-                  <div
-                    className="font-medium text-red-600 hover:underline dark:text-red-500 cursor-pointer"
-                    onClick={() => setBookId(book._id)}
-                  >
-                    Remove
-                  </div>
-                </Table.Cell>
-                <Table.Cell>
-                  <div
-                    className="font-medium text-green-600 hover:underline dark:text-green-500 cursor-pointer"
-                    onClick={() => handleAddToFinished(book._id)}
-                  >
-                    Add to Finished
-                  </div>
-                </Table.Cell>
-              </Table.Row>
-            ))}
-        </Table.Body>
-      </Table>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Link to={`/book/${book._id}`}>
+                      <div className="bg-slate-300 dark:bg-slate-500 max-w-12 h-14 flex">
+                        {book.img ? (
+                          <img
+                            src={
+                              book.img ||
+                              "https://static.wikia.nocookie.net/souo/images/4/47/Old_Book.jpg/revision/latest/scale-to-width-down/323?cb=20181030100841"
+                            }
+                            alt={book.title}
+                            className="h-fit w-auto my-auto"
+                          />
+                        ) : (
+                          <div className="text-[9px] leading-4 text-opacity-80 text-center mx-auto text-zinc-700 dark:text-zinc-300 p-1">
+                            NO
+                            <br />
+                            COVER
+                            <br />
+                            IMAGE
+                          </div>
+                        )}
+                      </div>
+                    </Link>
+                  </Table.Cell>
+                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                    <Link to={`/book/${book._id}`}>{book.title}</Link>
+                  </Table.Cell>
+                  <Table.Cell>{book.author}</Table.Cell>
+                  <Table.Cell className="text-center">
+                    {book.page || "-"}
+                  </Table.Cell>
+                  <Table.Cell className="text-center">
+                    {book.genre || "-"}
+                  </Table.Cell>
+                  <Table.Cell className="text-center">
+                    {book.language || book.original_language || "-"}
+                  </Table.Cell>
+                  <Table.Cell className="text-center">
+                    {book.translated_to || "-"}
+                  </Table.Cell>
+                  <Table.Cell className="text-center">
+                    {book.translator || "-"}
+                  </Table.Cell>
+                  <Table.Cell className="text-center">
+                    {book.nationality || "-"}
+                  </Table.Cell>
+                  <Table.Cell className="text-center">
+                    {book.publisher || "-"}
+                  </Table.Cell>
+                  <Table.Cell className="text-center">
+                    <div className="w-[120px]">
+                      {book.published_date
+                        ? new Date(book.published_date).toLocaleDateString(
+                            "en-US",
+                            options
+                          )
+                        : "-"}
+                    </div>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Link
+                      to={`/edit/${book._id}`}
+                      className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                    >
+                      Edit
+                    </Link>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <div
+                      className="font-medium text-red-600 hover:underline dark:text-red-500 cursor-pointer"
+                      onClick={() => setBookId(book._id)}
+                    >
+                      Remove
+                    </div>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <div
+                      className="font-medium text-green-600 hover:underline dark:text-green-500 cursor-pointer"
+                      onClick={() => handleAddToFinished(book._id)}
+                    >
+                      Add to Finished
+                    </div>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+          </Table.Body>
+        </Table>
+      </div>
 
       {(filter || searchQuery) && (!books || books?.length == 0) && (
         <div className="w-full text-center mt-10 text-3xl font-semibold text-slate-400 dark:text-slate-500">
