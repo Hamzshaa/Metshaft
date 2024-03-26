@@ -14,6 +14,7 @@ import Book from "./pages/Book";
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
+
   return (
     <>
       <BrowserRouter>

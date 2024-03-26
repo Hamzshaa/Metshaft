@@ -61,7 +61,10 @@ export const signin = async (req, res, next) => {
 
     const { password: pass, ...rest } = user._doc;
 
-    res.status(200).cookie("accessToken", token, { httpOnly: true }).send(rest);
+    res
+      .status(200)
+      .cookie("accessToken", token, { httpOnly: true, maxAge: 2147483647 })
+      .send(rest);
   } catch (error) {
     next(error);
   }
@@ -116,7 +119,7 @@ export const oauth = async (req, res, next) => {
 
       res
         .status(200)
-        .cookie("accessToken", token, { httpOnly: true })
+        .cookie("accessToken", token, { httpOnly: true, maxAge: 2147483647 })
         .send(rest);
     }
   } catch (error) {

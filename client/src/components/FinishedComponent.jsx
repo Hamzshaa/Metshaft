@@ -139,7 +139,7 @@ export default function FinishedComponent() {
 
   if (!searchQuery && !filter && loading && books.length == 0) {
     return (
-      <div className="text-center mt-[30vh]">
+      <div className="text-center mt-[30vh]  min-h-[var(--body-height)]">
         <Spinner aria-label="Center-aligned spinner example" size="xl" />
       </div>
     );
@@ -147,14 +147,14 @@ export default function FinishedComponent() {
 
   if (!searchQuery && !filter && !loading && books.length == 0) {
     return (
-      <div className="text-center mt-[20vh] text-2xl">
+      <div className="text-center mt-[20vh] text-2xl  min-h-[var(--body-height)]">
         On Progress list is currently empty
       </div>
     );
   }
 
   return (
-    <div className="overflow-scroll mx-5 my-5 md:m-10 backdrop-blur-3xl">
+    <div className="overflow-scroll mx-5 my-5 md:m-10 backdrop-blur-3xl min-h-[var(--body-height)]">
       <ListFilterComponent filterFromUrl={filter} searchFromUrl={searchQuery} />
       <Table hoverable>
         <Table.Head className="bg-red-800">
