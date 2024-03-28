@@ -13,13 +13,13 @@ export default function Home() {
       <div className="h-[var(--body-height)] w-full bg-slate-50 dark:bg-slate-800 absolute top-0 bg-opacity-90 dark:bg-opacity-80 -z-0"></div>
       <div className="h-[var(--body-height)] bg-logo-bgg bg-[url('./assets/logo_bg.jpg')] bg-no-repeat bg-cover bg-center"></div>
       <div className="z-20 absolute top-8 w-full h-[var(--body-height)] mt-20 sm:mt-16 md:mt-16">
-        {/* <Logo /> */}
-        <div className="h-[200px] items-center flex justify-center">
+        <Logo />
+        {/* <div className="h-[200px] items-center flex justify-center">
           <img
             src={theme == "dark" ? darkLogo : lightLogo}
             className="overflow-hidden -mb-10 "
           />
-        </div>
+        </div> */}
         <div className="mt-10 text-center max-w-[600px] mx-auto">
           <div className="h-[200px] relative">
             <div

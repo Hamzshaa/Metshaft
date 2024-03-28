@@ -61,6 +61,8 @@ export const signin = async (req, res, next) => {
 
     const { password: pass, ...rest } = user._doc;
 
+    req.user = rest;
+
     res
       .status(200)
       .cookie("accessToken", token, { httpOnly: true, maxAge: 2147483647 })
@@ -116,7 +118,7 @@ export const oauth = async (req, res, next) => {
       );
 
       const { password: pass, ...rest } = newUser._doc;
-
+      req.user = rest;
       res
         .status(200)
         .cookie("accessToken", token, { httpOnly: true, maxAge: 2147483647 })

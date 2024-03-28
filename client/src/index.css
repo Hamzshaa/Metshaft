@@ -33,7 +33,7 @@
   0% {
     content: "Trident Metshaft - Your Personal Bookshelf";
   }
-  55%,
+  58%,
   65% {
     content: "Discover, Track, and Relive Your Reading Adventures";
   }
@@ -44,12 +44,12 @@
 }
 
 #animated-div {
-  animation: squeeze-animation 4s infinite;
-  -webkit-animation: squeeze-animation 4s infinite;
+  animation: squeeze-animation 6s infinite;
+  -webkit-animation: squeeze-animation 6s infinite;
 }
 
 #animated-text::after {
-  animation: text-change-animation 8s infinite;
+  animation: text-change-animation 12s infinite;
   content: "Discover, Track, and Relive Your Reading Adventuress";
-  -webkit-animation: text-change-animation 8s infinite;
+  -webkit-animation: text-change-animation 12s infinite;
 }
