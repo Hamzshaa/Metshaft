@@ -177,6 +177,9 @@ export default function ProgressPageComponent() {
 
   return (
     <div className="mx-5 my-5 md:m-10 backdrop-blur-3xl min-h-[var(--body-height)]">
+      <div className="text-3xl text-center my-10 pt-10 pb-5 font-semibold">
+        On Progress List
+      </div>
       <ListFilterComponent filterFromUrl={filter} searchFromUrl={searchQuery} />
       <div className="overflow-scroll">
         <Table hoverable>
@@ -313,13 +316,11 @@ export default function ProgressPageComponent() {
           </Table.Body>
         </Table>
       </div>
-
       {(filter || searchQuery) && (!books || books?.length == 0) && (
         <div className="w-full text-center mt-10 text-3xl font-semibold text-slate-400 dark:text-slate-500">
           No book found
         </div>
       )}
-
       <Modal show={bookId} size="md" onClose={() => setBookId(null)} popup>
         <Modal.Header />
         <Modal.Body>
@@ -339,7 +340,6 @@ export default function ProgressPageComponent() {
           </div>
         </Modal.Body>
       </Modal>
-
       {filterLoading && (
         <div className="text-center self-center fixed w-[100%] h-[var(--table-height)] bottom-0 left-0 backdrop-blur-[1px] bg-white/30 flex flex-col justify-center">
           <Spinner

@@ -4,7 +4,7 @@
 
 :root {
   --body-height: calc(100vh - 86px);
-  --table-height: calc(100% - 64px);
+  --table-height: calc(100% - 255px);
 }
 
 *::-webkit-scrollbar {

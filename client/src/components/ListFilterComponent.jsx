@@ -28,7 +28,7 @@ const ListFilterComponent = ({ searchFromUrl, filterFromUrl }) => {
   };
 
   return (
-    <div>
+    <div className="mt-10">
       <div className="flex justify-between mb-5 px-2">
         <Dropdown label={`${filterFromUrl || "All"} `} inline>
           <Dropdown.Item onClick={() => handleFilterQueryChange("")}>
@@ -61,7 +61,7 @@ const ListFilterComponent = ({ searchFromUrl, filterFromUrl }) => {
           type="text"
           icon={IoSearch}
           placeholder="search book"
-          className="sm:w-72"
+          className="w-36 sm:w-72"
           onChange={handleSearchQueryChange}
           //   value={searchFromUrl || ""}
         />

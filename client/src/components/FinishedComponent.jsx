@@ -155,6 +155,9 @@ export default function FinishedComponent() {
 
   return (
     <div className="mx-5 my-5 md:m-10 backdrop-blur-3xl min-h-[var(--body-height)]">
+      <div className="text-3xl text-center my-10 pt-10 pb-5 font-semibold">
+        On Progress List
+      </div>
       <ListFilterComponent filterFromUrl={filter} searchFromUrl={searchQuery} />
 
       <div className="overflow-scroll">
