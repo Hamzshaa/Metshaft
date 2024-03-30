@@ -50,7 +50,7 @@ export default function Book() {
 
   return (
     <div className="mx-4  md:mx-5 my-10 min-h-[var(--body-height)] py-10">
-      <div className="w-fit sm:w-[640px] md:max-w-[900px] md:w-[750px] mx-auto gap-4 py-5 px-8 sm:px-10 border rounded-lg shadow-xl dark:bg-zinc-800 dark:bg-opacity-50 dark:border-opacity-50 dark:border-slate-600">
+      <div className="sm:w-[640px] md:max-w-[900px] md:w-[750px] mx-auto gap-4 py-5 px-8 sm:px-10 border rounded-lg shadow-xl dark:bg-zinc-800 dark:bg-opacity-50 dark:border-opacity-50 dark:border-slate-600">
         <div className="max-w-[480px] sm:max-w-[700px] md:max-w-[900px] mx-auto md:flex md:gap-4 md:items-center">
           {book.img ? (
             <div className="w-full max-w-[360px] sm:max-w-[400px] mx-auto md:w-[300px] order-2">
@@ -84,52 +84,93 @@ export default function Book() {
                   {book.state == "onProgress" ? "On progress" : "Finished"}
                 </div>
               </div>
-              <div className="sm:max-w-[360px] flex gap-2 mt-5 text-[12px] md:text-[14px] border-y dark:border-0 py-2 px-4">
-                <div className="font-semibold text-slate-900 dark:text-slate-200 flex-1 flex flex-col gap-2 ml-2">
-                  <p className="flex items-center gap-1">
-                    <GiBookmarklet />
-                    Page
-                  </p>
-                  <p className="flex items-center gap-1">
-                    <GiDiceEightFacesEight />
-                    Genre
-                  </p>
-                  <p className="flex items-center gap-1">
-                    <FaPenNib />
-                    Author&apos;s nationality
-                  </p>
-                  <p className="flex items-center gap-1">
-                    <IoPrintSharp />
-                    Publisher
-                  </p>
-                  <p className="flex items-center gap-1">
-                    <BsCalendar2DateFill />
-                    Publication Date
-                  </p>
-                  <p className="flex items-center gap-1">
-                    <LiaLanguageSolid />
-                    Language
-                  </p>
-                  <p className="flex items-center gap-1">
-                    <BsTranslate />
-                    Translated to
-                  </p>
-                  <p className="flex items-center gap-1">
-                    <IoIosPerson />
-                    Translator
-                  </p>
-                </div>
-                <div className="text-slate-500 dark:text-slate-400 text-[12px]  md:text-[14px] flex-2 flex flex-col gap-2 min-w-[100px]">
-                  <p className="">{book.page || "-"}</p>
-
-                  <p className="">{book.genre || "-"}</p>
-                  <p className="">{book.nationality || "-"}</p>
-                  <p className="">{book.publisher || "-"}</p>
-                  <p className="">{book.published_date || "-"}</p>
-                  <p className="">{book.language || "-"}</p>
-                  <p className="">{book.translated_to || "-"}</p>
-                  <p className="">{book.translator || "-"}</p>
-                </div>
+              <div className="sm:max-w-[360px] flex gap-2 mt-5 text-[12px] md:text-[14px] border-y dark:border-0 py-2 px-4 overflow-x-scroll">
+                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-transparent">
+                  <tbody>
+                    <tr className="border-b  dark:border-gray-700">
+                      <th
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white flex items-center gap-1"
+                      >
+                        <GiBookmarklet />
+                        Page
+                      </th>
+                      <td className="px-6 py-4">{book.page || "-"}</td>
+                    </tr>
+                    <tr className="border-b  dark:border-gray-700">
+                      <th
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white flex items-center gap-1"
+                      >
+                        <GiDiceEightFacesEight />
+                        Genre
+                      </th>
+                      <td className="px-6 py-4">{book.genre || "-"}</td>
+                    </tr>
+                    <tr className="border-b  dark:border-gray-700">
+                      <th
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white flex items-center gap-1"
+                      >
+                        <FaPenNib />
+                        Author&apos;s nationality
+                      </th>
+                      <td className="px-6 py-4">{book.nationality || "-"}</td>
+                    </tr>
+                    <tr className="border-b  dark:border-gray-700">
+                      <th
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white flex items-center gap-1"
+                      >
+                        <IoPrintSharp />
+                        Publisher
+                      </th>
+                      <td className="px-6 py-4">{book.publisher || "-"}</td>
+                    </tr>
+                    <tr className="border-b  dark:border-gray-700">
+                      <th
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white flex items-center gap-1"
+                      >
+                        <BsCalendar2DateFill />
+                        Publication Date
+                      </th>
+                      <td className="px-6 py-4">
+                        {book.published_date || "-"}
+                      </td>
+                    </tr>
+                    <tr className="border-b  dark:border-gray-700">
+                      <th
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white flex items-center gap-1"
+                      >
+                        <LiaLanguageSolid />
+                        Language
+                      </th>
+                      <td className="px-6 py-4">{book.language || "-"}</td>
+                    </tr>
+                    <tr className="border-b  dark:border-gray-700">
+                      <th
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white flex items-center gap-1"
+                      >
+                        <BsTranslate />
+                        Translated to
+                      </th>
+                      <td className="px-6 py-4">{book.translated_to || "-"}</td>
+                    </tr>
+                    <tr className="border-b  dark:border-gray-700">
+                      <th
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white flex items-center gap-1"
+                      >
+                        <IoIosPerson />
+                        Translator
+                      </th>
+                      <td className="px-6 py-4">{book.translator || "-"}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
             <div className="max-w-[480px] sm:max-w-[560px] mt-5">
