@@ -90,3 +90,32 @@ export const deleteUser = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getUsers = async (req, res, next) => {
+  const limit = parseInt(req.query.limit) || 10;
+  const page = parseInt(req.query.page) || 1;
+  const skip = (page - 1) * limit;
+
+  try {
+    const users = await User.find().skip(skip).limit(limit).sort("-createdAt");
+    const totalUsers = await User.countDocuments();
+
+    res.status(200).json({ users, totalUsers });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.userId);
+
+    if (!user) {
+      return next(errorHandler(404, "User not found"));
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
