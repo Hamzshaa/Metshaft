@@ -12,6 +12,9 @@ import { toggleTheme } from "../redux/theme/themeSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { signOutSuccess } from "../redux/user/userSlice";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { MdDashboard } from "react-icons/md";
+import { IoPerson } from "react-icons/io5";
+import { VscSignOut } from "react-icons/vsc";
 import { useState } from "react";
 
 import darkLogo from "../assets/logo_dark.png";
@@ -76,11 +79,18 @@ export default function NavbarComponent() {
               </span>
             </Dropdown.Header>
 
+            {currentUser.isAdmin === true && (
+              <Link to={"/dashboard?tab=dashboard"}>
+                <Dropdown.Item icon={MdDashboard}>Dashboard</Dropdown.Item>
+              </Link>
+            )}
+            <DropdownDivider />
+
             <Link to={"/dashboard?tab=profile"}>
-              <Dropdown.Item>Profile</Dropdown.Item>
+              <Dropdown.Item icon={IoPerson}>Profile</Dropdown.Item>
             </Link>
             <DropdownDivider />
-            <Dropdown.Item onClick={() => setOpenModal(true)}>
+            <Dropdown.Item icon={VscSignOut} onClick={() => setOpenModal(true)}>
               Sign out
             </Dropdown.Item>
           </Dropdown>

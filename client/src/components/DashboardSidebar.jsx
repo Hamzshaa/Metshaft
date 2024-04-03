@@ -2,14 +2,17 @@ import { BsPerson } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
 import { Button, Modal, Sidebar } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { signOutSuccess } from "../redux/user/userSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { MdDashboard } from "react-icons/md";
 
 export default function DashboardSidebar() {
   const location = useLocation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.user);
   const [tab, setTab] = useState("");
   const [openModal, setOpenModal] = useState(false);
 
@@ -19,6 +22,7 @@ export default function DashboardSidebar() {
     if (tabValue) {
       setTab(tabValue);
     }
+    console.log("dkajf");
   }, [location.search]);
 
   const handleSignout = async () => {
@@ -37,18 +41,35 @@ export default function DashboardSidebar() {
     }
   };
 
+  console.log(tab);
   return (
     <Sidebar className="w-full">
       <Sidebar.Items>
-        <Sidebar.ItemGroup>
-          <Sidebar.Item
-            active={tab === "profile"}
-            icon={BsPerson}
-            label={"user"}
-            labelColor="dark"
-          >
-            Profile
-          </Sidebar.Item>
+        <Sidebar.ItemGroup class="flex flex-col gap-2">
+          {currentUser.isAdmin && (
+            <Link to="/dashboard?">
+              <Sidebar.Item
+                active={tab === "dashboard" || !tab}
+                icon={MdDashboard}
+                labelColor="dark"
+                as="div"
+                onClick={() => setTab("")}
+              >
+                Dashboard
+              </Sidebar.Item>
+            </Link>
+          )}
+          <Link to="/dashboard?tab=profile">
+            <Sidebar.Item
+              active={tab === "profile"}
+              icon={BsPerson}
+              label={currentUser.isAdmin == true ? "admin" : "user"}
+              labelColor="dark"
+              as="div"
+            >
+              Profile
+            </Sidebar.Item>
+          </Link>
           <Sidebar.Item
             active={tab === "logout"}
             icon={FiLogOut}
