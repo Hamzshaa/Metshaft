@@ -67,8 +67,8 @@ export default function DashboardDash() {
   console.log(recentBooks);
 
   return (
-    <div className="md:h-[var(--body-height)] md:overflow-y-scroll overflow-x-hidden flex flex-col lg:flex-row lg:w-[var(--dashboard-width)] pr-10">
-      <div className="m-5 mr-1 p-5 w-full h-fit lg:w-[45%] bg-gray-50 dark:bg-gray-800 rounded-md shadow-xl">
+    <div className="md:h-[var(--body-height)] md:overflow-y-scroll overflow-x-hidden flex flex-col lg:flex-row lg:w-[var(--dashboard-width)] pr-2 md:pr-10">
+      <div className="m-1 p-1 sm:m-5 sm:ml-1 sm:p-5 md:ml-3 w-full h-fit lg:w-[45%] bg-gray-50 dark:bg-gray-800 rounded-md shadow-xl">
         <div className="flex justify-between items-end ml-2 mr-4 mb-2">
           <h1 className="text-2xl font-semibold">Recent Users</h1>
           <Link
@@ -134,7 +134,7 @@ export default function DashboardDash() {
         </div>
       </div>
 
-      <div className="m-5 ml-3 p-5 w-full h-fit lg:w-[55%] bg-gray-50 dark:bg-gray-800 rounded-md shadow-xl">
+      <div className="m-1 p-1 sm:m-5 sm:ml-1 sm:p-5 md:ml-3  w-full h-fit lg:w-[55%] bg-gray-50 dark:bg-gray-800 rounded-md shadow-xl">
         <div className="flex justify-between items-end ml-2 mr-4 mb-2">
           <h1 className="text-2xl font-semibold">Recent Books</h1>
           <Link
@@ -144,7 +144,7 @@ export default function DashboardDash() {
             SEE ALL <MdArrowOutward />
           </Link>
         </div>
-        <div className="overflow-x-auto border-x-2 border-gray-300 dark:border-gray-600 rounded-xl ">
+        <div className="overflow-x-auto border-x-2 border-gray-300 dark:border-gray-600 rounded-xl">
           <Table hoverable>
             <Table.Head>
               <Table.HeadCell className="bg-gray-100">
@@ -192,7 +192,9 @@ export default function DashboardDash() {
                         </div>
                       </Link>
                     </Table.Cell>
-                    <Table.Cell>{book.title}</Table.Cell>
+                    <Table.Cell>
+                      <Link to={`/book/${book._id}`}>{book.title}</Link>
+                    </Table.Cell>
                     <Table.Cell>{book.author}</Table.Cell>
                     <Table.Cell>{book?.language || "-"}</Table.Cell>
                     <Table.Cell>

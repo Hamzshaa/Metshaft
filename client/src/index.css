@@ -8,7 +8,7 @@
   --dashboard-width: calc(100% - 272px);
 }
 
-*::-webkit-scrollbar {
+body::-webkit-scrollbar {
   display: none;
 }
 
