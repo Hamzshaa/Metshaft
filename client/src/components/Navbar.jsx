@@ -14,6 +14,7 @@ import { signOutSuccess } from "../redux/user/userSlice";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { MdDashboard } from "react-icons/md";
 import { IoPerson } from "react-icons/io5";
+import { IoIosNotifications } from "react-icons/io";
 import { VscSignOut } from "react-icons/vsc";
 import { useState } from "react";
 
@@ -45,6 +46,8 @@ export default function NavbarComponent() {
     }
   };
 
+  const notification = 0;
+
   return (
     <Navbar className="border-b-2">
       <Link
@@ -68,32 +71,57 @@ export default function NavbarComponent() {
           </div>
         </div>
         {currentUser ? (
-          <Dropdown
-            arrowIcon={false}
-            inline
-            label={<Avatar img={currentUser.profilePicture} rounded />}
-          >
-            <Dropdown.Header>
-              <span className="block text-sm font-medium truncate">
-                {currentUser.email}
-              </span>
-            </Dropdown.Header>
-
-            {currentUser.isAdmin === true && (
-              <Link to={"/dashboard"}>
-                <Dropdown.Item icon={MdDashboard}>Dashboard</Dropdown.Item>
-              </Link>
+          <div className="my-auto relative">
+            {notification > 0 && (
+              <div className="bg-red-500 px-1 text-xs text-center w-fit rounded-full absolute z-10 -right-1">
+                {notification}
+              </div>
             )}
-            <DropdownDivider />
+            <Dropdown
+              arrowIcon={false}
+              inline
+              label={<Avatar img={currentUser.profilePicture} rounded />}
+            >
+              <Dropdown.Header>
+                <span className="block text-sm font-medium truncate">
+                  {currentUser.email}
+                </span>
+              </Dropdown.Header>
 
-            <Link to={"/dashboard?tab=profile"}>
-              <Dropdown.Item icon={IoPerson}>Profile</Dropdown.Item>
-            </Link>
-            <DropdownDivider />
-            <Dropdown.Item icon={VscSignOut} onClick={() => setOpenModal(true)}>
-              Sign out
-            </Dropdown.Item>
-          </Dropdown>
+              {currentUser.isAdmin === true && (
+                <Link to={"/dashboard"}>
+                  <Dropdown.Item icon={MdDashboard}>Dashboard</Dropdown.Item>
+                </Link>
+              )}
+              <DropdownDivider />
+
+              <Link to={"/dashboard?tab=profile"}>
+                <Dropdown.Item icon={IoPerson}>Profile</Dropdown.Item>
+              </Link>
+
+              <DropdownDivider />
+
+              <Link to={"/dashboard?tab=profile"}>
+                <Dropdown.Item icon={IoIosNotifications} className="flex">
+                  Notification{" "}
+                  {notification > 0 && (
+                    <div className="flex-1 text-right flex justify-end">
+                      <h3 className="bg-red-500 w-fit rounded-full px-[6px]">
+                        {notification}
+                      </h3>
+                    </div>
+                  )}
+                </Dropdown.Item>
+              </Link>
+              <DropdownDivider />
+              <Dropdown.Item
+                icon={VscSignOut}
+                onClick={() => setOpenModal(true)}
+              >
+                Sign out
+              </Dropdown.Item>
+            </Dropdown>
+          </div>
         ) : (
           <Link to="/signin">
             <Button color="red">Sign In</Button>
