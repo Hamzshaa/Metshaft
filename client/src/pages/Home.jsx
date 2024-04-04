@@ -74,7 +74,8 @@ export default function Home() {
         </section> */}
       </div>
 
-      <div className="h-[50vh] bg-slate-500"></div>
+      {/* Other contents here */}
+      <div className="h-[0vh] bg-slate-500"></div>
       <div className="hidden md:block">{/* <Banner className="" /> */}</div>
     </div>
   );

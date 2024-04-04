@@ -68,7 +68,7 @@ export default function DashboardDash() {
 
   return (
     <div className="h-[var(--body-height)] overflow-y-scroll overflow-x-hidden flex flex-col lg:flex-row lg:w-[var(--dashboard-width)] pr-10">
-      <div className="m-5 p-5 h-fit lg:w-[45%] bg-gray-50 dark:bg-gray-800 rounded-md shadow-xl">
+      <div className="m-5 p-5 w-full h-fit lg:w-[45%] bg-gray-50 dark:bg-gray-800 rounded-md shadow-xl">
         <div className="flex justify-between items-end ml-2 mr-4 mb-2">
           <h1 className="text-2xl font-semibold">Recent Users</h1>
           <Link
@@ -134,7 +134,7 @@ export default function DashboardDash() {
         </div>
       </div>
 
-      <div className="m-5 p-5 h-fit lg:w-[53%] bg-gray-50 dark:bg-gray-800 rounded-md shadow-xl">
+      <div className="m-5 p-5 w-full h-fit lg:w-[53%] bg-gray-50 dark:bg-gray-800 rounded-md shadow-xl">
         <div className="flex justify-between items-end ml-2 mr-4 mb-2">
           <h1 className="text-2xl font-semibold">Recent Books</h1>
           <Link

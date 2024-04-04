@@ -80,7 +80,7 @@ export default function NavbarComponent() {
             </Dropdown.Header>
 
             {currentUser.isAdmin === true && (
-              <Link to={"/dashboard?tab=dashboard"}>
+              <Link to={"/dashboard"}>
                 <Dropdown.Item icon={MdDashboard}>Dashboard</Dropdown.Item>
               </Link>
             )}
