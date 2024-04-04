@@ -84,7 +84,7 @@ export default function Book() {
                   {book.state == "onProgress" ? "On progress" : "Finished"}
                 </div>
               </div>
-              <div className="sm:max-w-[360px] flex gap-2 mt-5 text-[12px] md:text-[14px] border-y dark:border-0 py-2 px-4 overflow-x-scroll md:overflow-clip">
+              <div className="sm:max-w-[360px] flex gap-2 mt-5 text-[12px] md:text-[14px] border-y dark:border-0 py-2 px-4 overflow-x-scroll">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-transparent">
                   <tbody>
                     <tr className="border-b  dark:border-gray-700">

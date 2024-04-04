@@ -2,15 +2,16 @@ import { BsPerson } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
 import { Button, Modal, Sidebar } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { signOutSuccess } from "../redux/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { MdDashboard } from "react-icons/md";
+import { FaUsers } from "react-icons/fa";
+import { GiWhiteBook } from "react-icons/gi";
 
 export default function DashboardSidebar() {
   const location = useLocation();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
   const [tab, setTab] = useState("");
@@ -47,17 +48,39 @@ export default function DashboardSidebar() {
       <Sidebar.Items>
         <Sidebar.ItemGroup class="flex flex-col gap-2">
           {currentUser.isAdmin && (
-            <Link to="/dashboard?">
-              <Sidebar.Item
-                active={tab === "dashboard" || !tab}
-                icon={MdDashboard}
-                labelColor="dark"
-                as="div"
-                onClick={() => setTab("")}
-              >
-                Dashboard
-              </Sidebar.Item>
-            </Link>
+            <div className="flex flex-col gap-2">
+              <Link to="/dashboard?">
+                <Sidebar.Item
+                  active={tab === "dashboard" || !tab}
+                  icon={MdDashboard}
+                  labelColor="dark"
+                  as="div"
+                  onClick={() => setTab("")}
+                >
+                  Dashboard
+                </Sidebar.Item>
+              </Link>
+              <Link to="/dashboard?tab=users">
+                <Sidebar.Item
+                  active={tab === "users"}
+                  icon={FaUsers}
+                  labelColor="dark"
+                  as="div"
+                >
+                  Users
+                </Sidebar.Item>
+              </Link>
+              <Link to="/dashboard?tab=books">
+                <Sidebar.Item
+                  active={tab === "books"}
+                  icon={GiWhiteBook}
+                  labelColor="dark"
+                  as="div"
+                >
+                  Books
+                </Sidebar.Item>
+              </Link>
+            </div>
           )}
           <Link to="/dashboard?tab=profile">
             <Sidebar.Item

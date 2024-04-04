@@ -72,7 +72,7 @@ export default function DashboardDash() {
         <div className="flex justify-between items-end ml-2 mr-4 mb-2">
           <h1 className="text-2xl font-semibold">Recent Users</h1>
           <Link
-            to=""
+            to="/dashboard?tab=users"
             className="text-teal-600 dark:text-teal-400 flex gap-2 items-center"
           >
             SEE ALL <MdArrowOutward />
@@ -91,9 +91,7 @@ export default function DashboardDash() {
               <Table.HeadCell className="bg-gray-100">Role</Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y">
-              {recentUsers.length == 0 ? (
-                <div className="">No User</div>
-              ) : (
+              {recentUsers.length != 0 &&
                 recentUsers.map((user, index) => (
                   <Table.Row
                     key={index}
@@ -127,10 +125,14 @@ export default function DashboardDash() {
                       </h3>
                     </Table.Cell>
                   </Table.Row>
-                ))
-              )}
+                ))}
             </Table.Body>
           </Table>
+          {recentUsers.length == 0 && (
+            <div className="text-xl font-semibold text-center py-2 text-gray-600 dark:text-gray-400 ">
+              No User Found
+            </div>
+          )}
         </div>
       </div>
 
@@ -138,7 +140,7 @@ export default function DashboardDash() {
         <div className="flex justify-between items-end ml-2 mr-4 mb-2">
           <h1 className="text-2xl font-semibold">Recent Books</h1>
           <Link
-            to=""
+            to="/dashboard?tab=books"
             className="text-teal-600 dark:text-teal-400 flex gap-2 items-center"
           >
             SEE ALL <MdArrowOutward />
@@ -160,9 +162,7 @@ export default function DashboardDash() {
               </Table.HeadCell>{" "}
             </Table.Head>
             <Table.Body className="divide-y">
-              {recentBooks.length == 0 ? (
-                <div className="">No User</div>
-              ) : (
+              {recentBooks.length != 0 &&
                 recentBooks.map((book, index) => (
                   <Table.Row
                     key={index}
@@ -220,10 +220,14 @@ export default function DashboardDash() {
                       </h3>
                     </Table.Cell>
                   </Table.Row>
-                ))
-              )}
+                ))}
             </Table.Body>
           </Table>
+          {recentBooks.length == 0 && (
+            <div className="text-xl font-semibold text-center py-2 text-gray-600 dark:text-gray-400 ">
+              No Book Found
+            </div>
+          )}
         </div>
       </div>
     </div>

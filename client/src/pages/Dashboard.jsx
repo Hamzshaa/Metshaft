@@ -3,6 +3,8 @@ import Sidebar from "../components/DashboardSidebar";
 import { useEffect, useState } from "react";
 import DashboardProfile from "../components/DashboardProfile";
 import DashboardDash from "../components/DashboardDash";
+import DashboardUsers from "../components/DashboardUsers";
+import DashboardBooks from "../components/DashboardBooks";
 
 export default function Dashboard() {
   const location = useLocation();
@@ -21,6 +23,8 @@ export default function Dashboard() {
       </div>
       {tab === "profile" && <DashboardProfile />}
       {(tab === "dashboards" || !tab) && <DashboardDash />}
+      {tab === "users" && <DashboardUsers />}
+      {tab === "books" && <DashboardBooks />}
     </div>
   );
 }
