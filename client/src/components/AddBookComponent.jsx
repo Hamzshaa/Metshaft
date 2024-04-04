@@ -402,7 +402,7 @@ export default function AddBookComponent() {
       </div>
       {(imageFile || inputs.img) && (
         <div
-          className="w-full h-[252px] h- md:w-[576px] md:h-[256px] flex justify-center bg-[#374151] rounded-xl"
+          className="w-[576px] h-[256px] flex justify-center bg-[#374151] rounded-xl"
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleImgDrop}
           onClick={() => imgRef.current.click()}
@@ -410,7 +410,7 @@ export default function AddBookComponent() {
           <img
             src={(imageFile && URL.createObjectURL(imageFile)) || inputs.img}
             alt=""
-            className="h-full md:h-[256px] w-fit self-center"
+            className="h-[256px] w-fit self-center"
           />
         </div>
       )}
