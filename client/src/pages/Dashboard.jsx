@@ -21,7 +21,7 @@ export default function Dashboard() {
       <div className="md:w-64 w-full">
         <Sidebar />
       </div>
-      {tab === "profile" && <DashboardProfile />}
+      .{tab === "profile" && <DashboardProfile />}
       {(tab === "dashboards" || !tab) && <DashboardDash />}
       {tab === "users" && <DashboardUsers />}
       {tab === "books" && <DashboardBooks />}
