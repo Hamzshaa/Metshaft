@@ -11,6 +11,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import { useSelector } from "react-redux";
 import EditPage from "./pages/EditPage";
 import Book from "./pages/Book";
+import Notification from "./components/Notification";
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -19,6 +20,7 @@ function App() {
     <>
       <BrowserRouter>
         <NavbarComponent />
+        <Notification />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route
@@ -37,6 +39,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/edit/:bookId" element={<EditPage />} />
             <Route path="/book/:bookId" element={<Book />} />
+            {/* <Route path="/notification" element={<Notification />} /> */}
           </Route>
         </Routes>
       </BrowserRouter>

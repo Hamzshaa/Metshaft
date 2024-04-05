@@ -101,7 +101,7 @@ export default function NavbarComponent() {
 
               <DropdownDivider />
 
-              <Link to={"/dashboard?tab=profile"}>
+              <Link to={"/notification"}>
                 <Dropdown.Item icon={IoIosNotifications} className="flex">
                   Notification{" "}
                   {notification > 0 && (
