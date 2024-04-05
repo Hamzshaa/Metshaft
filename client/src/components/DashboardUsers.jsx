@@ -28,7 +28,7 @@ export default function DashboardUsers() {
         <div className="flex justify-between items-end ml-2 mr-4 mb-2">
           <h1 className="text-2xl font-semibold">Recent Users</h1>
         </div>
-        <div className="  overflow-x-scroll border-x-2 border-gray-300 dark:border-gray-600 rounded-xl">
+        <div className="overflow-x-scroll rounded-md">
           <Table hoverable>
             <Table.Head>
               <Table.HeadCell className="bg-gray-100">
@@ -90,13 +90,13 @@ export default function DashboardUsers() {
                 ))}
             </Table.Body>
           </Table>
-          {users.length == 0 && (
-            <div className="text-xl font-semibold text-center py-2 text-gray-600 dark:text-gray-400">
-              No User Found
-            </div>
-          )}
         </div>
       </div>
+      {users.length == 0 && (
+        <div className="text-xl font-semibold text-center py-2 text-gray-600 dark:text-gray-400">
+          No User Found
+        </div>
+      )}
     </div>
   );
 }
