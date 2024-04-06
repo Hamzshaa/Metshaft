@@ -57,7 +57,6 @@ export default function DashboardDash() {
     try {
       const res = await fetch(`/api/user/${id}`);
       const data = await res.json();
-      console.log(data.email);
       return data?.email;
     } catch (error) {
       console.log(error.message);
@@ -79,7 +78,7 @@ export default function DashboardDash() {
         <div className="overflow-x-auto border-x-2 border-gray-300 dark:border-gray-600 rounded-xl">
           <Table hoverable>
             <Table.Head>
-              <Table.HeadCell className="bg-gray-100">
+              <Table.HeadCell className="bg-gray-100 text-center">
                 User Image
               </Table.HeadCell>
               <Table.HeadCell className="bg-gray-100">Email</Table.HeadCell>
@@ -96,11 +95,16 @@ export default function DashboardDash() {
                     className="bg-white dark:border-gray-700 dark:bg-gray-800"
                   >
                     <Table.Cell>
-                      <img
-                        src={user?.profilePicture}
-                        alt=""
-                        className="w-10 h-10 rounded-full"
-                      />
+                      <Link
+                        to={`/profile/${user._id}`}
+                        className="flex w-fit mx-auto"
+                      >
+                        <img
+                          src={user?.profilePicture}
+                          alt=""
+                          className="w-10 h-10 rounded-full"
+                        />
+                      </Link>
                     </Table.Cell>
                     <Table.Cell>{user.email}</Table.Cell>
                     <Table.Cell>

@@ -57,10 +57,14 @@ export default function Profile() {
           </Dropdown>
         </div>
         <div className="flex flex-col items-center pb-10">
+          {/* https://i.pravatar.cc/96 */}
           <img
             alt="Bonnie image"
             height="96"
-            src={user?.profilePicture}
+            src={
+              user?.profilePicture ||
+              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+            }
             width="96"
             className="mb-3 rounded-full shadow-lg"
           />
@@ -75,7 +79,6 @@ export default function Profile() {
               href="#"
               className="inline-flex items-center rounded-lg bg-cyan-700 px-4 py-2 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
             >
-              {/* Add friend */}
               {user?.bookInfo?.total} books
             </a>
           </div>

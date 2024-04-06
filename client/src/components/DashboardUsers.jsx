@@ -1,5 +1,6 @@
 import { Table } from "flowbite-react";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 const options = { year: "numeric", month: "long", day: "numeric" };
 
 export default function DashboardUsers() {
@@ -48,13 +49,13 @@ export default function DashboardUsers() {
         <div className="overflow-x-scroll rounded-md">
           <Table hoverable>
             <Table.Head>
-              <Table.HeadCell className="bg-gray-100">
-                User Image
+              <Table.HeadCell className="bg-gray-100 text-center">
+                <h3 className="w-20">User Image</h3>
               </Table.HeadCell>
               <Table.HeadCell className="bg-gray-100">Email</Table.HeadCell>
               <Table.HeadCell className="bg-gray-100">Role</Table.HeadCell>
               <Table.HeadCell className="bg-gray-100">
-                On Progress Books
+                <h3 className="w-24">On Progress Books</h3>
               </Table.HeadCell>
               <Table.HeadCell className="bg-gray-100">
                 Finished Books
@@ -77,11 +78,16 @@ export default function DashboardUsers() {
                     className="bg-white dark:border-gray-700 dark:bg-gray-800"
                   >
                     <Table.Cell>
-                      <img
-                        src={user?.profilePicture}
-                        alt=""
-                        className="w-10 h-10 rounded-full"
-                      />
+                      <Link
+                        to={`/profile/${user._id}`}
+                        className="flex w-fit mx-auto"
+                      >
+                        <img
+                          src={user?.profilePicture}
+                          alt=""
+                          className="w-10 h-10 rounded-full"
+                        />
+                      </Link>
                     </Table.Cell>
                     <Table.Cell>{user.email}</Table.Cell>
                     <Table.Cell>
@@ -95,9 +101,15 @@ export default function DashboardUsers() {
                         {user.isAdmin == true ? "Admin" : "User"}
                       </h3>
                     </Table.Cell>
-                    <Table.Cell>{user.bookInfo?.progress}</Table.Cell>
-                    <Table.Cell>{user.bookInfo?.finished}</Table.Cell>
-                    <Table.Cell>{user.bookInfo?.total}</Table.Cell>
+                    <Table.Cell className="text-center">
+                      {user.bookInfo?.progress}
+                    </Table.Cell>
+                    <Table.Cell className="text-center">
+                      {user.bookInfo?.finished}
+                    </Table.Cell>
+                    <Table.Cell className="text-center">
+                      {user.bookInfo?.total}
+                    </Table.Cell>
                     <Table.Cell>
                       <h3 className="w-32">
                         {new Date(user.createdAt).toLocaleDateString(
