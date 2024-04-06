@@ -117,7 +117,7 @@ export default function DashboardDash() {
                       <h3
                         className={`font-semibold ${
                           user.isAdmin == true
-                            ? "text-green-600 dark:text-green-500"
+                            ? "text-green-700 dark:text-green-600 bg-green-300 dark:bg-green-300 px-1 rounded-sm"
                             : ""
                         }`}
                       >

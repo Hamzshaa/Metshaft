@@ -21,6 +21,24 @@ export default function DashboardUsers() {
     fetchUsers();
   }, []);
 
+  console.log("USERS: ", users);
+  useEffect(() => {
+    users.map((user) => {
+      const fetchBooksInfo = async () => {
+        try {
+          const res = await fetch(`/api/books/info/${user._id}`);
+          const data = await res.json();
+          if (res.ok) {
+            return data;
+          }
+        } catch (error) {
+          console.log(error.message);
+        }
+      };
+      fetchBooksInfo();
+    });
+  }, [users]);
+
   return (
     <div className="md:mx-auto md:w-[var(--dashboard-width)]">
       <h2 className="font-semibold text-3xl text-center my-8">Users</h2>
@@ -68,6 +86,20 @@ export default function DashboardUsers() {
                     </Table.Cell>
                     <Table.Cell>{user.email}</Table.Cell>
                     <Table.Cell>
+                      <h3
+                        className={`font-semibold ${
+                          user.isAdmin == true
+                            ? "text-green-700 dark:text-green-600 bg-green-300 dark:bg-green-300 px-1 w-fit rounded-sm"
+                            : ""
+                        }`}
+                      >
+                        {user.isAdmin == true ? "Admin" : "User"}
+                      </h3>
+                    </Table.Cell>
+                    <Table.Cell>{user.bookInfo?.progress}</Table.Cell>
+                    <Table.Cell>{user.bookInfo?.finished}</Table.Cell>
+                    <Table.Cell>{user.bookInfo?.total}</Table.Cell>
+                    <Table.Cell>
                       <h3 className="w-32">
                         {new Date(user.createdAt).toLocaleDateString(
                           "en-US",
@@ -76,14 +108,11 @@ export default function DashboardUsers() {
                       </h3>
                     </Table.Cell>
                     <Table.Cell>
-                      <h3
-                        className={`font-semibold ${
-                          user.isAdmin == true
-                            ? "text-green-600 dark:text-green-500"
-                            : ""
-                        }`}
-                      >
-                        {user.isAdmin == true ? "Admin" : "User"}
+                      <h3 className="w-32">
+                        {new Date(user.updatedAt).toLocaleDateString(
+                          "en-US",
+                          options
+                        )}
                       </h3>
                     </Table.Cell>
                   </Table.Row>

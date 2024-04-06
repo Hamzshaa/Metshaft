@@ -7,12 +7,14 @@ import {
   addToFinished,
   deleteImg,
   editBook,
+  getBookInfo,
 } from "../controllers/book.controller.js";
 
 const router = express.Router();
 
 router.post("/add", verifyToken, addBook);
 router.get("/", verifyToken, getBook);
+router.get("/info/:userId", getBookInfo);
 router.delete("/delete/:bookId", verifyToken, deleteBook);
 router.delete("/delete/img/:imgUrl", verifyToken, deleteImg);
 router.put("/add/toFinished/:bookId", verifyToken, addToFinished);

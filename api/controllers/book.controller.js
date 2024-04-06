@@ -123,6 +123,41 @@ export const getBook = async (req, res, next) => {
   }
 };
 
+export const getBookInfo = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    if (!user) {
+      return next(errorHandler(404, "User not found"));
+    }
+
+    const onProgressBooks = await Book.find({
+      user_id: req.params.userId,
+      state: "onProgress",
+    });
+
+    const finishedBooks = await Book.find({
+      user_id: req.params.userId,
+      state: "finished",
+    });
+
+    const updatedUser = await User.findByIdAndUpdate(
+      { _id: req.params.userId },
+      {
+        bookInfo: {
+          progress: onProgressBooks.length,
+          finished: finishedBooks.length,
+          total: onProgressBooks.length + finishedBooks.length,
+        },
+      },
+      { new: true }
+    );
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const deleteBook = async (req, res, next) => {
   try {
     if (!req.user) {

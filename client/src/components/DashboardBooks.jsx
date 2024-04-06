@@ -8,7 +8,7 @@ export default function DashboardBooks() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch("/api/book/");
+        const res = await fetch("/api/books/");
         const data = await res.json();
 
         if (res.ok) {
@@ -65,7 +65,7 @@ export default function DashboardBooks() {
               </Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y">
-              {users.length != 0 &&
+              {users?.length != 0 &&
                 users.map((user, index) => (
                   <Table.Row
                     key={index}

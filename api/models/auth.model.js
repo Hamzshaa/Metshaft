@@ -18,8 +18,16 @@ const userSchema = new mongoose.Schema(
     },
     isAdmin: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
+    bookInfo: {
+      type: Object,
+      default: { progress: 0, finished: 0, total: 0 },
+    },
+    totalBooks: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );
