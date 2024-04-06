@@ -153,7 +153,10 @@ export default function DashboardBooks() {
 
                     <Table.Cell>{book.author}</Table.Cell>
                     <Table.Cell>
-                      <Link to="/profile/userId" className="flex gap-2 mr-1">
+                      <Link
+                        to={`/profile/${book.user_id}`}
+                        className="flex gap-2 mr-1"
+                      >
                         <img
                           src={users[index]?.profilePicture}
                           alt=""
