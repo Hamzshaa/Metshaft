@@ -13,6 +13,7 @@ import EditPage from "./pages/EditPage";
 import Book from "./pages/Book";
 import Notification from "./components/Notification";
 import Profile from "./pages/Profile";
+import TotalBooksList from "./pages/TotalBooksList";
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -41,6 +42,7 @@ function App() {
             <Route path="/edit/:bookId" element={<EditPage />} />
             <Route path="/book/:bookId" element={<Book />} />
             <Route path="/profile/:userId" element={<Profile />} />
+            <Route path="/books/total/:userId" element={<TotalBooksList />} />
             {/* <Route path="/notification" element={<Notification />} /> */}
           </Route>
         </Routes>
