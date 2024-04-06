@@ -23,7 +23,6 @@ export default function DashboardSidebar() {
     if (tabValue) {
       setTab(tabValue);
     }
-    console.log("dkajf");
   }, [location.search]);
 
   const handleSignout = async () => {
@@ -42,7 +41,6 @@ export default function DashboardSidebar() {
     }
   };
 
-  console.log(tab);
   return (
     <Sidebar className="w-full">
       <Sidebar.Items>

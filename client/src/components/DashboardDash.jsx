@@ -64,8 +64,6 @@ export default function DashboardDash() {
     }
   };
 
-  console.log(recentBooks);
-
   return (
     <div className="md:h-[var(--body-height)] md:overflow-y-scroll overflow-x-hidden flex flex-col lg:flex-row lg:w-[var(--dashboard-width)] pr-2 md:pr-10">
       <div className="m-1 p-1 sm:m-5 sm:ml-1 sm:p-5 md:ml-3 w-full h-fit lg:w-[45%] bg-gray-50 dark:bg-gray-800 rounded-md shadow-xl">

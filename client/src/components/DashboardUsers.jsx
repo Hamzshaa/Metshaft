@@ -21,7 +21,6 @@ export default function DashboardUsers() {
     fetchUsers();
   }, []);
 
-  console.log("USERS: ", users);
   useEffect(() => {
     users.map((user) => {
       const fetchBooksInfo = async () => {

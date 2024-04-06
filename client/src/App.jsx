@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import EditPage from "./pages/EditPage";
 import Book from "./pages/Book";
 import Notification from "./components/Notification";
+import Profile from "./pages/Profile";
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -39,6 +40,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/edit/:bookId" element={<EditPage />} />
             <Route path="/book/:bookId" element={<Book />} />
+            <Route path="/profile/:userId" element={<Profile />} />
             {/* <Route path="/notification" element={<Notification />} /> */}
           </Route>
         </Routes>
