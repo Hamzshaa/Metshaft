@@ -37,12 +37,10 @@ export const updateUser = async (req, res, next) => {
       let fileName = user.profilePicture.split("/").pop().split(".")[0];
       const fullPath = "metsehaft/" + fileName;
       const response = await cloudinary.uploader.destroy(fullPath);
-      console.log(response);
     }
 
     if (req.body.email && req.body.email !== user.email) {
       const emailExist = await User.findOne({ email: req.body.email });
-      console.log(emailExist);
       if (emailExist) {
         return next(errorHandler(400, "Email already exist"));
       }
@@ -115,6 +113,37 @@ export const getUser = async (req, res, next) => {
     }
 
     res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const grantRevokeAdmin = async (req, res, next) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return next(errorHandler(404, "User not found"));
+    }
+
+    if (user.email === "trident32000@gmail.com") {
+      return next(
+        errorHandler(
+          400,
+          "You can't change the admin status of the owner of the app."
+        )
+      );
+    }
+
+    if (user.isAdmin) {
+      await User.findByIdAndUpdate(userId, { $set: { isAdmin: false } });
+    } else {
+      await User.findByIdAndUpdate(userId, { $set: { isAdmin: true } });
+    }
+
+    res.status(200).json({ message: "Admin status changed successfully" });
   } catch (error) {
     next(error);
   }

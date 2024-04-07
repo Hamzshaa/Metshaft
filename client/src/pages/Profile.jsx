@@ -1,9 +1,11 @@
-import { Card, Dropdown } from "flowbite-react";
+import { Button, Card, Dropdown, Modal } from "flowbite-react";
 import { useEffect, useState } from "react";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { Link, useParams } from "react-router-dom";
 
 export default function Profile() {
   const [user, setUser] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const { userId } = useParams();
 
@@ -23,7 +25,27 @@ export default function Profile() {
     fetchUser();
   }, [userId]);
 
-  console.log(user);
+  const handleMakeAdmin = async () => {
+    const res = await fetch(`/api/user/grantRevokeAdmin/${userId}`, {
+      method: "PUT",
+    });
+    // const data = await res.json();
+    if (res.ok) {
+      setUser((prev) => ({
+        ...prev,
+        isAdmin: !prev.isAdmin,
+      }));
+    }
+  };
+
+  const handleDelete = async () => {
+    const res = await fetch(`/api/user/delete/${userId}`, {
+      method: "DELETE",
+    });
+    if (res.ok) {
+      window.location.replace("/users");
+    }
+  };
 
   return (
     <div className="h-[var(--body-height)]">
@@ -39,20 +61,20 @@ export default function Profile() {
               </Link>
             </Dropdown.Item>
             <Dropdown.Item>
-              <a
-                href="#"
+              <div
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+                onClick={handleMakeAdmin}
               >
                 {user?.isAdmin ? "Remove Admin" : "Make Admin"}
-              </a>
+              </div>
             </Dropdown.Item>
             <Dropdown.Item>
-              <a
-                href="#"
+              <div
                 className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+                onClick={() => setShowModal(true)}
               >
                 Delete
-              </a>
+              </div>
             </Dropdown.Item>
           </Dropdown>
         </div>
@@ -75,15 +97,39 @@ export default function Profile() {
             {user?.isAdmin ? "Admin" : "User"}
           </span>
           <div className="mt-4 flex space-x-3 lg:mt-6">
-            <a
-              href="#"
-              className="inline-flex items-center rounded-lg bg-cyan-700 px-4 py-2 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
+            <Link
+              to={`/books/total/${user?._id}`}
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white inline-flex items-center rounded-lg bg-cyan-700 px-4 py-2 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
             >
               {user?.bookInfo?.total} books
-            </a>
+            </Link>
           </div>
         </div>
       </Card>
+      <Modal
+        show={showModal}
+        size="md"
+        onClose={() => setShowModal(null)}
+        popup
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+              Are you sure you want to delete this user?
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button color="failure" onClick={handleDelete}>
+                {"Yes, I'm sure"}
+              </Button>
+              <Button color="gray" onClick={() => setShowModal(null)}>
+                No, cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

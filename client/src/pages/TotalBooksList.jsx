@@ -148,7 +148,7 @@ export default function TotalBooksList() {
   if (!searchQuery && !filter && !loading && books?.length == 0) {
     return (
       <div className="text-center mt-[20vh] text-2xl  min-h-[var(--body-height)]">
-        On Progress list is currently empty
+        Total book list is currently empty
       </div>
     );
   }
