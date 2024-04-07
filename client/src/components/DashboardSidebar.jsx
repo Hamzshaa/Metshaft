@@ -9,6 +9,7 @@ import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { MdDashboard } from "react-icons/md";
 import { FaUsers } from "react-icons/fa";
 import { GiWhiteBook } from "react-icons/gi";
+import { GrAnnounce } from "react-icons/gr";
 
 export default function DashboardSidebar() {
   const location = useLocation();
@@ -76,6 +77,16 @@ export default function DashboardSidebar() {
                   as="div"
                 >
                   Books
+                </Sidebar.Item>
+              </Link>
+              <Link to="/dashboard?tab=notify">
+                <Sidebar.Item
+                  active={tab === "notify"}
+                  icon={GrAnnounce}
+                  labelColor="dark"
+                  as="div"
+                >
+                  Notify Users
                 </Sidebar.Item>
               </Link>
             </div>

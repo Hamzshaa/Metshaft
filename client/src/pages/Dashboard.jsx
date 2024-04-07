@@ -5,6 +5,7 @@ import DashboardProfile from "../components/DashboardProfile";
 import DashboardDash from "../components/DashboardDash";
 import DashboardUsers from "../components/DashboardUsers";
 import DashboardBooks from "../components/DashboardBooks";
+import NotifyUsersPage from "../components/NotifyUsersPage";
 
 export default function Dashboard() {
   const location = useLocation();
@@ -21,10 +22,11 @@ export default function Dashboard() {
       <div className="md:w-64 w-full">
         <Sidebar />
       </div>
-      .{tab === "profile" && <DashboardProfile />}
+      {tab === "profile" && <DashboardProfile />}
       {(tab === "dashboards" || !tab) && <DashboardDash />}
       {tab === "users" && <DashboardUsers />}
       {tab === "books" && <DashboardBooks />}
+      {tab === "notify" && <NotifyUsersPage />}
     </div>
   );
 }

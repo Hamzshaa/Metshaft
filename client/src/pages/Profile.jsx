@@ -43,7 +43,7 @@ export default function Profile() {
       method: "DELETE",
     });
     if (res.ok) {
-      window.location.replace("/users");
+      window.location.replace("/dashboard?tab=users");
     }
   };
 

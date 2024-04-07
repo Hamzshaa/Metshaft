@@ -110,8 +110,6 @@ export const oauth = async (req, res, next) => {
         profilePicture: profilePic,
       });
 
-      console.log(newUser);
-
       await newUser.save();
 
       const token = jwt.sign(

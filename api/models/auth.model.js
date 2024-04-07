@@ -32,6 +32,17 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    notification: {
+      isSeen: {
+        type: Boolean,
+        default: false,
+      },
+      message: [
+        {
+          type: String,
+        },
+      ],
+    },
   },
   { timestamps: true }
 );

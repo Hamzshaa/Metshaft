@@ -177,7 +177,6 @@ export const deleteBook = async (req, res, next) => {
       let fileName = book.img.split("/").pop().split(".")[0];
       const fullPath = "metsehaft/" + fileName;
       await cloudinary.uploader.destroy(fullPath);
-      console.log(book.img);
     }
 
     await Book.findByIdAndDelete(req.params.bookId);
@@ -197,8 +196,6 @@ export const deleteImg = async (req, res, next) => {
     if (req.params.imgUrl) {
       const fullPath = "metsehaft/" + req.params.imgUrl;
       result = await cloudinary.uploader.destroy(fullPath);
-      console.log("Full path: ", fullPath);
-      console.log("Response: ", result);
     }
 
     // if (result != "ok") {
@@ -231,7 +228,6 @@ export const addToFinished = async (req, res, next) => {
     }
 
     if (!req.body.state) {
-      console.log("Nothing to update");
       return;
     }
 
@@ -243,7 +239,6 @@ export const addToFinished = async (req, res, next) => {
       { new: true }
     );
 
-    console.log(updatedBook);
     res.status(200).json(updatedBook);
   } catch (error) {
     next(error);
@@ -251,9 +246,6 @@ export const addToFinished = async (req, res, next) => {
 };
 
 export const editBook = async (req, res, next) => {
-  console.log("ID: ", req.params.bookId);
-  console.log("body: ", req.body);
-
   try {
     const book = await Book.findById(req.params.bookId);
 
@@ -268,8 +260,6 @@ export const editBook = async (req, res, next) => {
     if (req.user.id !== req.body.user_id || req.user.isAdmin) {
       next(errorHandler(401, "Unauthorized to edit this book"));
     }
-
-    console.log(req.body.img);
 
     const editedBook = await Book.findByIdAndUpdate(
       req.params.bookId,
