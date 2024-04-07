@@ -29,11 +29,14 @@ export default function DashboardProfile() {
   const dispatch = useDispatch();
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const [inputs, setInputs] = useState({
+    name: currentUser.name,
     email: currentUser.email,
     password: "",
   });
   const [imageFile, setImageFile] = useState(null);
   const [openModal, setOpenModal] = useState(false);
+
+  console.log(inputs);
 
   const handleChange = (e) => {
     setInputs((prev) => {
@@ -156,6 +159,20 @@ export default function DashboardProfile() {
           onChange={handleImageChange}
           disabled={loading}
         />
+
+        <div>
+          <div className="mb-2 block">
+            <Label htmlFor="name" value="Name" />
+          </div>
+          <TextInput
+            id="name"
+            type="name"
+            placeholder="John Doe"
+            shadow
+            onChange={handleChange}
+            value={inputs.name}
+          />
+        </div>
 
         <div>
           <div className="mb-2 block">

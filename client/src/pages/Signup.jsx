@@ -42,7 +42,7 @@ export default function Signup() {
       const data = await res.json();
 
       if (res.ok) {
-        dispatch(signInSuccess(data));
+        dispatch(signInSuccess(null));
         navigate("/signin");
       } else {
         dispatch(signInFailure(data.message));

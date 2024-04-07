@@ -93,9 +93,16 @@ export default function Profile() {
           <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
             {user?.email}
           </h5>
-          <span className="text-sm text-gray-500 dark:text-gray-400">
-            {user?.isAdmin ? "Admin" : "User"}
-          </span>
+          <div className="flex gap-2 items-center">
+            <span className="text-sm text-gray-500 dark:text-gray-400">
+              {user?.name}
+            </span>
+
+            <span className="text-sm bg-gray-500 dark:bg-gray-400 h-1 w-1 rounded-full "></span>
+            <span className="text-sm text-gray-500 dark:text-gray-400">
+              {user?.isAdmin ? "Admin" : "User"}
+            </span>
+          </div>
           <div className="mt-4 flex space-x-3 lg:mt-6">
             <Link
               to={`/books/total/${user?._id}`}
