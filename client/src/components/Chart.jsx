@@ -77,9 +77,9 @@ const Chart = ({
 };
 
 Chart.propTypes = {
-  icon: PropTypes.string,
+  icon: PropTypes.string || PropTypes.object,
   title: PropTypes.string,
-  number: PropTypes.string,
+  number: PropTypes.number || PropTypes.string,
   chartData: PropTypes.array,
   color: PropTypes.string,
   dataKey: PropTypes.string,
