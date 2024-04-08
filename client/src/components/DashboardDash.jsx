@@ -8,6 +8,53 @@ import { FaUsers } from "react-icons/fa6";
 
 import Chart from "./Chart";
 import BarChartComponent from "./BarChartComponent";
+import PieChartComponent from "./PieChartComponent";
+import AreaChartComponent from "./AreaChartComponent";
+
+const data = [
+  {
+    name: "Page A",
+    uv: 4000,
+    pv: 2400,
+    amt: 2400,
+  },
+  {
+    name: "Page B",
+    uv: 3000,
+    pv: 1398,
+    amt: 2210,
+  },
+  {
+    name: "Page C",
+    uv: 2000,
+    pv: 9800,
+    amt: 2290,
+  },
+  {
+    name: "Page D",
+    uv: 2780,
+    pv: 3908,
+    amt: 2000,
+  },
+  {
+    name: "Page E",
+    uv: 1890,
+    pv: 4800,
+    amt: 2181,
+  },
+  {
+    name: "Page F",
+    uv: 2390,
+    pv: 3800,
+    amt: 2500,
+  },
+  {
+    name: "Page G",
+    uv: 3490,
+    pv: 4300,
+    amt: 2100,
+  },
+];
 
 export default function DashboardDash() {
   const [recentUsers, setRecentUsers] = useState([]);
@@ -188,30 +235,40 @@ export default function DashboardDash() {
         </div>
       </div>
 
-      <div className="">
-        <Chart
-          color="#8884db"
-          icon={<GiBookshelf />}
-          title="Total Books"
-          number={chartBookData[6] ? chartBookData[6].books : "0"}
-          dataKey="books"
-          percentage={bookPercentage}
-          chartData={chartBookData}
-          link="/dashboard?tab=books"
+      <div className="w-full mx-auto">
+        <div className="w-full mx-auto mt-4 flex flex-col gap-4">
+          <Chart
+            color="#8884db"
+            icon={<GiBookshelf />}
+            title="Total Books"
+            number={chartBookData[6] ? chartBookData[6].books : "0"}
+            dataKey="books"
+            percentage={bookPercentage}
+            chartData={chartBookData}
+            link="/dashboard?tab=books"
+          />
+          <Chart
+            color="#fca80b"
+            icon={<FaUsers />}
+            title="Total Users"
+            number={chartUsersData[6] ? chartUsersData[6].users : "0"}
+            dataKey="users"
+            percentage={usersPercentage}
+            chartData={chartUsersData}
+            link="/dashboard?tab=users"
+          />
+        </div>
+        <BarChartComponent
+          title="Title here"
+          dataKey="uv"
+          chartData={data}
+          color="#8e9756"
         />
-        <Chart
-          color="#fca80b"
-          icon={<FaUsers />}
-          title="Total Users"
-          number={chartUsersData[6] ? chartUsersData[6].users : "0"}
-          dataKey="users"
-          percentage={usersPercentage}
-          chartData={chartUsersData}
-          link="/dashboard?tab=users"
-        />
-        {/* <BarChartComponent /> */}
       </div>
-
+      <div className="w-full">
+        <PieChartComponent />
+        <AreaChartComponent />
+      </div>
       {/* <div className="m-1 p-1 sm:m-5 sm:ml-1 sm:p-5 md:ml-3  w-full h-fit lg:w-[55%] bg-gray-50 dark:bg-gray-800 rounded-md shadow-xl">
         <div className="flex justify-between items-end ml-2 mr-4 mb-2">
           <h1 className="text-2xl font-semibold">Recent Books</h1>
