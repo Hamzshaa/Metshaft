@@ -288,3 +288,103 @@ export const editBook = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getChartInfo = async (req, res, next) => {
+  try {
+    const currentDate = new Date();
+
+    const section7 = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - 4
+    );
+
+    const section6 = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - 8
+    );
+
+    const section5 = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - 12
+    );
+
+    const section4 = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - 16
+    );
+
+    const section3 = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - 20
+    );
+
+    const section2 = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - 24
+    );
+
+    const section1 = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - 28
+    );
+
+    const section7Books = await Book.countDocuments({
+      createdAt: { $gte: section7 },
+    });
+
+    const section6Books = await Book.countDocuments({
+      createdAt: { $gte: section6 },
+    });
+
+    const section5Books = await Book.countDocuments({
+      createdAt: { $gte: section5 },
+    });
+
+    const section4Books = await Book.countDocuments({
+      createdAt: { $gte: section4 },
+    });
+
+    const section3Books = await Book.countDocuments({
+      createdAt: { $gte: section3 },
+    });
+
+    const section2Books = await Book.countDocuments({
+      createdAt: { $gte: section2 },
+    });
+
+    const section1Books = await Book.countDocuments({
+      createdAt: { $gte: section1 },
+    });
+
+    let percentage = 0;
+    if (section7Books !== 0) {
+      percentage = Math.round(
+        ((section1Books - section7Books) / section1Books) * 100
+      );
+    } else {
+      percentage = section1Books * 100;
+    }
+
+    res.status(200).json({
+      chartData: [
+        { name: "Section 7", books: section7Books },
+        { name: "Section 6", books: section6Books },
+        { name: "Section 5", books: section5Books },
+        { name: "Section 4", books: section4Books },
+        { name: "Section 3", books: section3Books },
+        { name: "Section 2", books: section2Books },
+        { name: "Section 1", books: section1Books },
+      ],
+      percentage,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
