@@ -388,3 +388,302 @@ export const getChartInfo = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getBarChartInfo = async (req, res, next) => {
+  try {
+    const currentDate = new Date();
+    const options = { year: "numeric", month: "long", day: "numeric" };
+
+    const day1 = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - 1
+    );
+
+    const day2 = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - 2
+    );
+
+    const day3 = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - 3
+    );
+
+    const day4 = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - 4
+    );
+
+    const day5 = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - 5
+    );
+
+    const day6 = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - 6
+    );
+
+    const day7 = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - 7
+    );
+
+    const day8 = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - 8
+    );
+
+    const day9 = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - 9
+    );
+
+    const day10 = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - 10
+    );
+
+    const day11 = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - 11
+    );
+
+    const day12 = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - 12
+    );
+
+    const day13 = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - 13
+    );
+
+    const day14 = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - 14
+    );
+
+    const day15 = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - 15
+    );
+
+    const day1Books = await Book.countDocuments({
+      createdAt: { $gte: day1 },
+    });
+
+    const day1Users = await User.countDocuments({
+      createdAt: { $gte: day1 },
+    });
+
+    const day2Books = await Book.countDocuments({
+      createdAt: { $gte: day2, $lt: day1 },
+    });
+
+    const day2Users = await User.countDocuments({
+      createdAt: { $gte: day2, $lt: day1 },
+    });
+
+    const day3Books = await Book.countDocuments({
+      createdAt: { $gte: day3, $lt: day2 },
+    });
+
+    const day3Users = await User.countDocuments({
+      createdAt: { $gte: day3, $lt: day2 },
+    });
+
+    const day4Books = await Book.countDocuments({
+      createdAt: { $gte: day4, $lt: day3 },
+    });
+
+    const day4Users = await User.countDocuments({
+      createdAt: { $gte: day4, $lt: day3 },
+    });
+
+    const day5Books = await Book.countDocuments({
+      createdAt: { $gte: day5, $lt: day4 },
+    });
+
+    const day5Users = await User.countDocuments({
+      createdAt: { $gte: day5, $lt: day4 },
+    });
+
+    const day6Books = await Book.countDocuments({
+      createdAt: { $gte: day6, $lt: day5 },
+    });
+
+    const day6Users = await User.countDocuments({
+      createdAt: { $gte: day6, $lt: day5 },
+    });
+
+    const day7Books = await Book.countDocuments({
+      createdAt: { $gte: day7, $lt: day6 },
+    });
+
+    const day7Users = await User.countDocuments({
+      createdAt: { $gte: day7, $lt: day6 },
+    });
+
+    const day8Books = await Book.countDocuments({
+      createdAt: { $gte: day8, $lt: day7 },
+    });
+
+    const day8Users = await User.countDocuments({
+      createdAt: { $gte: day8, $lt: day7 },
+    });
+
+    const day9Books = await Book.countDocuments({
+      createdAt: { $gte: day9, $lt: day8 },
+    });
+
+    const day9Users = await User.countDocuments({
+      createdAt: { $gte: day9, $lt: day8 },
+    });
+
+    const day10Books = await Book.countDocuments({
+      createdAt: { $gte: day10, $lt: day9 },
+    });
+
+    const day10Users = await User.countDocuments({
+      createdAt: { $gte: day10, $lt: day9 },
+    });
+
+    const day11Books = await Book.countDocuments({
+      createdAt: { $gte: day11, $lt: day10 },
+    });
+
+    const day11Users = await User.countDocuments({
+      createdAt: { $gte: day11, $lt: day10 },
+    });
+
+    const day12Books = await Book.countDocuments({
+      createdAt: { $gte: day12, $lt: day11 },
+    });
+
+    const day12Users = await User.countDocuments({
+      createdAt: { $gte: day12, $lt: day11 },
+    });
+
+    const day13Books = await Book.countDocuments({
+      createdAt: { $gte: day13, $lt: day12 },
+    });
+
+    const day13Users = await User.countDocuments({
+      createdAt: { $gte: day13, $lt: day12 },
+    });
+
+    const day14Books = await Book.countDocuments({
+      createdAt: { $gte: day14, $lt: day13 },
+    });
+
+    const day14Users = await User.countDocuments({
+      createdAt: { $gte: day14, $lt: day13 },
+    });
+
+    const day15Books = await Book.countDocuments({
+      createdAt: { $gte: day15, $lt: day14 },
+    });
+
+    const day15Users = await User.countDocuments({
+      createdAt: { $gte: day15, $lt: day14 },
+    });
+
+    res.status(200).json({
+      barChartData: [
+        {
+          date: day15.toLocaleDateString("en-US", options),
+          books: day15Books,
+          users: day15Users,
+        },
+        {
+          date: day14.toLocaleDateString("en-US", options),
+          books: day14Books,
+          users: day14Users,
+        },
+        {
+          date: day13.toLocaleDateString("en-US", options),
+          books: day13Books,
+          users: day13Users,
+        },
+        {
+          date: day12.toLocaleDateString("en-US", options),
+          books: day12Books,
+          users: day12Users,
+        },
+        {
+          date: day11.toLocaleDateString("en-US", options),
+          books: day11Books,
+          users: day11Users,
+        },
+        {
+          date: day10.toLocaleDateString("en-US", options),
+          books: day10Books,
+          users: day10Users,
+        },
+        {
+          date: day9.toLocaleDateString("en-US", options),
+          books: day9Books,
+          users: day9Users,
+        },
+        {
+          date: day8.toLocaleDateString("en-US", options),
+          books: day8Books,
+          users: day8Users,
+        },
+        {
+          date: day7.toLocaleDateString("en-US", options),
+          books: day7Books,
+          users: day7Users,
+        },
+        {
+          date: day6.toLocaleDateString("en-US", options),
+          books: day6Books,
+          users: day6Users,
+        },
+        {
+          date: day5.toLocaleDateString("en-US", options),
+          books: day5Books,
+          day1Users: day5Users,
+        },
+        {
+          date: day4.toLocaleDateString("en-US", options),
+          books: day4Books,
+          users: day4Users,
+        },
+        {
+          date: day3.toLocaleDateString("en-US", options),
+          books: day3Books,
+          users: day3Users,
+        },
+        {
+          date: day2.toLocaleDateString("en-US", options),
+          books: day2Books,
+          users: day2Users,
+        },
+        {
+          date: day1.toLocaleDateString("en-US", options),
+          books: day1Books,
+          users: day1Users,
+        },
+      ],
+    });
+  } catch (error) {
+    next(error);
+  }
+};
