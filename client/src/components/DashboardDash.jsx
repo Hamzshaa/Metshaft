@@ -3,12 +3,43 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { MdArrowOutward } from "react-icons/md";
+import { GiBookshelf } from "react-icons/gi";
+
+import Chart from "./Chart";
 
 export default function DashboardDash() {
   const [recentUsers, setRecentUsers] = useState([]);
   const [recentBooks, setRecentBooks] = useState([]);
   const [userEmails, setUserEmails] = useState([]);
+  const [chartBookData, setChartBookData] = useState([
+    { section: "Books", books: 0 },
+  ]);
+  const [bookPercentage, setBookPercentage] = useState(0);
+  const [chartUsersData, setChartUsersData] = useState([
+    { section: "Books", users: 0 },
+  ]);
+  const [usersPercentage, setUsersPercentage] = useState(0);
   const options = { year: "numeric", month: "long", day: "numeric" };
+
+  console.log(chartBookData);
+
+  useEffect(() => {
+    const fetchChartData = async () => {
+      try {
+        const res = await fetch("/api/books/chartInfo");
+        const data = await res.json();
+
+        if (res.ok) {
+          setChartBookData(data.chartData);
+          setBookPercentage(data.percentage);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
+    fetchChartData();
+  }, []);
 
   useEffect(() => {
     const fetchRecentUsers = async () => {
@@ -138,7 +169,30 @@ export default function DashboardDash() {
         </div>
       </div>
 
-      <div className="m-1 p-1 sm:m-5 sm:ml-1 sm:p-5 md:ml-3  w-full h-fit lg:w-[55%] bg-gray-50 dark:bg-gray-800 rounded-md shadow-xl">
+      <div className="">
+        <Chart
+          color="#8884db"
+          icon={<GiBookshelf />}
+          title="Total Books"
+          number={chartBookData[6] ? chartBookData[6].books : "0"}
+          dataKey="books"
+          percentage={bookPercentage}
+          chartData={chartBookData}
+          link="/dashboard?tab=books"
+        />
+        <Chart
+          color="#fca80b"
+          icon={<GiBookshelf />}
+          title="Total Users"
+          number={chartUsersData[6] ? chartUsersData[6].users : "0"}
+          dataKey="users"
+          percentage={usersPercentage}
+          chartData={chartUsersData}
+          link="/dashboard?tab=users"
+        />
+      </div>
+
+      {/* <div className="m-1 p-1 sm:m-5 sm:ml-1 sm:p-5 md:ml-3  w-full h-fit lg:w-[55%] bg-gray-50 dark:bg-gray-800 rounded-md shadow-xl">
         <div className="flex justify-between items-end ml-2 mr-4 mb-2">
           <h1 className="text-2xl font-semibold">Recent Books</h1>
           <Link
@@ -231,7 +285,7 @@ export default function DashboardDash() {
             </div>
           )}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
