@@ -18,8 +18,11 @@ const Chart = ({
       <div className="flex flex-col justify-between">
         <div className="flex-3 flex gap-2 items-center">
           <span
-            className="text-2xl text-center p-3 rounded-full shadow-2xl"
-            style={{ backgroundColor: color }}
+            style={{
+              backgroundColor: color,
+              boxShadow: "0 2px 10px rgba(0, 0, 0, 0.5)",
+            }}
+            className="text-2xl text-center p-3 rounded-full"
           >
             {icon}
           </span>

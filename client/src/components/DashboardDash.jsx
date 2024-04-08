@@ -4,8 +4,10 @@ import { Link } from "react-router-dom";
 
 import { MdArrowOutward } from "react-icons/md";
 import { GiBookshelf } from "react-icons/gi";
+import { FaUsers } from "react-icons/fa6";
 
 import Chart from "./Chart";
+import BarChartComponent from "./BarChartComponent";
 
 export default function DashboardDash() {
   const [recentUsers, setRecentUsers] = useState([]);
@@ -21,8 +23,6 @@ export default function DashboardDash() {
   const [usersPercentage, setUsersPercentage] = useState(0);
   const options = { year: "numeric", month: "long", day: "numeric" };
 
-  console.log(chartBookData);
-
   useEffect(() => {
     const fetchChartData = async () => {
       try {
@@ -32,6 +32,25 @@ export default function DashboardDash() {
         if (res.ok) {
           setChartBookData(data.chartData);
           setBookPercentage(data.percentage);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
+    fetchChartData();
+  }, []);
+
+  useEffect(() => {
+    const fetchChartData = async () => {
+      try {
+        const res = await fetch("/api/user/chartInfo");
+        const data = await res.json();
+
+        if (res.ok) {
+          console.log(data);
+          setChartUsersData(data.chartData);
+          setUsersPercentage(data.percentage);
         }
       } catch (error) {
         console.log(error.message);
@@ -182,7 +201,7 @@ export default function DashboardDash() {
         />
         <Chart
           color="#fca80b"
-          icon={<GiBookshelf />}
+          icon={<FaUsers />}
           title="Total Users"
           number={chartUsersData[6] ? chartUsersData[6].users : "0"}
           dataKey="users"
@@ -190,6 +209,7 @@ export default function DashboardDash() {
           chartData={chartUsersData}
           link="/dashboard?tab=users"
         />
+        {/* <BarChartComponent /> */}
       </div>
 
       {/* <div className="m-1 p-1 sm:m-5 sm:ml-1 sm:p-5 md:ml-3  w-full h-fit lg:w-[55%] bg-gray-50 dark:bg-gray-800 rounded-md shadow-xl">
