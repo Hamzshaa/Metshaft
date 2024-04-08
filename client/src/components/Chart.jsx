@@ -14,7 +14,7 @@ const Chart = ({
   link,
 }) => {
   return (
-    <div className="p-5 border-2 border-white dark:border-gray-800 shadow-md rounded-md flex justify-between h-[200px] w-[360px] w-full">
+    <div className="p-5 pb-1 border-2 border-white dark:border-gray-800 shadow-md rounded-md flex justify-between h-[200px] w-[360px] w-full">
       <div className="flex flex-col justify-between">
         <div className="flex-3 flex gap-2 items-center">
           <span

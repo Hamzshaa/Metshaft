@@ -4,13 +4,14 @@ import { Link } from "react-router-dom";
 
 import { MdArrowOutward } from "react-icons/md";
 import { GiBookshelf } from "react-icons/gi";
-import { FaUsers } from "react-icons/fa6";
+import { FaCreativeCommonsSamplingPlus, FaUsers } from "react-icons/fa6";
 
 import Chart from "./Chart";
 import BarChartComponent from "./BarChartComponent";
 import PieChartComponent from "./PieChartComponent";
 import AreaChartComponent from "./AreaChartComponent";
 import DashboardRecentUsersTable from "./DashboardRecentUsersTable";
+import { resetWarningCache } from "prop-types";
 
 const data = [
   {
@@ -64,6 +65,7 @@ export default function DashboardDash() {
     { section: "Books", books: 0 },
   ]);
   const [bookPercentage, setBookPercentage] = useState(0);
+  const [barChartData, setBarChartData] = useState([]);
   const [chartUsersData, setChartUsersData] = useState([
     { section: "Books", users: 0 },
   ]);
@@ -94,7 +96,6 @@ export default function DashboardDash() {
         const data = await res.json();
 
         if (res.ok) {
-          console.log(data);
           setChartUsersData(data.chartData);
           setUsersPercentage(data.percentage);
         }
@@ -104,6 +105,23 @@ export default function DashboardDash() {
     };
 
     fetchChartData();
+  }, []);
+
+  useEffect(() => {
+    const fetchBarChartData = async () => {
+      try {
+        const res = await fetch("/api/books/chartInfo/barChart");
+        const data = await res.json();
+
+        if (res.ok) {
+          setBarChartData(data.barChartData);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
+    fetchBarChartData();
   }, []);
 
   useEffect(() => {
@@ -171,19 +189,21 @@ export default function DashboardDash() {
               link="/dashboard?tab=users"
             />
           </div>
-          <BarChartComponent
-            title="Title here"
-            dataKey="uv"
-            chartData={data}
-            color="#8e9756"
-          />
+          <div className="ml-2">
+            <BarChartComponent
+              title="Title here"
+              dataKey="day1Users"
+              chartData={barChartData}
+              color="#8e9756"
+            />
+          </div>
           {/* <div className="w-full lg:flex">
             <PieChartComponent />
             <AreaChartComponent />
           </div> */}
         </div>
       </div>
-      <div className="w-full lg:flex lg:gap-4 lg:flex-row-reverse mb-10">
+      <div className="w-full lg:flex lg:gap-4 lg:flex-row-reverse mb-10 ml-2">
         <div className="lg:flex-2">
           <PieChartComponent />
         </div>

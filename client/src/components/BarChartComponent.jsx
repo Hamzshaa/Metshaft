@@ -1,4 +1,12 @@
-import { BarChart, Bar, ResponsiveContainer, Tooltip } from "recharts";
+import {
+  BarChart,
+  Bar,
+  ResponsiveContainer,
+  Tooltip,
+  Rectangle,
+  Legend,
+  XAxis,
+} from "recharts";
 import propTypes from "prop-types";
 
 export default function BarChartComponent({
@@ -8,7 +16,7 @@ export default function BarChartComponent({
   color,
 }) {
   return (
-    <div className="border-2 border-gray-100 dark:border-gray-800 shadow-xl my-4 py-4 h-[285px] w-full">
+    <div className="border-2 border-gray-100 dark:border-gray-800 shadow-xl my-4 py-4 h-[250px] w-full">
       <h1 className="font-semibold text-xl px-2 pb-2">{title}</h1>
 
       <div className="w-full h-[150px]">
@@ -19,7 +27,20 @@ export default function BarChartComponent({
               labelStyle={{ display: "none" }}
               cursor={{ fill: "none" }}
             />
-            <Bar dataKey={dataKey} fill={color} />
+            {/* <Bar dataKey={dataKey} fill={color} /> */}
+
+            <Bar
+              dataKey="users"
+              fill="#8884d8"
+              activeBar={<Rectangle fill="pink" stroke="blue" />}
+            />
+            <Bar
+              dataKey="books"
+              fill="#82ca9d"
+              activeBar={<Rectangle fill="gold" stroke="purple" />}
+            />
+            <XAxis dataKey="date" />
+            <Legend />
           </BarChart>
         </ResponsiveContainer>
       </div>
