@@ -38,25 +38,25 @@ export default function DashboardRecentUsersTable() {
         {recentUsers.length != 0 &&
           recentUsers.map((user, index) => (
             <div className="flex justify-between items-end" key={index}>
-              <div className="flex gap-3 items-center">
+              <div className="flex gap-3 items-center ">
                 <Link to={`/profile/${user._id}`} className="flex w-fit">
                   <img
                     src={user?.profilePicture}
                     alt=""
-                    className="w-16 h-16 md:w-10 md:h-10 rounded-full"
+                    className="w-16 h-16 md:w-10 md:h-10 rounded-full object-cover max-w-16"
                   />
                 </Link>
                 <div className="flex flex-col gap-1">
                   <span className="font-semibold text-xl md:text-md">
                     {user?.name}
                   </span>
-                  <span className="text-sm md:text-xs text-gray-500 dark:text-gray-400">
+                  <span className="text-[12px] md:text-xs text-gray-500 dark:text-gray-400">
                     {user?.email}
                   </span>
                 </div>
               </div>
               <div className="pb-2">
-                <h3 className="font-semibold text-sm md:text-xs text-gray-600 dark:text-gray-400">
+                <h3 className="font-semibold text-[12px] md:text-xs text-gray-600 dark:text-gray-400">
                   {new Date(user.createdAt).toLocaleDateString(
                     "en-US",
                     options
