@@ -10,6 +10,7 @@ import Chart from "./Chart";
 import BarChartComponent from "./BarChartComponent";
 import PieChartComponent from "./PieChartComponent";
 import AreaChartComponent from "./AreaChartComponent";
+import DashboardRecentUsersTable from "./DashboardRecentUsersTable";
 
 const data = [
   {
@@ -57,7 +58,6 @@ const data = [
 ];
 
 export default function DashboardDash() {
-  const [recentUsers, setRecentUsers] = useState([]);
   const [recentBooks, setRecentBooks] = useState([]);
   const [userEmails, setUserEmails] = useState([]);
   const [chartBookData, setChartBookData] = useState([
@@ -68,7 +68,6 @@ export default function DashboardDash() {
     { section: "Books", users: 0 },
   ]);
   const [usersPercentage, setUsersPercentage] = useState(0);
-  const options = { year: "numeric", month: "long", day: "numeric" };
 
   useEffect(() => {
     const fetchChartData = async () => {
@@ -105,22 +104,6 @@ export default function DashboardDash() {
     };
 
     fetchChartData();
-  }, []);
-
-  useEffect(() => {
-    const fetchRecentUsers = async () => {
-      try {
-        const res = await fetch("/api/user?limit=5");
-        const data = await res.json();
-
-        if (res.ok) {
-          setRecentUsers(data.users);
-        }
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    fetchRecentUsers();
   }, []);
 
   useEffect(() => {
@@ -161,114 +144,54 @@ export default function DashboardDash() {
   };
 
   return (
-    <div className="md:h-[var(--body-height)] md:overflow-y-scroll overflow-x-hidden flex flex-col lg:flex-row lg:w-[var(--dashboard-width)] pr-2 md:pr-10">
-      <div className="m-1 p-1 sm:m-5 sm:ml-1 sm:p-5 md:ml-3 w-full h-fit lg:w-[45%] bg-gray-50 dark:bg-gray-800 rounded-md shadow-xl">
-        <div className="flex justify-between items-end ml-2 mr-4 mb-2">
-          <h1 className="text-2xl font-semibold">Recent Users</h1>
-          <Link
-            to="/dashboard?tab=users"
-            className="text-teal-600 dark:text-teal-400 flex gap-2 items-center"
-          >
-            SEE ALL <MdArrowOutward />
-          </Link>
+    <div className="md:h-[var(--body-height)] md:overflow-y-scroll overflow-x-hidden flex flex-col lg:flex-co lg:w-[var(--dashboard-width)] pr-2 md:pr-10 ">
+      <div className="lg:flex">
+        <DashboardRecentUsersTable />
+
+        <div className="w-full mx-auto">
+          <div className="w-full mx-auto mt-4 flex flex-col gap-4 md:flex-row md:gap-2 md:mx-2">
+            <Chart
+              color="#8884db"
+              icon={<GiBookshelf />}
+              title="Total Books"
+              number={chartBookData[6] ? chartBookData[6].books : "0"}
+              dataKey="books"
+              percentage={bookPercentage}
+              chartData={chartBookData}
+              link="/dashboard?tab=books"
+            />
+            <Chart
+              color="#fca80b"
+              icon={<FaUsers />}
+              title="Total Users"
+              number={chartUsersData[6] ? chartUsersData[6].users : "0"}
+              dataKey="users"
+              percentage={usersPercentage}
+              chartData={chartUsersData}
+              link="/dashboard?tab=users"
+            />
+          </div>
+          <BarChartComponent
+            title="Title here"
+            dataKey="uv"
+            chartData={data}
+            color="#8e9756"
+          />
+          {/* <div className="w-full lg:flex">
+            <PieChartComponent />
+            <AreaChartComponent />
+          </div> */}
         </div>
-        <div className="overflow-x-auto border-x-2 border-gray-300 dark:border-gray-600 rounded-xl">
-          <Table hoverable>
-            <Table.Head>
-              <Table.HeadCell className="bg-gray-100 text-center">
-                User Image
-              </Table.HeadCell>
-              <Table.HeadCell className="bg-gray-100">Email</Table.HeadCell>
-              <Table.HeadCell className="bg-gray-100">
-                Created At
-              </Table.HeadCell>
-              <Table.HeadCell className="bg-gray-100">Role</Table.HeadCell>
-            </Table.Head>
-            <Table.Body className="divide-y">
-              {recentUsers.length != 0 &&
-                recentUsers.map((user, index) => (
-                  <Table.Row
-                    key={index}
-                    className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                  >
-                    <Table.Cell>
-                      <Link
-                        to={`/profile/${user._id}`}
-                        className="flex w-fit mx-auto"
-                      >
-                        <img
-                          src={user?.profilePicture}
-                          alt=""
-                          className="w-10 h-10 rounded-full"
-                        />
-                      </Link>
-                    </Table.Cell>
-                    <Table.Cell>{user.email}</Table.Cell>
-                    <Table.Cell>
-                      <h3 className="w-32">
-                        {new Date(user.createdAt).toLocaleDateString(
-                          "en-US",
-                          options
-                        )}
-                      </h3>
-                    </Table.Cell>
-                    <Table.Cell>
-                      <h3
-                        className={`font-semibold ${
-                          user.isAdmin == true
-                            ? "text-green-700 dark:text-green-600 bg-green-300 dark:bg-green-300 px-1 rounded-sm w-fit"
-                            : ""
-                        }`}
-                      >
-                        {user.isAdmin == true ? "Admin" : "User"}
-                      </h3>
-                    </Table.Cell>
-                  </Table.Row>
-                ))}
-            </Table.Body>
-          </Table>
-          {recentUsers.length == 0 && (
-            <div className="text-xl font-semibold text-center py-2 text-gray-600 dark:text-gray-400 ">
-              No User Found
-            </div>
-          )}
+      </div>
+      <div className="w-full lg:flex lg:gap-4 lg:flex-row-reverse mb-10">
+        <div className="lg:flex-2">
+          <PieChartComponent />
+        </div>
+        <div className="lg:flex-1">
+          <AreaChartComponent />
         </div>
       </div>
 
-      <div className="w-full mx-auto">
-        <div className="w-full mx-auto mt-4 flex flex-col gap-4">
-          <Chart
-            color="#8884db"
-            icon={<GiBookshelf />}
-            title="Total Books"
-            number={chartBookData[6] ? chartBookData[6].books : "0"}
-            dataKey="books"
-            percentage={bookPercentage}
-            chartData={chartBookData}
-            link="/dashboard?tab=books"
-          />
-          <Chart
-            color="#fca80b"
-            icon={<FaUsers />}
-            title="Total Users"
-            number={chartUsersData[6] ? chartUsersData[6].users : "0"}
-            dataKey="users"
-            percentage={usersPercentage}
-            chartData={chartUsersData}
-            link="/dashboard?tab=users"
-          />
-        </div>
-        <BarChartComponent
-          title="Title here"
-          dataKey="uv"
-          chartData={data}
-          color="#8e9756"
-        />
-      </div>
-      <div className="w-full">
-        <PieChartComponent />
-        <AreaChartComponent />
-      </div>
       {/* <div className="m-1 p-1 sm:m-5 sm:ml-1 sm:p-5 md:ml-3  w-full h-fit lg:w-[55%] bg-gray-50 dark:bg-gray-800 rounded-md shadow-xl">
         <div className="flex justify-between items-end ml-2 mr-4 mb-2">
           <h1 className="text-2xl font-semibold">Recent Books</h1>

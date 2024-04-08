@@ -1,7 +1,6 @@
 import {
   Area,
   AreaChart,
-  CartesianGrid,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -55,7 +54,7 @@ const data = [
 
 export default function AnalyticsChartComponent() {
   return (
-    <div className="w-full h-full flex flex-col border-2 border-gray-100 dark:border-gray-800 justify-between shadow-xl px-2 py-4">
+    <div className="w-full h-full flex flex-col border-2 border-gray-100 dark:border-gray-800 justify-between shadow-xl px-2 py-4 my-2">
       <h1 className="font-semibold text-xl pb-4">Revenue Analytics</h1>
       <div className="w-full h-[300px]">
         <ResponsiveContainer width="99%" height="100%">

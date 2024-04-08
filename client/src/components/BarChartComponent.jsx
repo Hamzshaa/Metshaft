@@ -8,7 +8,7 @@ export default function BarChartComponent({
   color,
 }) {
   return (
-    <div className="border-2 border-gray-100 dark:border-gray-800 shadow-xl my-4 py-4 h-fit w-full">
+    <div className="border-2 border-gray-100 dark:border-gray-800 shadow-xl my-4 py-4 h-[285px] w-full">
       <h1 className="font-semibold text-xl px-2 pb-2">{title}</h1>
 
       <div className="w-full h-[150px]">
