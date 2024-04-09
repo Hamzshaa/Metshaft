@@ -9,7 +9,7 @@ export default function DashboardUsers() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch("/api/user?limit=5");
+        const res = await fetch("/api/user");
         const data = await res.json();
 
         if (res.ok) {

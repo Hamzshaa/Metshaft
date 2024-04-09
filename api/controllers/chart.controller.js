@@ -48,51 +48,51 @@ export const getChartInfo = async (req, res, next) => {
     );
 
     const section7Books = await Book.countDocuments({
-      createdAt: { $gte: section7 },
+      createdAt: { $lt: currentDate },
     });
 
     const section6Books = await Book.countDocuments({
-      createdAt: { $gte: section6 },
+      createdAt: { $lt: section6 },
     });
 
     const section5Books = await Book.countDocuments({
-      createdAt: { $gte: section5 },
+      createdAt: { $lt: section5 },
     });
 
     const section4Books = await Book.countDocuments({
-      createdAt: { $gte: section4 },
+      createdAt: { $lt: section4 },
     });
 
     const section3Books = await Book.countDocuments({
-      createdAt: { $gte: section3 },
+      createdAt: { $lt: section3 },
     });
 
     const section2Books = await Book.countDocuments({
-      createdAt: { $gte: section2 },
+      createdAt: { $lt: section2 },
     });
 
     const section1Books = await Book.countDocuments({
-      createdAt: { $gte: section1 },
+      createdAt: { $lt: section1 },
     });
 
     let percentage = 0;
-    if (section7Books !== 0) {
+    if (section1Books !== 0) {
       percentage = Math.round(
-        ((section1Books - section7Books) / section7Books) * 100
+        ((section7Books - section1Books) / section1Books) * 100
       );
     } else {
-      percentage = section1Books * 100;
+      percentage = section7Books * 100;
     }
 
     res.status(200).json({
       chartData: [
-        { name: "Section 7", books: section7Books },
-        { name: "Section 6", books: section6Books },
-        { name: "Section 5", books: section5Books },
-        { name: "Section 4", books: section4Books },
-        { name: "Section 3", books: section3Books },
-        { name: "Section 2", books: section2Books },
         { name: "Section 1", books: section1Books },
+        { name: "Section 2", books: section2Books },
+        { name: "Section 3", books: section3Books },
+        { name: "Section 4", books: section4Books },
+        { name: "Section 5", books: section5Books },
+        { name: "Section 6", books: section6Books },
+        { name: "Section 7", books: section7Books },
       ],
       percentage,
     });
@@ -148,51 +148,51 @@ export const getUserChartInfo = async (req, res, next) => {
     );
 
     const section7Users = await User.countDocuments({
-      createdAt: { $gte: section7 },
+      createdAt: { $lt: currentDate },
     });
 
     const section6Users = await User.countDocuments({
-      createdAt: { $gte: section6 },
+      createdAt: { $lt: section6 },
     });
 
     const section5Users = await User.countDocuments({
-      createdAt: { $gte: section5 },
+      createdAt: { $lt: section5 },
     });
 
     const section4Users = await User.countDocuments({
-      createdAt: { $gte: section4 },
+      createdAt: { $lt: section4 },
     });
 
     const section3Users = await User.countDocuments({
-      createdAt: { $gte: section3 },
+      createdAt: { $lt: section3 },
     });
 
     const section2Users = await User.countDocuments({
-      createdAt: { $gte: section2 },
+      createdAt: { $lt: section2 },
     });
 
     const section1Users = await User.countDocuments({
-      createdAt: { $gte: section1 },
+      createdAt: { $lt: section1 },
     });
 
     let percentage = 0;
-    if (section7Users !== 0) {
+    if (section1Users !== 0) {
       percentage = Math.round(
-        ((section1Users - section7Users) / section7Users) * 100
+        ((section7Users - section1Users) / section1Users) * 100
       );
     } else {
-      percentage = section1Users * 100;
+      percentage = section7Users * 100;
     }
 
     res.status(200).json({
       chartData: [
-        { name: "Section 7", users: section7Users },
-        { name: "Section 6", users: section6Users },
-        { name: "Section 5", users: section5Users },
-        { name: "Section 4", users: section4Users },
-        { name: "Section 3", users: section3Users },
-        { name: "Section 2", users: section2Users },
         { name: "Section 1", users: section1Users },
+        { name: "Section 2", users: section2Users },
+        { name: "Section 3", users: section3Users },
+        { name: "Section 4", users: section4Users },
+        { name: "Section 5", users: section5Users },
+        { name: "Section 6", users: section6Users },
+        { name: "Section 7", users: section7Users },
       ],
       percentage,
     });
