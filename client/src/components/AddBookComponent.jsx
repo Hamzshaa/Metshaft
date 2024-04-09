@@ -16,15 +16,18 @@ import {
   processSuccess,
 } from "../redux/book/bookSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function AddBookComponent() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const imgRef = useRef();
   const { currentUser } = useSelector((state) => state.user);
   const { loading, error } = useSelector((state) => state.book);
   const [switch1, setSwitch1] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [imageFile, setImageFile] = useState(null);
+  const [checkBox, setCheckBox] = useState(false);
   const options = { year: "numeric", month: "long", day: "numeric" };
 
   const [inputs, setInputs] = useState({
@@ -40,8 +43,10 @@ export default function AddBookComponent() {
     if (e.target.id === "addDirectly") {
       setInputs((prev) => {
         if (e.target.checked) {
+          setCheckBox(true);
           return { ...prev, ["state"]: "finished" };
         } else {
+          setCheckBox(false);
           return { ...prev, ["state"]: "onProgress" };
         }
       });
@@ -145,6 +150,12 @@ export default function AddBookComponent() {
         });
         setSwitch1(false);
         setImageFile(null);
+        if (checkBox) {
+          navigate("/finished");
+        } else {
+          navigate("/progress");
+        }
+        setCheckBox(false);
       } else {
         dispatch(processFailure(data.message));
       }

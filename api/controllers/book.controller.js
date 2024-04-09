@@ -31,7 +31,8 @@ export const addBook = async (req, res, next) => {
       return next(errorHandler(400, "Book with this title already exist."));
     }
 
-    const state = req.body.addDirectly ? "finished" : "onProgress";
+    const state = req.body.state;
+
     const newBook = new Book({
       ...req.body,
       state,
