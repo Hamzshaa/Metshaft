@@ -77,6 +77,14 @@ export const deleteUser = async (req, res, next) => {
       return next(errorHandler(404, "User not found"));
     }
 
+    if (user.email === "trident32000@gmail.com") {
+      return next(errorHandler(400, "You can't delete the owner of the app."));
+    }
+
+    if (!req.user.email === "trident32000@gmail.com" && user.isAdmin) {
+      return next(errorHandler(400, "You can't delete an admin."));
+    }
+
     if (user.profilePicture.includes("cloudinary")) {
       let fileName = user.profilePicture.split("/").pop().split(".")[0];
       const fullPath = "metsehaft/" + fileName;
