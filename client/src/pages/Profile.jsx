@@ -82,13 +82,13 @@ export default function Profile() {
           {/* https://i.pravatar.cc/96 */}
           <img
             alt="Bonnie image"
-            height="96"
+            // height="96"
             src={
               user?.profilePicture ||
               "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
             }
-            width="96"
-            className="mb-3 rounded-full shadow-lg"
+            // width="96"
+            className="mb-3 rounded-full shadow-lg w-24 h-24 object-cover"
           />
           <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
             {user?.email}
