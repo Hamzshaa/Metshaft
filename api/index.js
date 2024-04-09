@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import authRoute from "../api/routers/auth.router.js";
 import userRoute from "../api/routers/user.router.js";
 import bookRoute from "../api/routers/book.router.js";
+import chartRoute from "../api/routers/chart.router.js";
 dotenv.config();
 import path from "path";
 
@@ -27,6 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);
 app.use("/api/books", bookRoute);
+app.use("/api/charts", chartRoute);
 
 app.use(express.static(path.join(__dirname, "/client/dist")));
 

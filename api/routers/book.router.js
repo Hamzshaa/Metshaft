@@ -8,8 +8,6 @@ import {
   deleteImg,
   editBook,
   getBookInfo,
-  getChartInfo,
-  getBarChartInfo,
 } from "../controllers/book.controller.js";
 
 const router = express.Router();
@@ -17,8 +15,6 @@ const router = express.Router();
 router.post("/add", verifyToken, addBook);
 router.get("/", verifyToken, getBook);
 router.get("/info/:userId", verifyToken, getBookInfo);
-router.get("/chartInfo", verifyToken, getChartInfo);
-router.get("/chartInfo/barChart", getBarChartInfo);
 router.delete("/delete/:bookId", verifyToken, deleteBook);
 router.delete("/delete/img/:imgUrl", verifyToken, deleteImg);
 router.put("/add/toFinished/:bookId", verifyToken, addToFinished);

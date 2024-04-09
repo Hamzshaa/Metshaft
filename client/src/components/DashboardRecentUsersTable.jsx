@@ -1,4 +1,3 @@
-import { Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { MdArrowOutward } from "react-icons/md";
 import { Link } from "react-router-dom";

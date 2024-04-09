@@ -1,66 +1,62 @@
-import { Table } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
-import { MdArrowOutward } from "react-icons/md";
 import { GiBookshelf } from "react-icons/gi";
-import { FaCreativeCommonsSamplingPlus, FaUsers } from "react-icons/fa6";
+import { FaUsers } from "react-icons/fa6";
 
 import Chart from "./Chart";
 import BarChartComponent from "./BarChartComponent";
 import PieChartComponent from "./PieChartComponent";
 import AreaChartComponent from "./AreaChartComponent";
 import DashboardRecentUsersTable from "./DashboardRecentUsersTable";
-import { resetWarningCache } from "prop-types";
 
-const data = [
-  {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];
+// const data = [
+//   {
+//     name: "Page A",
+//     uv: 4000,
+//     pv: 2400,
+//     amt: 2400,
+//   },
+//   {
+//     name: "Page B",
+//     uv: 3000,
+//     pv: 1398,
+//     amt: 2210,
+//   },
+//   {
+//     name: "Page C",
+//     uv: 2000,
+//     pv: 9800,
+//     amt: 2290,
+//   },
+//   {
+//     name: "Page D",
+//     uv: 2780,
+//     pv: 3908,
+//     amt: 2000,
+//   },
+//   {
+//     name: "Page E",
+//     uv: 1890,
+//     pv: 4800,
+//     amt: 2181,
+//   },
+//   {
+//     name: "Page F",
+//     uv: 2390,
+//     pv: 3800,
+//     amt: 2500,
+//   },
+//   {
+//     name: "Page G",
+//     uv: 3490,
+//     pv: 4300,
+//     amt: 2100,
+//   },
+// ];
 
 export default function DashboardDash() {
-  const [recentBooks, setRecentBooks] = useState([]);
-  const [userEmails, setUserEmails] = useState([]);
+  // const [recentBooks, setRecentBooks] = useState([]);
+  // const [userEmails, setUserEmails] = useState([]);
   const [chartBookData, setChartBookData] = useState([
     { section: "Books", books: 0 },
   ]);
@@ -70,11 +66,13 @@ export default function DashboardDash() {
     { section: "Books", users: 0 },
   ]);
   const [usersPercentage, setUsersPercentage] = useState(0);
+  const [pieChartData, setPieChartData] = useState([]);
+  const [areaChartData, setAreaChartData] = useState([]);
 
   useEffect(() => {
     const fetchChartData = async () => {
       try {
-        const res = await fetch("/api/books/chartInfo");
+        const res = await fetch("/api/charts/chartInfo/books/lineChart");
         const data = await res.json();
 
         if (res.ok) {
@@ -92,7 +90,7 @@ export default function DashboardDash() {
   useEffect(() => {
     const fetchChartData = async () => {
       try {
-        const res = await fetch("/api/user/chartInfo");
+        const res = await fetch("/api/charts/chartInfo/users/lineChart");
         const data = await res.json();
 
         if (res.ok) {
@@ -110,7 +108,7 @@ export default function DashboardDash() {
   useEffect(() => {
     const fetchBarChartData = async () => {
       try {
-        const res = await fetch("/api/books/chartInfo/barChart");
+        const res = await fetch("/api/charts/chartInfo/barChart");
         const data = await res.json();
 
         if (res.ok) {
@@ -125,41 +123,75 @@ export default function DashboardDash() {
   }, []);
 
   useEffect(() => {
-    const getRecentBooks = async () => {
+    const fetchPieChartData = async () => {
       try {
-        const res = await fetch("/api/books/?limit=5&sortDirection=asc");
+        const res = await fetch("/api/charts/chartInfo/pieChart");
         const data = await res.json();
 
         if (res.ok) {
-          setRecentBooks(data.books);
+          setPieChartData(data.pieChartData);
         }
       } catch (error) {
         console.log(error.message);
       }
     };
 
-    getRecentBooks();
+    fetchPieChartData();
   }, []);
 
   useEffect(() => {
-    if (recentBooks.length > 0) {
-      recentBooks.map((book) => {
-        getUserEmail(book.user_id).then((email) => {
-          setUserEmails((prev) => [...prev, email]);
-        });
-      });
-    }
-  }, [recentBooks]);
+    const fetchAreaChartData = async () => {
+      try {
+        const res = await fetch("/api/charts/chartInfo/areaChart");
+        const data = await res.json();
 
-  const getUserEmail = async (id) => {
-    try {
-      const res = await fetch(`/api/user/${id}`);
-      const data = await res.json();
-      return data?.email;
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+        if (res.ok) {
+          console.log(data);
+          setAreaChartData(data.areaChartData);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchAreaChartData();
+  }, []);
+
+  // useEffect(() => {
+  //   const getRecentBooks = async () => {
+  //     try {
+  //       const res = await fetch("/api/books/?limit=5&sortDirection=asc");
+  //       const data = await res.json();
+
+  //       if (res.ok) {
+  //         setRecentBooks(data.books);
+  //       }
+  //     } catch (error) {
+  //       console.log(error.message);
+  //     }
+  //   };
+
+  //   getRecentBooks();
+  // }, []);
+
+  // useEffect(() => {
+  //   if (recentBooks.length > 0) {
+  //     recentBooks.map((book) => {
+  //       getUserEmail(book.user_id).then((email) => {
+  //         setUserEmails((prev) => [...prev, email]);
+  //       });
+  //     });
+  //   }
+  // }, [recentBooks]);
+
+  // const getUserEmail = async (id) => {
+  //   try {
+  //     const res = await fetch(`/api/user/${id}`);
+  //     const data = await res.json();
+  //     return data?.email;
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // };
 
   return (
     <div className="md:h-[var(--body-height)] md:overflow-y-scroll overflow-x-hidden flex flex-col lg:flex-co lg:w-[var(--dashboard-width)] pr-2 md:pr-10 ">
@@ -189,30 +221,25 @@ export default function DashboardDash() {
               link="/dashboard?tab=users"
             />
           </div>
-          <div className="ml-2">
-            <BarChartComponent
-              title="Title here"
-              dataKey="day1Users"
-              chartData={barChartData}
-              color="#8e9756"
-            />
+          <div className="ml-2 w-full">
+            <BarChartComponent chartData={barChartData} />
           </div>
-          {/* <div className="w-full lg:flex">
-            <PieChartComponent />
-            <AreaChartComponent />
-          </div> */}
         </div>
       </div>
       <div className="w-full lg:flex lg:gap-4 lg:flex-row-reverse mb-10 ml-2">
         <div className="lg:flex-2">
-          <PieChartComponent />
+          <PieChartComponent data={pieChartData} />
         </div>
         <div className="lg:flex-1">
-          <AreaChartComponent />
+          <AreaChartComponent data={areaChartData} />
         </div>
       </div>
+    </div>
+  );
+}
 
-      {/* <div className="m-1 p-1 sm:m-5 sm:ml-1 sm:p-5 md:ml-3  w-full h-fit lg:w-[55%] bg-gray-50 dark:bg-gray-800 rounded-md shadow-xl">
+{
+  /* <div className="m-1 p-1 sm:m-5 sm:ml-1 sm:p-5 md:ml-3  w-full h-fit lg:w-[55%] bg-gray-50 dark:bg-gray-800 rounded-md shadow-xl">
         <div className="flex justify-between items-end ml-2 mr-4 mb-2">
           <h1 className="text-2xl font-semibold">Recent Books</h1>
           <Link
@@ -305,7 +332,5 @@ export default function DashboardDash() {
             </div>
           )}
         </div>
-      </div> */}
-    </div>
-  );
+      </div> */
 }

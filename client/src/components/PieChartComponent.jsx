@@ -1,15 +1,10 @@
+import propTypes from "prop-types";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
-const data = [
-  { name: "Group A", value: 400, color: "#FFBB28" },
-  { name: "Group B", value: 300, color: "#FF8042" },
-  { name: "Group C", value: 300, color: "#FF4E42" },
-  { name: "Group D", value: 200, color: "#FF4E42" },
-];
-export default function PieChartComponent() {
+export default function PieChartComponent({ data }) {
   return (
     <div className="h-full w-full border-2 border-gray-100 dark:border-gray-800 flex flex-col justify-between shadow-xl px-2 py-4 my-2">
-      <h1 className="font-semibold text-xl">Leads by Source</h1>
+      <h1 className="font-semibold text-xl">On Progress vs. Finished</h1>
       <div className="w-full h-full align-center flex justify-center">
         <ResponsiveContainer width="99%" height={250}>
           <PieChart>
@@ -32,7 +27,7 @@ export default function PieChartComponent() {
         </ResponsiveContainer>
       </div>
 
-      <div className="flex justify-between gap-3 text-sm px-5">
+      <div className="flex justify-center gap-8 text-sm px-5">
         {data.map((item) => (
           <div className="flex flex-col gap-3 items-center" key={item.name}>
             <div className="flex gap-2 items-center">
@@ -49,3 +44,7 @@ export default function PieChartComponent() {
     </div>
   );
 }
+
+PieChartComponent.propTypes = {
+  data: propTypes.array.isRequired,
+};
