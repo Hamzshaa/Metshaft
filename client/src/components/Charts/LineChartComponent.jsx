@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { LineChart, Line, Tooltip } from "recharts";
 
-const Chart = ({
+const LineChartComponent = ({
   icon,
   title,
   number,
@@ -76,7 +76,7 @@ const Chart = ({
   );
 };
 
-Chart.propTypes = {
+LineChartComponent.propTypes = {
   icon: PropTypes.string || PropTypes.object,
   title: PropTypes.string,
   number: PropTypes.number || PropTypes.string,
@@ -86,4 +86,4 @@ Chart.propTypes = {
   percentage: PropTypes.number,
   link: PropTypes.string,
 };
-export default Chart;
+export default LineChartComponent;

@@ -1,7 +1,7 @@
 import { Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import UsersSkeletonLoading from "./SkeletonLoadingComponents/UsersSkeletonLoading";
+import UsersSkeletonLoading from "../SkeletonLoadingComponents/UsersSkeletonLoading";
 const options = { year: "numeric", month: "long", day: "numeric" };
 
 export default function DashboardUsers() {
@@ -82,34 +82,6 @@ export default function DashboardUsers() {
               </Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y">
-              {/* {loading && (
-                <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                  <Table.Cell>
-                    <div className="w-11 h-11 mx-auto rounded-full bg-gray-300 dark:bg-gray-700 animate-pulse" />
-                  </Table.Cell>
-                  <Table.Cell>
-                    <h3 className="w-40 h-3 bg-gray-300 dark:bg-gray-700 animate-pulse"></h3>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <h3 className="w-16 h-4 bg-gray-300 dark:bg-gray-700 rounded-sm"></h3>
-                  </Table.Cell>
-                  <Table.Cell className="text-center">
-                    <h3 className="w-8 h-3 mx-auto bg-gray-300 dark:bg-gray-700 animate-pulse"></h3>
-                  </Table.Cell>
-                  <Table.Cell className="text-center">
-                    <h3 className="w-8 h-3 mx-auto bg-gray-300 dark:bg-gray-700 animate-pulse"></h3>
-                  </Table.Cell>
-                  <Table.Cell className="text-center">
-                    <h3 className="w-8 h-3 mx-auto bg-gray-300 dark:bg-gray-700 animate-pulse"></h3>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <h3 className="w-24 h-3 bg-gray-300 dark:bg-gray-700 animate-pulse"></h3>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <h3 className="w-24 h-3 bg-gray-300 dark:bg-gray-700 animate-pulse"></h3>
-                  </Table.Cell>
-                </Table.Row>
-              )} */}
               {users.length != 0 &&
                 users.map((user, index) => (
                   <Table.Row

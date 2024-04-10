@@ -3,7 +3,7 @@ import { FiLogOut } from "react-icons/fi";
 import { Button, Modal, Sidebar } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { signOutSuccess } from "../redux/user/userSlice";
+import { signOutSuccess } from "../../redux/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { MdDashboard } from "react-icons/md";

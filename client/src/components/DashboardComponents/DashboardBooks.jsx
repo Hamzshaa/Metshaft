@@ -1,7 +1,7 @@
 import { Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import BookSkeletonLoading from "./SkeletonLoadingComponents/BookSkeletonLoading";
+import BookSkeletonLoading from "../SkeletonLoadingComponents/BookSkeletonLoading";
 const options = { year: "numeric", month: "long", day: "numeric" };
 
 export default function DashboardBooks() {

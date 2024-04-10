@@ -19,7 +19,7 @@ import {
   deleteAccountFailure,
   deleteAccountStart,
   deleteAccountSuccess,
-} from "../redux/user/userSlice";
+} from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
