@@ -179,6 +179,11 @@ export const pushNotification = async (req, res, next) => {
         $push: {
           notification: {
             message: req.body.message,
+            date: new Date().toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            }),
             ...(req.body.title && { title: req.body.title }),
           },
         },
@@ -194,6 +199,11 @@ export const pushNotification = async (req, res, next) => {
           $push: {
             notification: {
               message: req.body.message,
+              date: new Date().toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              }),
               ...(req.body.title && { title: req.body.title }),
             },
           },
@@ -210,6 +220,11 @@ export const pushNotification = async (req, res, next) => {
           $push: {
             notification: {
               message: req.body.message,
+              date: new Date().toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              }),
               ...(req.body.title && { title: req.body.title }),
             },
           },
@@ -226,6 +241,11 @@ export const pushNotification = async (req, res, next) => {
           $push: {
             notification: {
               message: req.body.message,
+              date: new Date().toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              }),
               ...(req.body.title && { title: req.body.title }),
             },
           },

@@ -45,6 +45,9 @@ const userSchema = new mongoose.Schema(
         title: {
           type: String,
         },
+        date: {
+          type: String,
+        },
       },
     ],
   },

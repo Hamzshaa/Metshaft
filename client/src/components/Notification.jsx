@@ -27,7 +27,7 @@ export default function Notification() {
     };
 
     fetchNotification();
-  }, []);
+  }, [currentUser._id, notification]);
 
   return (
     <div className="">
