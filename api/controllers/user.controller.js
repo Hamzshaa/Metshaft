@@ -242,3 +242,17 @@ export const pushNotification = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getNotification = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.userId);
+
+    if (!user) {
+      return next(errorHandler(404, "User not found"));
+    }
+
+    res.status(200).json(user.notification);
+  } catch (error) {
+    next(error);
+  }
+};

@@ -57,7 +57,7 @@ export default function NotifyUsersPage() {
         Notify Users
       </div>
 
-      <div className="sm:w-[500px] md:w-[550px] lg:w-[700px]">
+      <div className="sm:w-[500px] md:w-[550px] md:px-5 lg:w-[700px]">
         <form onSubmit={handleSubmit}>
           <fieldset className=" mb-6">
             <legend className="font-medium mb-2">Choose target</legend>

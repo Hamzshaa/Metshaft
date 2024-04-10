@@ -16,7 +16,7 @@ import { MdDashboard } from "react-icons/md";
 import { IoPerson } from "react-icons/io5";
 import { IoIosNotifications } from "react-icons/io";
 import { VscSignOut } from "react-icons/vsc";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import darkLogo from "../assets/logo_dark.png";
 import lightLogo from "../assets/logo_light.png";
@@ -27,6 +27,7 @@ export default function NavbarComponent() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
+  const [notifications, setNotifications] = useState(0);
   const { currentUser } = useSelector((state) => state.user);
   const { theme } = useSelector((state) => state.theme);
 
@@ -47,7 +48,23 @@ export default function NavbarComponent() {
     }
   };
 
-  const notification = 0;
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const res = await fetch(`/api/user/notification/${currentUser._id}`);
+        const data = await res.json();
+        if (res.ok) {
+          console.log(data);
+          setNotifications(data.length);
+        } else {
+          console.log(data.message);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchNotifications();
+  }, []);
 
   return (
     <Navbar className="border-b-2">
@@ -73,9 +90,9 @@ export default function NavbarComponent() {
         </div>
         {currentUser ? (
           <div className="my-auto relative">
-            {notification > 0 && (
+            {notifications > 0 && (
               <div className="bg-red-500 px-1 text-xs text-center w-fit rounded-full absolute z-10 -right-1">
-                {notification}
+                {notifications}
               </div>
             )}
             <Dropdown
@@ -105,10 +122,10 @@ export default function NavbarComponent() {
               <div onClick={() => dispatch(toggleNotification())}>
                 <Dropdown.Item icon={IoIosNotifications} className="flex">
                   Notification{" "}
-                  {notification > 0 && (
+                  {notifications > 0 && (
                     <div className="flex-1 text-right flex justify-end">
                       <h3 className="bg-red-500 w-fit rounded-full px-[6px]">
-                        {notification}
+                        {notifications}
                       </h3>
                     </div>
                   )}
