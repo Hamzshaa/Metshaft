@@ -1,7 +1,7 @@
 import { Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import UsersSkeletonLoading from "./UsersSkeletonLoading";
+import UsersSkeletonLoading from "./SkeletonLoadingComponents/UsersSkeletonLoading";
 const options = { year: "numeric", month: "long", day: "numeric" };
 
 export default function DashboardUsers() {

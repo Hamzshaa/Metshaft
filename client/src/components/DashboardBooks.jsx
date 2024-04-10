@@ -1,14 +1,17 @@
 import { Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import BookSkeletonLoading from "./SkeletonLoadingComponents/BookSkeletonLoading";
 const options = { year: "numeric", month: "long", day: "numeric" };
 
 export default function DashboardBooks() {
   const [books, setBooks] = useState([]);
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchBooks = async () => {
+      setLoading(true);
       try {
         const res = await fetch("/api/books/");
         const data = await res.json();
@@ -18,33 +21,14 @@ export default function DashboardBooks() {
         }
       } catch (error) {
         console.log(error.message);
+      } finally {
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
       }
     };
     fetchBooks();
   }, []);
-
-  console.log(books);
-  console.log("USERS: ", users);
-
-  // useEffect(() => {
-  //   if (books.length > 0) {
-  //     books.map((book) => {
-  //       getUserEmail(book.user_id).then((email) => {
-  //         setUsers((prev) => [...prev, email]);
-  //       });
-  //     });
-  //   }
-  // }, [books]);
-
-  // const getUserEmail = async (id) => {
-  //   try {
-  //     const res = await fetch(`/api/user/${id}`);
-  //     const data = await res.json();
-  //     return data?.email;
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // };
 
   useEffect(() => {
     setUsers([]);
@@ -73,6 +57,10 @@ export default function DashboardBooks() {
       console.log(error.message);
     }
   };
+
+  if (loading) {
+    return <BookSkeletonLoading />;
+  }
 
   return (
     <div className="md:mx-auto md:w-[var(--dashboard-width)]">
@@ -223,7 +211,7 @@ export default function DashboardBooks() {
           </Table>
         </div>
       </div>
-      {books?.length == 0 && (
+      {!loading && books?.length == 0 && (
         <div className="text-xl font-semibold text-center py-2 text-gray-600 dark:text-gray-400">
           No Book Found
         </div>
