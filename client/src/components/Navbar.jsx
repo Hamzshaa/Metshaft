@@ -20,6 +20,7 @@ import { useState } from "react";
 
 import darkLogo from "../assets/logo_dark.png";
 import lightLogo from "../assets/logo_light.png";
+import { toggleNotification } from "../redux/notification/notificationSlice";
 
 export default function NavbarComponent() {
   const path = useLocation().pathname;
@@ -101,7 +102,7 @@ export default function NavbarComponent() {
 
               <DropdownDivider />
 
-              <Link to={"/notification"}>
+              <div onClick={() => dispatch(toggleNotification())}>
                 <Dropdown.Item icon={IoIosNotifications} className="flex">
                   Notification{" "}
                   {notification > 0 && (
@@ -112,7 +113,7 @@ export default function NavbarComponent() {
                     </div>
                   )}
                 </Dropdown.Item>
-              </Link>
+              </div>
               <DropdownDivider />
               <Dropdown.Item
                 icon={VscSignOut}

@@ -1,45 +1,55 @@
-import { useState } from "react";
+import { Modal } from "flowbite-react";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleNotification } from "../redux/notification/notificationSlice";
+import NotificationMessageCard from "./NotificationMessageCard";
 
 export default function Notification() {
-  const [showNotification, setShowNotification] = useState(false);
+  const dispatch = useDispatch();
 
-  const notification = [
-    "notification1",
-    "notification2",
-    "notification3",
-    "notification4",
-    "notification5",
-    "notification6",
-    "notification7",
-    "notification8",
-    "notification9",
-    "notification10",
-    "notification11",
+  const { notification } = useSelector((state) => state.notification);
+
+  const notification2 = [
+    {
+      title: "Yehone title ezihgar",
+      message:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi saepe officia ipsam nulla natus vitae quos sit alias magni soluta!",
+      date: "March 23, 2022",
+    },
+    {
+      title: "Yehone title ezihgar",
+      message:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi saepe officia ipsam nulla natus vitae quos sit alias magni soluta!",
+      date: "March 23, 2022",
+    },
+    {
+      title: "Yehone title ezihgar",
+      message:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi saepe officia ipsam nulla natus vitae quos sit alias magni soluta!",
+      date: "March 23, 2022",
+    },
   ];
 
   return (
-    <div className=""></div>
-    // <div className="absolute h-[var(--body-height)] w-full bg-blue-800 opacity-80 left-0 bottom-0 z-40">
-    //   <div
-    //     className={`${
-    //       true ? "block" : "hidden"
-    //     } w-full h-[var(--body-height)] fixed bg-opacity-50 bottom-0 z-50 overflow-y-scroll sm:w-80 sm:right-0 sm:bg-opacity-100 sm:bg-black`}
-    //   >
-    //     <div className="flex justify-between px-5">
-    //       <div className=""></div>
-    //       <div className="">Notification</div>
-    //       <div className="" onClick={() => showNotification(false)}>
-    //         X
-    //       </div>
-    //     </div>
-    //     {notification.map((item, index) => (
-    //       <div className="py-5" key={index}>
-    //         <hr />
-    //         <div className="">{item}</div>
-    //       </div>
-    //     ))}
-    //     <hr />
-    //   </div>
-    // </div>
+    <div className="">
+      <Modal
+        show={notification}
+        position={"center"}
+        // onClose={() => setOpenModal(false)}
+        onClose={() => dispatch(toggleNotification())}
+      >
+        <Modal.Header>Notifications</Modal.Header>
+        <Modal.Body>
+          {notification2.map((item, index) => (
+            <NotificationMessageCard
+              key={index}
+              title={item.title}
+              message={item.message}
+              date={item.date}
+              border={index !== notification2.length - 1}
+            />
+          ))}
+        </Modal.Body>
+      </Modal>
+    </div>
   );
 }

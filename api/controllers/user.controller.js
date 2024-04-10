@@ -157,3 +157,7 @@ export const grantRevokeAdmin = async (req, res, next) => {
     next(error);
   }
 };
+
+export const pushNotification = async (req, res, next) => {
+  console.log(req.body);
+};
