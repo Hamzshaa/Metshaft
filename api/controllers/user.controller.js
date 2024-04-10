@@ -160,4 +160,85 @@ export const grantRevokeAdmin = async (req, res, next) => {
 
 export const pushNotification = async (req, res, next) => {
   console.log(req.body);
+  if (!req.body.message.trim() || !req.body.message) {
+    return next(errorHandler(400, "Message is required"));
+  }
+
+  if (req.body.target === "single-user" && !req.body.email) {
+    return next(errorHandler(400, "Email is required"));
+  }
+
+  try {
+    if (req.body.target === "single-user") {
+      const user = await User.findOne({ email: req.body.email });
+      if (!user) {
+        return next(errorHandler(404, "User not found"));
+      }
+
+      await User.findByIdAndUpdate(user._id, {
+        $push: {
+          notification: {
+            message: req.body.message,
+            ...(req.body.title && { title: req.body.title }),
+          },
+        },
+      });
+
+      return res.status(200).json({
+        message: `Notification sent successfully for ${req.body.email}`,
+      });
+    } else if (req.body.target === "all") {
+      await User.updateMany(
+        {},
+        {
+          $push: {
+            notification: {
+              message: req.body.message,
+              ...(req.body.title && { title: req.body.title }),
+            },
+          },
+        }
+      );
+
+      return res
+        .status(200)
+        .json({ message: "Notification sent successfully for all users" });
+    } else if (req.body.target === "only-admins") {
+      await User.updateMany(
+        { isAdmin: true },
+        {
+          $push: {
+            notification: {
+              message: req.body.message,
+              ...(req.body.title && { title: req.body.title }),
+            },
+          },
+        }
+      );
+
+      return res
+        .status(200)
+        .json({ message: "Notification sent successfully for admins" });
+    } else if (req.body.target === "except-admins") {
+      await User.updateMany(
+        { isAdmin: false },
+        {
+          $push: {
+            notification: {
+              message: req.body.message,
+              ...(req.body.title && { title: req.body.title }),
+            },
+          },
+        }
+      );
+
+      return res.status(200).json({
+        message: "Notification sent successfully for non admin users",
+      });
+    } else {
+      return next(errorHandler(400, "Invalid target"));
+    }
+  } catch (error) {
+    next(error);
+  }
 };
