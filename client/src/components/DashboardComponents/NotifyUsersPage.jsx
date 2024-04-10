@@ -1,12 +1,27 @@
-import { Button, Label, Radio, TextInput, Textarea } from "flowbite-react";
-import { useState } from "react";
+import {
+  Alert,
+  Button,
+  Label,
+  Radio,
+  TextInput,
+  Textarea,
+} from "flowbite-react";
+import { useEffect, useState } from "react";
 
 export default function NotifyUsersPage() {
   const [selectedOption, setSelectedOption] = useState("all");
   const [inputs, setInputs] = useState({ target: selectedOption });
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+
+  useEffect(() => {
+    setInputs((prev) => ({ ...prev, target: selectedOption }));
+  }, [selectedOption]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
+    setSuccessMessage(null);
     try {
       const res = await fetch("/api/user/notification", {
         method: "PUT",
@@ -18,8 +33,10 @@ export default function NotifyUsersPage() {
       const data = await res.json();
       if (res.ok) {
         console.log(data);
+        setSuccessMessage(data.message);
       } else {
         console.log("error: ", data.message);
+        setError(data.message);
       }
     } catch (error) {
       console.log(error.message);
@@ -136,6 +153,16 @@ export default function NotifyUsersPage() {
               Push Notification
             </Button>
           </div>
+          {successMessage && (
+            <Alert className="mt-5 items-center" color="info">
+              {successMessage}
+            </Alert>
+          )}
+          {error && (
+            <Alert className="mt-5 items-center" color="failure">
+              {error}
+            </Alert>
+          )}
         </form>
       </div>
     </div>
