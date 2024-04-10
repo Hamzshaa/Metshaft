@@ -1,12 +1,15 @@
 import { Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import UsersSkeletonLoading from "./UsersSkeletonLoading";
 const options = { year: "numeric", month: "long", day: "numeric" };
 
 export default function DashboardUsers() {
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     const fetchUsers = async () => {
       try {
         const res = await fetch("/api/user");
@@ -17,6 +20,10 @@ export default function DashboardUsers() {
         }
       } catch (error) {
         console.log(error.message);
+      } finally {
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
       }
     };
     fetchUsers();
@@ -38,6 +45,10 @@ export default function DashboardUsers() {
       fetchBooksInfo();
     });
   }, [users]);
+
+  if (loading) {
+    return <UsersSkeletonLoading />;
+  }
 
   return (
     <div className="md:mx-auto md:w-[var(--dashboard-width)]">
@@ -71,6 +82,34 @@ export default function DashboardUsers() {
               </Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y">
+              {/* {loading && (
+                <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                  <Table.Cell>
+                    <div className="w-11 h-11 mx-auto rounded-full bg-gray-300 dark:bg-gray-700 animate-pulse" />
+                  </Table.Cell>
+                  <Table.Cell>
+                    <h3 className="w-40 h-3 bg-gray-300 dark:bg-gray-700 animate-pulse"></h3>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <h3 className="w-16 h-4 bg-gray-300 dark:bg-gray-700 rounded-sm"></h3>
+                  </Table.Cell>
+                  <Table.Cell className="text-center">
+                    <h3 className="w-8 h-3 mx-auto bg-gray-300 dark:bg-gray-700 animate-pulse"></h3>
+                  </Table.Cell>
+                  <Table.Cell className="text-center">
+                    <h3 className="w-8 h-3 mx-auto bg-gray-300 dark:bg-gray-700 animate-pulse"></h3>
+                  </Table.Cell>
+                  <Table.Cell className="text-center">
+                    <h3 className="w-8 h-3 mx-auto bg-gray-300 dark:bg-gray-700 animate-pulse"></h3>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <h3 className="w-24 h-3 bg-gray-300 dark:bg-gray-700 animate-pulse"></h3>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <h3 className="w-24 h-3 bg-gray-300 dark:bg-gray-700 animate-pulse"></h3>
+                  </Table.Cell>
+                </Table.Row>
+              )} */}
               {users.length != 0 &&
                 users.map((user, index) => (
                   <Table.Row
@@ -132,7 +171,7 @@ export default function DashboardUsers() {
           </Table>
         </div>
       </div>
-      {users.length == 0 && (
+      {!loading && users.length == 0 && (
         <div className="text-xl font-semibold text-center py-2 text-gray-600 dark:text-gray-400">
           No User Found
         </div>
