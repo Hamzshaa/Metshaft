@@ -17,7 +17,7 @@ export default function Notification() {
         const data = await res.json();
 
         if (res.ok) {
-          setNotifications(data);
+          setNotifications(data.reverse());
         } else {
           console.log(data.message);
         }

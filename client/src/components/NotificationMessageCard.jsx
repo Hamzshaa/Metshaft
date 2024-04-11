@@ -46,7 +46,6 @@ export default function NotificationMessageCard({
       const data = await res.json();
 
       if (res.ok) {
-        console.log(data.message);
         setIsSeenClicked(true);
         dispatch(decrementUnseenNotifications());
       } else {

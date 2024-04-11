@@ -34,8 +34,6 @@ export default function NavbarComponent() {
   const { theme } = useSelector((state) => state.theme);
   const { unseenNotifications } = useSelector((state) => state.notification);
 
-  console.log(unseenNotifications);
-
   const handleSignout = async () => {
     try {
       const res = await fetch("/api/auth/signout", {
@@ -59,12 +57,10 @@ export default function NavbarComponent() {
         const res = await fetch(`/api/user/notification/${currentUser._id}`);
         const data = await res.json();
         if (res.ok) {
-          console.log(data);
           const unseenNotification = data.filter(
             (item) => item.isSeen == false
           );
-          console.log("DATA: ", data);
-          console.log("Unseen Notification: ", unseenNotification);
+
           dispatch(setUnseenNotifications(unseenNotification.length));
         } else {
           console.log(data.message);
@@ -74,7 +70,9 @@ export default function NavbarComponent() {
       }
     };
     fetchNotifications();
-  }, [currentUser?._id]);
+  }, [currentUser?._id, dispatch]);
+
+  console.log(theme);
 
   return (
     <Navbar className="border-b-2">
@@ -83,7 +81,7 @@ export default function NavbarComponent() {
         className="self-center whitespace-nowrap h-16 align-middle items-center flex justify-center overflow-hidden"
       >
         <img
-          src={theme == "dark" ? darkLogo : lightLogo}
+          src={theme == "dark" ? lightLogo : darkLogo}
           alt="logo"
           className="w-40 -mb-3 bg-[url('../assets/logo_dark.png')]"
         />

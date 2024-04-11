@@ -35,7 +35,6 @@ export default function NotifyUsersPage() {
       });
       const data = await res.json();
       if (res.ok) {
-        console.log(data);
         setSuccessMessage(data.message);
         dispatch(incrementUnseenNotifications());
       } else {
