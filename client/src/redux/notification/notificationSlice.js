@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   notification: false,
+  unseenNotifications: 0,
 };
 
 export const notificationSlice = createSlice({
@@ -11,9 +12,19 @@ export const notificationSlice = createSlice({
     toggleNotification: (state) => {
       state.notification = !state.notification;
     },
+    incrementUnseenNotifications: (state) => {
+      state.unseenNotifications += 1;
+    },
+    decrementUnseenNotifications: (state) => {
+      state.unseenNotifications -= 1;
+    },
   },
 });
 
-export const { toggleNotification } = notificationSlice.actions;
+export const {
+  toggleNotification,
+  incrementUnseenNotifications,
+  decrementUnseenNotifications,
+} = notificationSlice.actions;
 
 export default notificationSlice.reducer;

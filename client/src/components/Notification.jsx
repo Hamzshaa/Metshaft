@@ -13,7 +13,7 @@ export default function Notification() {
   useEffect(() => {
     const fetchNotification = async () => {
       try {
-        const res = await fetch(`/api/user/notification/${currentUser._id}`);
+        const res = await fetch(`/api/user/notification/${currentUser?._id}`);
         const data = await res.json();
 
         if (res.ok) {
@@ -27,7 +27,26 @@ export default function Notification() {
     };
 
     fetchNotification();
-  }, [currentUser._id, notification]);
+  }, [currentUser?._id, notification]);
+
+  const handleDelete = async (id) => {
+    console.log(id);
+    try {
+      const res = await fetch(`/api/user/notification/delete/${id}`, {
+        method: "PUT",
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        console.log(data.message);
+        setNotifications(notifications.filter((item) => item._id !== id));
+      } else {
+        console.log("ERROR: ", data.message);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <div className="">
@@ -44,9 +63,12 @@ export default function Notification() {
             notifications.map((item, index) => (
               <NotificationMessageCard
                 key={index}
+                id={item._id}
                 title={item.title}
                 message={item.message}
                 date={item.date}
+                isSeen={item.isSeen}
+                handleDelete={handleDelete}
                 border={index !== notifications.length - 1}
               />
             ))}

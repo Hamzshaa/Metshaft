@@ -7,8 +7,11 @@ import {
   Textarea,
 } from "flowbite-react";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { incrementUnseenNotifications } from "../../redux/notification/notificationSlice";
 
 export default function NotifyUsersPage() {
+  const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState("all");
   const [inputs, setInputs] = useState({ target: selectedOption });
   const [error, setError] = useState(null);
@@ -34,6 +37,7 @@ export default function NotifyUsersPage() {
       if (res.ok) {
         console.log(data);
         setSuccessMessage(data.message);
+        dispatch(incrementUnseenNotifications());
       } else {
         console.log("error: ", data.message);
         setError(data.message);

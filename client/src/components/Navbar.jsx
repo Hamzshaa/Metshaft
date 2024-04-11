@@ -16,7 +16,7 @@ import { MdDashboard } from "react-icons/md";
 import { IoPerson } from "react-icons/io5";
 import { IoIosNotifications } from "react-icons/io";
 import { VscSignOut } from "react-icons/vsc";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import darkLogo from "../assets/logo_dark.png";
 import lightLogo from "../assets/logo_light.png";
@@ -27,9 +27,11 @@ export default function NavbarComponent() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
-  const [notifications, setNotifications] = useState(0);
   const { currentUser } = useSelector((state) => state.user);
   const { theme } = useSelector((state) => state.theme);
+  const { unseenNotifications } = useSelector((state) => state.notification);
+
+  console.log(unseenNotifications);
 
   const handleSignout = async () => {
     try {
@@ -48,23 +50,27 @@ export default function NavbarComponent() {
     }
   };
 
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        const res = await fetch(`/api/user/notification/${currentUser._id}`);
-        const data = await res.json();
-        if (res.ok) {
-          console.log(data);
-          setNotifications(data.length);
-        } else {
-          console.log(data.message);
-        }
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    fetchNotifications();
-  }, []);
+  // useEffect(() => {
+  //   const fetchNotifications = async () => {
+  //     try {
+  //       const res = await fetch(`/api/user/notification/${currentUser._id}`);
+  //       const data = await res.json();
+  //       if (res.ok) {
+  //         console.log(data);
+  //         const unseenNotification = data.filter(
+  //           (item) => item.isSeen == false
+  //         );
+  //         console.log("DATA: ", data);
+  //         console.log("Unseen Notification: ", unseenNotification);
+  //       } else {
+  //         console.log(data.message);
+  //       }
+  //     } catch (error) {
+  //       console.log(error.message);
+  //     }
+  //   };
+  //   fetchNotifications();
+  // }, [currentUser?._id]);
 
   return (
     <Navbar className="border-b-2">
@@ -90,9 +96,9 @@ export default function NavbarComponent() {
         </div>
         {currentUser ? (
           <div className="my-auto relative">
-            {notifications > 0 && (
+            {unseenNotifications > 0 && (
               <div className="bg-red-500 px-1 text-xs text-center w-fit rounded-full absolute z-10 -right-1">
-                {notifications}
+                {unseenNotifications}
               </div>
             )}
             <Dropdown
@@ -122,10 +128,10 @@ export default function NavbarComponent() {
               <div onClick={() => dispatch(toggleNotification())}>
                 <Dropdown.Item icon={IoIosNotifications} className="flex">
                   Notification{" "}
-                  {notifications > 0 && (
+                  {unseenNotifications > 0 && (
                     <div className="flex-1 text-right flex justify-end">
                       <h3 className="bg-red-500 w-fit rounded-full px-[6px]">
-                        {notifications}
+                        {unseenNotifications}
                       </h3>
                     </div>
                   )}

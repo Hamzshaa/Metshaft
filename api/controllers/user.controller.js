@@ -276,3 +276,72 @@ export const getNotification = async (req, res, next) => {
     next(error);
   }
 };
+
+export const markAsReadNotification = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return next(errorHandler(404, "User not found"));
+    }
+
+    user.notification.forEach(async (item) => {
+      if (item._id == req.params.notificationId) {
+        await User.updateOne(
+          { _id: req.user.id, "notification._id": item._id },
+          { $set: { "notification.$.isSeen": true } }
+        );
+      }
+    });
+
+    res.status(200).json({ message: "Notifications marked as read" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteNotification = async (req, res, next) => {
+  console.log(req.params.notificationId);
+  try {
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return next(errorHandler(404, "User not found"));
+    }
+
+    user.notification.forEach(async (item) => {
+      if (item._id == req.params.notificationId) {
+        await User.updateOne(
+          { _id: req.user.id },
+          { $pull: { notification: { _id: item._id } } }
+        );
+      }
+    });
+
+    res.status(200).json({ message: "Notification deleted successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getSpecificNotification = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.userId);
+
+    if (!user) {
+      return next(errorHandler(404, "User not found"));
+    }
+
+    const notification = user.notification.find(
+      (item) => item._id == req.params.notificationId
+    );
+
+    if (!notification) {
+      return next(errorHandler(404, "Notification not found"));
+    }
+
+    res.status(200).json(notification);
+  } catch (error) {
+    next(error);
+  }
+};
