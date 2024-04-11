@@ -16,11 +16,14 @@ import { MdDashboard } from "react-icons/md";
 import { IoPerson } from "react-icons/io5";
 import { IoIosNotifications } from "react-icons/io";
 import { VscSignOut } from "react-icons/vsc";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import darkLogo from "../assets/logo_dark.png";
 import lightLogo from "../assets/logo_light.png";
-import { toggleNotification } from "../redux/notification/notificationSlice";
+import {
+  setUnseenNotifications,
+  toggleNotification,
+} from "../redux/notification/notificationSlice";
 
 export default function NavbarComponent() {
   const path = useLocation().pathname;
@@ -50,27 +53,28 @@ export default function NavbarComponent() {
     }
   };
 
-  // useEffect(() => {
-  //   const fetchNotifications = async () => {
-  //     try {
-  //       const res = await fetch(`/api/user/notification/${currentUser._id}`);
-  //       const data = await res.json();
-  //       if (res.ok) {
-  //         console.log(data);
-  //         const unseenNotification = data.filter(
-  //           (item) => item.isSeen == false
-  //         );
-  //         console.log("DATA: ", data);
-  //         console.log("Unseen Notification: ", unseenNotification);
-  //       } else {
-  //         console.log(data.message);
-  //       }
-  //     } catch (error) {
-  //       console.log(error.message);
-  //     }
-  //   };
-  //   fetchNotifications();
-  // }, [currentUser?._id]);
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const res = await fetch(`/api/user/notification/${currentUser._id}`);
+        const data = await res.json();
+        if (res.ok) {
+          console.log(data);
+          const unseenNotification = data.filter(
+            (item) => item.isSeen == false
+          );
+          console.log("DATA: ", data);
+          console.log("Unseen Notification: ", unseenNotification);
+          dispatch(setUnseenNotifications(unseenNotification.length));
+        } else {
+          console.log(data.message);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchNotifications();
+  }, [currentUser?._id]);
 
   return (
     <Navbar className="border-b-2">

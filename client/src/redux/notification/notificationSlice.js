@@ -18,6 +18,9 @@ export const notificationSlice = createSlice({
     decrementUnseenNotifications: (state) => {
       state.unseenNotifications -= 1;
     },
+    setUnseenNotifications: (state, action) => {
+      state.unseenNotifications = action.payload;
+    },
   },
 });
 
@@ -25,6 +28,7 @@ export const {
   toggleNotification,
   incrementUnseenNotifications,
   decrementUnseenNotifications,
+  setUnseenNotifications,
 } = notificationSlice.actions;
 
 export default notificationSlice.reducer;
