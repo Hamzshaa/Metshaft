@@ -72,8 +72,6 @@ export default function NavbarComponent() {
     fetchNotifications();
   }, [currentUser?._id, dispatch]);
 
-  console.log(theme);
-
   return (
     <Navbar className="border-b-2">
       <Link
