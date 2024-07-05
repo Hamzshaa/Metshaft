@@ -79,7 +79,7 @@ export default function NavbarComponent() {
         className="self-center whitespace-nowrap h-16 align-middle items-center flex justify-center overflow-hidden"
       >
         <img
-          src={theme == "dark" ? lightLogo : darkLogo}
+          src={theme != "dark" ? lightLogo : darkLogo}
           alt="logo"
           className="w-40 -mb-3 bg-[url('../assets/logo_dark.png')]"
         />
