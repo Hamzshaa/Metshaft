@@ -67,7 +67,7 @@ export default function Footer() {
       <div className="h-[100px] items-center flex justify-center my-10">
         <Link to="/">
           <img
-            src={theme == "dark" ? lightLogo : darkLogo}
+            src={theme != "dark" ? lightLogo : darkLogo}
             className="overflow-hidden w-56"
           />
         </Link>
